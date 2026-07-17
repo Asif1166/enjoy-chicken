@@ -1,0 +1,156 @@
+{% extends "base.html" %}
+{% load static %}
+{% block body %}
+
+ 
+
+
+<!-- Start Breadcrumb
+    ============================================= -->
+    <div class="breadcrumb-area bg-cover shadow dark text-center text-light"
+    style="background-image: url(/static/assets/img/default/banner2.jpg);">
+
+</div>
+<!-- End Breadcrumb -->
+
+
+
+{% if not order %}
+<div class="contact-style-one-area default-padding overflow-hidden">
+    <div class="container">
+        <div class="row align-center">
+            <div class="col-lg-8 offset-lg-2">
+                <div class="contact-form-style-one">
+                    <div class="heading text-center">
+                        <h2 class="heading">Suivre votre commande</h2>
+                    </div>
+                    <form action="{% url 'track_order' %}" method="GET" class="">
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <input class="form-control" id="order_id" name="order_id" placeholder="Indiquer l'identifiant de la commande*" type="text" required>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-8">
+                                <div class="form-group">
+                                    <input class="form-control" id="phone_no" name="phone_no" placeholder="Numéro de contact*" type="text" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12 text-center">
+                                <button type="submit" id="submit">
+                                    <i class="fa fa-paper-plane"></i> Poursuivre
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% else %}
+<div class="validtheme-shop-single-area default-padding">
+    <div class="container">
+        <div class="account-card order-details">
+            <div class="order-head">
+                <div class="clearfix m-l20">
+                    <h4 class="mb-0">Commande #{{ order_display_id }}</h4>
+                    <span class="badge badge-danger">{{ order.product_status }}</span>
+                    &nbsp;<span class="badge bg-success m-0">{{ order.order_type }}</span>
+                </div>
+            </div>
+            <div class="row mb-sm-4 mb-2">
+                <div class="col-sm-6">
+                    <div class="shiping-tracker-detail">
+                        <span style="color: aliceblue;">Cliente</span>
+                        <h6 class="">{{ order.shipping_address.name }}</h6>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="shiping-tracker-detail" style="color: aliceblue;">
+                        <strong style="color: aliceblue;">Adresse</strong>: <span style="color: aliceblue;">{{ order.shipping_address.street_address }}</span>
+                        <br>
+                        <strong style="color: aliceblue;"><span style="color: aliceblue;">Post Code</span></strong> {{ order.shipping_address.postal_code }}, {{ order.shipping_address.city }}
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="shiping-tracker-detail">
+                        <span style="color: aliceblue;">Placé sur</span>
+                        <h6 class="">{{ order.order_date }}</h6>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="shiping-tracker-detail">
+                        <span style="color: aliceblue;">Numéro de contact</span>
+                        <h6 class="">{{ order.shipping_address.phone }}</h6>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Order items section -->
+            <div class="row mt-5">
+                <div class="col-sm-12">
+                    <h5 class="pb-1 border-bottom" style="display: inline-block;">Détails de la catégorie de menu</h5>
+                    {% for item in order.cartorderitems_set.all %}
+                    <div class="tracking-item">
+                        <div class="tracking-product">
+                            <a href="{{ item.product.get_absolute_url }}">
+                                <img alt="" src="{{item.image}}">
+                            </a>
+                        </div>
+                        <div class="tracking-product-content">
+                            <a href="{{ item.product.get_absolute_url }}">
+                                <h5 class="">{{ item.qty }} - {{ item.item }}</h5>
+                            </a>
+                            <small class="d-block" style="color: aliceblue;"><strong>Prix</strong> : &euro;{{ item.price }}</small>
+                        </div>
+                    </div>
+                    {% endfor %}
+                    <!-- <div class="tracking-item-content">
+                        <span>Prix total</span>
+                        <h6>+ &euro;{{ order.price }}</h6>
+                    </div> -->
+                    <div class="tracking-item-content">
+                        <span style="color: aliceblue;">Sub Total</span>
+                         
+                        <h6> &euro;{{ order.price }} </h6>
+                        
+                    </div>  
+                    <div class="tracking-item-content">
+                        <span style="color: aliceblue;">Tax <span style="color: rgb(207, 183, 183); font-size: smaller;"> (TVA 5.00 % included)</span></span>
+                         
+                        <h6> &euro;{{ order.tax_amount }} </h6>
+                        
+                    </div> 
+                     <div class="tracking-item-content">
+                        <span style="color: aliceblue;">Expédition </span>
+                        
+                        <h6> &euro;{{ cost_settings.shipping_cost }} </h6>
+                        
+                    </div>
+                    <div class="tracking-item-content border-bottom border-light mb-2">
+                    </div>
+                    <div class="tracking-item-content">
+                        <span style="color: aliceblue;">Commande Total</span>
+                        <h6>&euro;{{ order.total_cost }}</h6>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-3">
+                <div class="col-sm-12">
+                    <a class="btn btn-theme btn-sm animation" href="{% url 'download_invoice' order.id %}">Download Slip</a>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</div>
+{% endif %}
+
+    
+
+{% endblock body %}

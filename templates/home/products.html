@@ -1,0 +1,230 @@
+<!-- Start Foot Menu 
+    ============================================= -->
+<div class="food-menu-style-two-area overflow-hidden default-padding bg-blue color-style-four background-image">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 offset-lg-2">
+                <div class="site-heading text-center">
+                    <h4 class="sub-title" id="ChooseyourmenuText">Choisissez votre menu</h4>
+                    <h2 class="title" id="OurCartText">Notre Carte</h2>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="food-menu-three-two-items">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <div class="nav nav-tabs food-menu-nav style-three" id="nav-tab" role="tablist">
+                        <button class="nav-link active" id="main-navs-id-all" data-bs-toggle="tab"
+                            data-bs-target="#maintab-all" type="button" role="tab" aria-controls="maintab-all"
+                            aria-selected="true">
+                            All
+                        </button>
+                        {% for super_category in super_categories %}
+                        <button class="nav-link" id="main-navs-id-{{ forloop.counter }}" data-bs-toggle="tab"
+                            data-bs-target="#maintab{{ forloop.counter }}" type="button" role="tab"
+                            aria-controls="maintab{{ forloop.counter }}" aria-selected="false">
+                            {{ super_category.title }}
+                        </button>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="tab-content food-style-two-content" id="nav-tabContent">
+
+
+
+
+
+
+
+
+
+                            <!-- All Products Tab Pane -->
+                            <div class="tab-pane fade show active" id="maintab-all" role="tabpanel"
+                                aria-labelledby="main-navs-id-all">
+                                <div class="food-menu-style-two-area overflow-hidden default-padding color-style-two">
+                                    <div class="container">
+                                        <div class="row">
+
+                                            {% for product in products %}
+                                            <div class="col-lg-6">
+                                                <div class="info">
+                                                    <ul class="meal-items">
+                                                        <li class="product-item">
+                                                            <div class="thumbnail">
+                                                                <a href="{% url 'product_details' product.pid  %}">
+                                                                    {% if product.image %}
+                                                                    <img src="{{ product.image.url }}"
+                                                                        alt="Image Not Found">
+                                                                    {% endif %}
+                                                                </a>
+                                                            </div>
+                                                            <div class="content">
+                                                                <div class="top">
+                                                                    <div class="title">
+                                                                        <h4><a
+                                                                                href="{% url 'product_details' product.pid  %}">
+                                                                                {{product.title }}</a></h4>
+
+
+                                                                    </div>
+
+
+                                                                    <div class="price">
+                                                                        <span>€{{ product.price }}</span>
+                                                                    </div>
+
+
+                                                                </div>
+                                                                <div class="bottom">
+                                                                    <div class="left" style="font-size: 15px;">
+                                                                        <p style="color: #aba8a8;">{{product.category}}
+                                                                        </p>
+                                                                    </div>
+
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            {% endfor %}
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                            {% for super_category in super_categories %}
+                            <div class="tab-pane fade" id="maintab{{ forloop.counter }}" role="tabpanel"
+                                aria-labelledby="main-navs-id-{{ forloop.counter }}">
+                                <div class="food-menu-style-two-area overflow-hidden default-padding color-style-two">
+                                    <div class="container">
+                                        <div class="row">
+                                            <div class="col-lg-3">
+                                                <div class="nav nav-tabs text-light food-menu-nav style-two"
+                                                    id="nav-tab" role="tablist">
+                                                    {% for category in super_category.category_set.all %}
+                                                    <button class="nav-link {% if forloop.first %}active{% endif %}"
+                                                        id="navs-id-{{ forloop.parentloop.counter }}-{{ forloop.counter }}"
+                                                        data-bs-toggle="tab"
+                                                        data-bs-target="#tabs{{ forloop.parentloop.counter }}-{{ forloop.counter }}"
+                                                        type="button" role="tab"
+                                                        aria-controls="tabs{{ forloop.parentloop.counter }}-{{ forloop.counter }}"
+                                                        aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
+                                                        style="width: 250px;"> <!-- Set your desired width here -->
+                                                        {{ category.title }}
+                                                        {% if category.image %}
+                                                        <img width="30" src="{{ category.image.url }}"
+                                                            alt="Image Not Found">
+                                                        {% endif %}
+                                                    </button>
+
+                                                    {% endfor %}
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-8 offset-lg-1">
+                                                <div class="tab-content food-menu-tab-content style-two"
+                                                    id="nav-tabContent">
+                                                    {% for category in super_category.category_set.all %}
+                                                    <div class="tab-pane fade {% if forloop.first %}show active{% endif %}"
+                                                        id="tabs{{ forloop.parentloop.counter }}-{{ forloop.counter }}"
+                                                        role="tabpanel"
+                                                        aria-labelledby="navs-id-{{ forloop.parentloop.counter }}-{{ forloop.counter }}">
+                                                        <div class="row">
+                                                            {% for product in category.product_set.all %}
+                                                            <div class="col-lg-6">
+                                                                <div class="">
+                                                                    <ul class="meal-items">
+                                                                        <li class="product-item">
+                                                                            <div class="thumbnail">
+                                                                                <a
+                                                                                    href="{% url 'product_details' product.pid  %}"></a>
+                                                                                {% if product.image %}
+                                                                                <img src="{{ product.image.url }}"
+                                                                                    alt="Image Not Found">
+                                                                                {% endif %}
+                                                                                </a>
+                                                                            </div>
+                                                                            <div class="content">
+                                                                                <div class="top">
+                                                                                    <div class="title">
+                                                                                        <h4><a href="{% url 'product_details' product.pid  %}">{{ product.title }}</a>
+                                                                                        </h4>
+                                                                                    </div>
+                                                                                    <div class="price">
+                                                                                        <span>€{{ product.price }}</span>
+                                                                                    </div>
+
+
+                                                                                </div>
+                                                                                <div class="bottom">
+                                                                                    <div class="left"
+                                                                                        style="font-size: 15px;">
+                                                                                        <p style="color: #aba8a8;">{{ product.category }}</p>
+                                                                                    </div>
+
+                                                                                </div>
+                                                                            </div>
+                                                                        </li>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                            {% endfor %}
+                                                        </div>
+                                                    </div>
+                                                    {% endfor %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+<!-- End Food Menu -->
+
+
+
+<style>
+    .product-item {
+        margin-bottom: 15px;
+        /* Adjust the value as needed */
+    }
+
+    /* Make all price buttons the same width */
+    ul.meal-items li .content .top .price {
+        min-width: 80px;
+        justify-content: center;
+    }
+</style>

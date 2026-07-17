@@ -1,0 +1,70 @@
+
+
+{% extends "base.html" %}
+
+{% load static %}
+
+
+
+{% block body %}
+
+
+    <!-- Start Breadcrumb
+    ============================================= -->
+    <div class="breadcrumb-area bg-cover shadow dark text-center text-light"
+    style="background-image: url(/static/assets/img/default/banner2.jpg);">
+    
+    </div>
+    <!-- End Breadcrumb -->
+
+
+<div class="contact-style-one-area default-padding overflow-hidden">
+
+    <div class="container">
+        <div class="row align-center">
+
+
+
+            <div class="col-lg-10 offset-lg-1">
+                <div class="confirmation-card">
+                    <div class="thumb mb-4">
+                        <img src="/front/img/shop/confirmation.png" alt="">
+                    </div>
+                    <div class="text-center">
+                        <h5 class="heading">La commande est passée avec succès!</h5>
+                        <div class="d-flex flex-column flex-md-row justify-content-center align-items-center">
+                            <a href="{% url 'track_order' %}?order_id={{ order.id }}&phone_no={{ phone_number }}" 
+                               class="btn secondary btn-theme btn-sm animation mb-2 mb-md-0 me-md-2">Voir l&#039;ordre</a>
+                            <a href="/" 
+                               class="btn secondary btn-theme btn-sm animation">Retour à l'accueil</a>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+
+
+
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{% endblock body %}

@@ -1,0 +1,604 @@
+
+{% extends "base.html" %}
+
+{% load static %}
+
+
+
+{% block body %}
+
+
+
+    
+    <style>
+
+      
+
+        option {
+            /*background-color: #f3f3f3;*/
+            color: #fff;
+            padding: 5px;
+        }
+
+        .form-control:focus {
+            color: #fff;
+        }
+        .form-group input{
+            color: #fff;
+        }
+
+        .form-group textarea{
+            color: #fff;
+        }
+
+        .form-group select{
+            color: #fff;
+        }
+
+        @media only screen and (max-width: 500px) {
+            .marginTop {
+                margin-top: 20px;
+            }
+        }
+
+        .card-payment{
+            display: none;
+        }
+
+        #shopping-cart-frm input.error, select.error{
+            border: 1px solid red !important;
+        }
+
+        #shopping-cart-frm label.error{
+            color : red;
+            margin-top:3px;
+        }
+
+        .hidden{
+            display: none;
+        }
+        .contact-form-style-one input {
+            background-color: #002654;
+        }
+        .contact-form-style-one input, .contact-form-style-one textarea, .contact-form-style-one input:focus, .contact-form-style-one textarea:focus {
+            background-color: #002654;
+        }
+        
+        .order-type-message {
+            animation: fadeIn 0.5s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .delivery-disabled-message,
+        .takeaway-disabled-message {
+            box-shadow: 0 2px 8px rgba(255, 107, 53, 0.3);
+        }
+        
+        .min-order-warning {
+            background-color: #f04124;
+            color: #fff;
+            padding: 12px;
+            border-radius: 5px;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            display: none;
+            text-align: center;
+            font-weight: 500;
+        }
+        
+        .min-order-warning.show {
+            display: block;
+        }
+        
+        .radio.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+        
+        .radio.disabled label {
+            cursor: not-allowed;
+        }
+    </style>
+
+
+     
+    
+
+
+
+
+
+
+
+    <!-- Start Breadcrumb
+    ============================================= -->
+    <div class="breadcrumb-area bg-cover shadow dark text-center text-light"
+    style="background-image: url(/static/assets/img/default/banner2.jpg);">
+    
+    </div>
+    <!-- End Breadcrumb -->
+
+        <div class="contact-style-one-area default-padding overflow-hidden" style="background-color: #002654;">
+        <div class="container">
+            <ul class="user-noti-error bg-gray" role="alert" style="display: none;">
+                <li class="text-center">
+                </li>
+            </ul>
+            <a id="vali-error"></a>
+            <form action="{% url 'order_complete' %}" method="POST">
+                {% csrf_token %}
+            <div class="row" >
+                <div class="col-lg-8">
+                    <div class="contact-form-style-one" style="background-color: #405b7b;">
+                        <h4 class="mb-4" style="color: #fff;">Détails de facturation</h4>
+                             <div class="row">
+                                <div class="col-lg-12 mb-3" >
+                                    <div class="form-group" >
+                                        <input class="form-control mb-0"  name="name" placeholder="Nom*" type="text" value="" required>
+                                                                            </div>
+                                </div>
+                               
+                                <div class="col-lg-12 mb-3">
+                                    <div class="form-group">
+                                        <input class="form-control mb-0" name="email" placeholder="email*" type="text" value="" required>
+                                                                            </div>
+                                </div>
+                                <div class="col-lg-12 mb-3">
+                                    <div class="form-group">
+                                        <input class="form-control mb-0" name="phone" placeholder="Numéro de contact*" type="text" value="" required>
+                                                                            </div>
+                                </div>
+                                <div class="col-lg-12 mb-3">
+                                    <div class="form-group">
+                                        <input class="form-control mb-0" name="street" placeholder="Adresse*" type="text" value="" required>
+                                                                            </div>
+                                </div>
+                                <div class="col-lg-12 mb-3">
+                                    <div class="form-group">
+                                        <input class="form-control mb-0" name="zip" placeholder="Code Postal*" type="text" value="" required>
+                                                                            </div>
+                                </div>
+                                <div class="col-lg-12 mb-3">
+                                    <div class="form-group">
+                                        <span class="alert-error"></span>
+                                        <select style="background-color: #002654; color: #a19797;" class="form-control mb-0 form-select border-0 p-2 px-3" name="city" required>
+                                                                                        <option value="" >Ville*</option>
+                                                                                        <option value="Annœullin 59112">Annœullin 59112</option>
+                                                                                        <option value="Bois -Blance 59000">Bois -Blance 59000</option>
+                                                                                        <option value="Canton de Lille-2 59800">Canton de Lille-2 59800</option>
+                                                                                        <option value="Croix 59170">Croix 59170</option>
+                                                                                        <option value="Euralille 59777">Euralille 59777</option>
+                                                                                        <option value="Faches-Thumesnil 59155">Faches-Thumesnil 59155</option>
+                                                                                        <option value="Fives 59000">Fives 59000</option>
+                                                                                        <option value="Lille 59000">Lille 59000</option>
+                                                                                        <option value="Lille Centre 59000">Lille Centre 59000</option>
+                                                                                        <option value="Lille Moulins 59000">Lille Moulins 59000</option>
+                                                                                        <option value="Lille Sud 59000">Lille Sud 59000</option>
+                                                                                        <option value="Madeleine 59110">Madeleine 59110</option>
+                                                                                        <option value="Roboix 59512">Roboix 59512</option>
+                                                                                        <option value="St-Maurice Pellevoisin 59800">St-Maurice Pellevoisin 59800</option>
+                                                                                        <option value="Vauban-Esquermes 59000">Vauban-Esquermes 59000</option>
+                                                                                        <option value="Vieux-Lille 59800">Vieux-Lille 59800</option>
+                                                                                        <option value="34">villeneuve d&#039;ascq 59491</option>
+                                                                                        <option value="Wazemmes 59000">Wazemmes 59000</option>
+                                                                                    </select>
+                                                                            </div>
+                                </div>
+                                <div class="col-lg-12 mb-3">
+                                    <div class="form-group">
+                                        <textarea name="ordernotes" class="form-control mb-0" placeholder="Notes(optional)"></textarea>
+                                    </div>
+                                </div>
+                                
+                              
+                            </div>
+                    </div>
+                </div>
+
+                <div class="col-xl-4 side-bar marginTop">
+                    <div class="title text-center" ><h4 style="color: #fff;">Votre commande</h4></div>
+                    <div class="order-detail" style="background-color: #405b7b;">
+                            
+
+                        {% for product_id, item in cart_data.items %}
+                        <div class="cart-item style-1">
+                            <div class="dz-media">
+                                <img src="{{ item.image }}" alt="image">
+                            </div>
+                            <div class="dz-content">
+                                <h6 class=" mb-0" style="color: #fff;">{{ item.title }} X {{ item.qty }}
+                                    
+                                    <br> <p style="color: #fff;">&euro;{{ item.price }}</p> </h6>
+                                
+                           
+                                <br>
+                               
+                                
+                                <!-- <span class="price" style="color: #fff;">
+                                    &nbsp;                 
+                                                                        &euro; {{ item.total }}
+                                </span> -->
+                            </div>
+                            
+                        </div>
+                                                <table>
+                   
+                            {% endfor %}
+                          
+                            <tbody>
+                            <tr class="subtotal">
+                                <td>Sous-total</td>
+                                <td class="price">
+                                                                                &nbsp;
+                                                                                &euro;{{ cart_total_amount|floatformat:2 }}
+                                    </td>
+                                </tr>
+                            
+                            {% if cart_total_amount < 30 %}
+                            <tr class="">
+                                <td colspan="2">
+                                    <div class="order-type-message minimum-order-message" style="background-color: #ff6b35; color: #fff; padding: 12px; border-radius: 5px; margin-top: 10px; margin-bottom: 10px; text-align: center;">
+                                        <strong>⚠️ Commande minimum de 30€ requise pour la livraison</strong>
+                                        <p style="margin: 5px 0 0 0; font-size: 14px;">Votre commande actuelle est de <strong>&euro;{{ cart_total_amount|floatformat:2 }}</strong>. Ajoutez <strong>&euro;{{ remaining_amount|floatformat:2 }}</strong> pour bénéficier de la livraison.</p>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endif %}
+                            
+                            <tr class="title">
+                                <td><h6 class=" font-weight-500" style="color: #fff;">Type de commande</h6></td>
+                                <td></td>
+                            </tr>
+
+                            {% if not is_delivery_enabled %}
+                            <tr class="">
+                                <td colspan="2">
+                                    <div class="order-type-message delivery-disabled-message" style="background-color: #ff6b35; color: #fff; padding: 12px; border-radius: 5px; margin-bottom: 10px; text-align: center;">
+                                        <strong>⚠️ Livraison temporairement indisponible</strong>
+                                        <p style="margin: 5px 0 0 0; font-size: 14px;">Le service de livraison n'est pas disponible pour le moment. Veuillez choisir une autre option de commande.</p>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endif %}
+
+                            {% if not is_take_away_enabled %}
+                            <tr class="">
+                                <td colspan="2">
+                                    <div class="order-type-message takeaway-disabled-message" style="background-color: #ff6b35; color: #fff; padding: 12px; border-radius: 5px; margin-bottom: 10px; text-align: center;">
+                                        <strong>⚠️ Emporter temporairement indisponible</strong>
+                                        <p style="margin: 5px 0 0 0; font-size: 14px;">Le service d'emporter n'est pas disponible pour le moment. Veuillez choisir une autre option de commande.</p>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endif %}
+
+                            <tr class="">
+                                <td>
+
+                                    {% if is_delivery_enabled %}
+                                        <label class="radio" id="delivery-label">
+                                            <span>Livraison</span>
+                                            {% if cart_total_amount >= 30 %}
+                                            <input type="radio" id="delivery-radio" name="order_type" value="delivery" checked="checked" onclick="updatePaymentButtons()">
+                                            {% else %}
+                                            <input type="radio" id="delivery-radio" name="order_type" value="delivery" onclick="updatePaymentButtons()">
+                                            {% endif %}
+                                            <span class="checkround"></span>
+                                        </label>
+                                    {% endif %}
+
+                                    {% if is_take_away_enabled %}
+                                    <label class="radio">Emporter
+                                        {% if not is_delivery_enabled or cart_total_amount < 30 %}
+                                        <input type="radio" id="take_away-radio" checked="checked" name="order_type" value="take_away" onclick="updatePaymentButtons()">
+                                        {% else %}
+                                        <input type="radio" id="take_away-radio" name="order_type" value="take_away" onclick="updatePaymentButtons()">
+                                        {% endif %}
+                                        <span class="checkround"></span>
+                                    </label>
+                                    {% endif %}
+                                    <label class="radio">paiement en espèces
+                                        <input type="radio" id="pay_on_spot-radio" name="order_type" value="pay_on_spot" onclick="updatePaymentButtons()">
+                                        <span class="checkround"></span>
+                                    </label>
+                                    
+                                    <div class="min-order-warning" id="min-order-warning">
+                                        <strong>⚠️ Commande minimum de 30€ requise pour la livraison</strong>
+                                    </div>
+                                </td>
+                            </tr>
+
+
+
+                            <tr class="shipping">                                
+                                <tr class="title">
+                                    <td>
+                                        <h6 class=" font-weight-500" style="color: #fff;"></h6>
+                                        <p  class=" font-weight-100" style="color: #fff;">TVA {{ cost_settings.tax_rate }} % <span style="color: red;">(included)</span></p>
+                                        <input type="hidden" name="shipping_cost" value="0">
+                                        
+                                    </td>
+                                    <td colspan="2" class="price ">&euro; <span class="shipping-price">{{tax_amount}}</span></td>
+                                </tr>
+                                </tr>
+
+
+                            
+                            <tr class="shipping">                                
+                            <tr class="title">
+                                <td>
+                                    <h6 class=" font-weight-500" style="color: #fff;">Expédition</h6>
+                                    <input type="hidden" name="shipping_cost" value="0">
+                                </td>
+                                <td colspan="2" class="price ">&euro; <span class="shipping-price">{{ cost_settings.shipping_cost }}</span></td>
+                            </tr>
+                            </tr>
+
+
+
+                                
+                            
+
+                       
+
+
+                                
+
+                                
+                            <tr class="total">
+                                <td>Total</td>
+                                <td class="price">&euro;<span class="cart-total-price">{{ total_cost|floatformat:2 }}</span></td>
+
+                            </tr>
+                            </tbody>
+                        </table>
+
+
+
+
+
+
+        <!-- Payment Method Selection -->
+        <div class="half-input-wrapper">
+            <div class="single-input" hidden>
+                <input type="radio" id="cod-option" name="payment_method" value="COD" checked>
+                <label for="cod-option">paiement en espèces</label>
+            </div>
+            <div class="single-input" hidden>
+                <input type="radio" id="stripe-option" name="payment_method" value="Stripe" >
+                <label for="stripe-option">Stripe</label>
+            </div>
+        </div>
+
+
+
+
+        <button type="submit" class="btn secondary btn-theme btn-sm animation w-100" id="stripe-button" onclick="document.getElementById('stripe-option').checked=true;" style="display: none;">
+            Paiement
+        </button>
+       <hr>
+       <hr>
+        <button type="submit" class="btn secondary btn-theme btn-sm animation w-100" id="cod-button" onclick="document.getElementById('cod-option').checked=true;" style="display: none;">
+            paiement en espèces 
+        </button>
+                                <div class="mt-3">
+                            <div id="paymentResponse"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Minimum order amount for delivery (in euros)
+        const MIN_DELIVERY_AMOUNT = 30;
+        
+        // Function to get cart total amount
+        function getCartTotalAmount() {
+            // Get cart total amount from template - handle both comma and dot decimal separators
+            let cartTotalAmountStr = '{{ cart_total_amount|floatformat:2 }}';
+            // Replace comma with dot for parsing, then parse
+            let cartTotalAmount = parseFloat(cartTotalAmountStr.replace(',', '.')) || 0;
+            
+            // Fallback: Try to get from the displayed subtotal if parsing failed
+            if (isNaN(cartTotalAmount) || cartTotalAmount === 0) {
+                const subtotalElement = document.querySelector('.subtotal .price');
+                if (subtotalElement) {
+                    const subtotalText = subtotalElement.textContent.trim();
+                    // Match number pattern (handles both comma and dot decimals)
+                    const subtotalMatch = subtotalText.match(/[\d,]+\.?\d*/);
+                    if (subtotalMatch) {
+                        cartTotalAmount = parseFloat(subtotalMatch[0].replace(',', '.')) || 0;
+                    }
+                }
+            }
+            
+            return cartTotalAmount;
+        }
+        
+        // Get cart total (will be updated after DOM loads)
+        let cartTotalAmount = getCartTotalAmount();
+        
+        function checkDeliveryMinimum() {
+            const deliveryRadio = document.getElementById('delivery-radio');
+            const deliveryLabel = document.getElementById('delivery-label');
+            const warningDiv = document.getElementById('min-order-warning');
+            
+            if (!deliveryRadio || !deliveryLabel) {
+                return; // Delivery option doesn't exist
+            }
+            
+            if (cartTotalAmount < MIN_DELIVERY_AMOUNT) {
+                // Disable delivery option
+                deliveryRadio.disabled = true;
+                deliveryLabel.classList.add('disabled');
+                
+                // If delivery is currently selected, switch to another option
+                if (deliveryRadio.checked) {
+                    const takeAwayRadio = document.getElementById('take_away-radio');
+                    const payOnSpotRadio = document.getElementById('pay_on_spot-radio');
+                    
+                    if (takeAwayRadio && !takeAwayRadio.disabled) {
+                        takeAwayRadio.checked = true;
+                    } else if (payOnSpotRadio && !payOnSpotRadio.disabled) {
+                        payOnSpotRadio.checked = true;
+                    }
+                    
+                    updatePaymentButtons();
+                }
+                
+                // Show warning if delivery is attempted
+                if (deliveryRadio.checked) {
+                    warningDiv.classList.add('show');
+                } else {
+                    warningDiv.classList.remove('show');
+                }
+            } else {
+                // Enable delivery option
+                deliveryRadio.disabled = false;
+                deliveryLabel.classList.remove('disabled');
+                warningDiv.classList.remove('show');
+                
+                // If no option is selected and delivery is available, select it
+                const checkedOption = document.querySelector('input[name="order_type"]:checked');
+                if (!checkedOption && !deliveryRadio.disabled) {
+                    deliveryRadio.checked = true;
+                }
+            }
+        }
+        
+        function updatePaymentButtons() {
+            const orderTypeRadio = document.querySelector('input[name="order_type"]:checked');
+            const orderType = orderTypeRadio ? orderTypeRadio.value : null;
+            const warningDiv = document.getElementById('min-order-warning');
+            
+            // Hide both buttons initially
+            const stripeButton = document.getElementById('stripe-button');
+            const codButton = document.getElementById('cod-button');
+            
+            if (stripeButton) stripeButton.style.display = 'none';
+            if (codButton) codButton.style.display = 'none';
+            
+            // If no order type is selected, don't show buttons
+            if (!orderType) {
+                console.log('No order type selected');
+                return;
+            }
+            
+            console.log('Order Type:', orderType);
+            console.log('Cart Total:', cartTotalAmount);
+            console.log('Is above minimum?', cartTotalAmount >= MIN_DELIVERY_AMOUNT);
+            
+            // Check if delivery is selected but below minimum
+            if (orderType === 'delivery' && cartTotalAmount < MIN_DELIVERY_AMOUNT) {
+                if (warningDiv) warningDiv.classList.add('show');
+                console.log('Delivery selected but below minimum - showing warning');
+                return; // Don't show payment buttons
+            } else {
+                if (warningDiv) warningDiv.classList.remove('show');
+            }
+            
+            if (orderType === 'delivery') {
+                // Show Stripe button only for delivery
+                if (stripeButton) {
+                    stripeButton.style.display = 'block';
+                    console.log('Showing Stripe button for delivery');
+                }
+            } else if (orderType === 'take_away') {
+                // Show Stripe button for take away
+                if (stripeButton) {
+                    stripeButton.style.display = 'block';
+                    console.log('Showing Stripe button for take away');
+                }
+            } else if (orderType === 'pay_on_spot') {
+                // Show Cash on Delivery button only
+                if (codButton) {
+                    codButton.style.display = 'block';
+                    console.log('Showing COD button for pay on spot');
+                }
+            }
+        }
+        
+        // Prevent form submission if delivery is selected but below minimum
+        document.addEventListener("DOMContentLoaded", function() {
+            // Recalculate cart total after DOM is loaded (in case we need fallback)
+            cartTotalAmount = getCartTotalAmount();
+            
+            console.log('DOM Content Loaded');
+            console.log('Cart Total Amount:', cartTotalAmount);
+            console.log('Minimum Delivery Amount:', MIN_DELIVERY_AMOUNT);
+            
+            const form = document.querySelector('form[action="{% url 'order_complete' %}"]');
+            
+            if (form) {
+                form.addEventListener('submit', function(e) {
+                    const orderType = document.querySelector('input[name="order_type"]:checked')?.value;
+                    
+                    if (orderType === 'delivery' && cartTotalAmount < MIN_DELIVERY_AMOUNT) {
+                        e.preventDefault();
+                        alert('Commande minimum de 30€ requise pour la livraison. Veuillez choisir une autre option de commande.');
+                        return false;
+                    }
+                });
+            }
+            
+            // Check delivery minimum on page load (this will uncheck delivery if below minimum)
+            checkDeliveryMinimum();
+            
+            // Ensure at least one option is selected
+            const checkedOption = document.querySelector('input[name="order_type"]:checked');
+            if (!checkedOption) {
+                // If no option is selected, select the first available enabled option
+                const deliveryRadio = document.getElementById('delivery-radio');
+                const takeAwayRadio = document.getElementById('take_away-radio');
+                const payOnSpotRadio = document.getElementById('pay_on_spot-radio');
+                
+                if (deliveryRadio && !deliveryRadio.disabled) {
+                    deliveryRadio.checked = true;
+                } else if (takeAwayRadio && !takeAwayRadio.disabled) {
+                    takeAwayRadio.checked = true;
+                } else if (payOnSpotRadio && !payOnSpotRadio.disabled) {
+                    payOnSpotRadio.checked = true;
+                }
+            }
+            
+            // Then update payment buttons based on the selected option
+            updatePaymentButtons();
+            
+            // Also listen to all order type radio changes
+            const orderTypeRadios = document.querySelectorAll('input[name="order_type"]');
+            orderTypeRadios.forEach(function(radio) {
+                radio.addEventListener('change', function() {
+                    console.log('Order type changed to:', this.value);
+                    checkDeliveryMinimum();
+                    updatePaymentButtons();
+                });
+            });
+        });
+    </script>
+
+
+
+    {% endblock body %}
+    
+
+
+    
+  
+
+
+       

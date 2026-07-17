@@ -1,0 +1,262 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+
+
+{% block body %}
+
+<div class="shop-grid-sidebar">
+    <!-- rts navigation bar area start -->
+    <div class="rts-navigation-area-breadcrumb">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="navigator-breadcrumb-wrapper">
+                        <a href="index.html">Home</a>
+                        <i class="fa-regular fa-chevron-right"></i>
+                        <a class="current" href="index.html">Shop Grid Sidebar</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- rts navigation bar area end -->
+    <div class="section-seperator">
+        <div class="container">
+            <hr class="section-seperator">
+        </div>
+    </div>
+
+    <!-- shop[ grid sidebar wrapper -->
+    <div class="shop-grid-sidebar-area rts-section-gap">
+        <div class="container">
+            <div class="row g-0">
+                <div class="col-xl-3 col-lg-12 pr--70 pr_lg--10 pr_sm--10 pr_md--5 rts-sticky-column-item">
+                    <div class="sidebar-filter-main theiaStickySidebar">
+                        <div class="single-filter-box">
+                            <h5 class="title">Widget Price Filter</h5>
+                            <div class="filterbox-body">
+                                <form method="GET" action="{% url 'products' %}" class="price-input-area">
+                                    <!-- Min price input -->
+                                    <div class="half-input-wrapper">
+                                        <div class="single">
+                                            <label for="min">Min price</label>
+                                            <input id="min" name="min_price" type="text" value="{{ request.GET.min_price }}" placeholder="0">
+                                        </div>
+                                        <!-- Max price input -->
+                                        <div class="single">
+                                            <label for="max">Max price</label>
+                                            <input id="max" name="max_price" type="text" value="2000" placeholder="2000">
+                                        </div>
+                                    </div>
+                                    <!-- Price range slider -->
+                                    <input id="price-slider" type="range" class="range" min="0" max="2000" step="1" value="{{ request.GET.min_price }}" data-max="{{ request.GET.max_price }}">
+                                    <!-- Filter button -->
+                                    <div class="filter-value-min-max">
+                                        <span>Price: €<span id="price-min">{{ request.GET.min_price }}</span> — €<span id="price-max">{{ request.GET.max_price }}</span></span>
+                                        <button class="rts-btn btn-primary" type="submit">Filter</button>
+                                    </div>
+                                </form>
+                                
+                                
+                            </div>
+                        </div>
+                        <div class="single-filter-box">
+                            <h5 class="title">Product Categories</h5>
+                            <div class="filterbox-body">
+                                <form method="get" action="{% url 'products' %}">
+                                    <div class="category-wrapper">
+                                        {% for category in categories %}
+                                        <div class="single-category">
+                                            <input id="cat{{ category.id }}" name="categories" type="checkbox" value="{{ category.id }}" 
+                                                {% if category.id|stringformat:"s" in selected_categories %}checked{% endif %}>
+                                            <label for="cat{{ category.id }}">{{ category.title }}</label>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                    <br>
+                                    <button type="submit" class="rts-btn btn-primary radious-sm">Apply Filters</button>
+                                </form>
+                            </div>
+                        </div>
+            
+                     
+                    </div>
+                </div>
+                <div class="col-xl-9 col-lg-12">
+                    <div class="filter-select-area">
+                       
+                    </div>
+
+                    <div class="tab-content" id="myTabContent">
+                        <div class="product-area-wrapper-shopgrid-list mt--20 tab-pane fade show active" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
+                            <div class="row g-4">
+
+                             {% for product in products %}
+                            <div class="col-lg-3 col-md-4 col-sm-6 col-6">
+                                <div class="single-shopping-card-one">
+                                    <!-- image and action area start -->
+                                    <div class="image-and-action-area-wrapper">
+                                        <a href="{% url 'product_details' product.pid %}" class="thumbnail-preview">
+                                            {% if product.percentage > 0 %}
+                                            <div class="badge">
+                                            
+                                                <span>{{ product.percentage }}% <br> Off</span>
+                                            
+                                                <i class="fa-solid fa-bookmark"></i>
+                                            </div>
+                                            {% endif %}
+
+                                            {% if product.image %}
+                                            <img src="{{ product.image.url }}" alt="{{ product.title }}">
+                                            {% else %}
+                                            <img src="/static/assets/images/placeholder.jpg" alt="Placeholder Image">
+                                            {% endif %}
+                                        </a>
+                                        <!-- <div class="action-share-option">
+                                            <div class="single-action openuptip message-show-action" data-flow="up" title="Add To Wishlist">
+                                                <i class="fa-light fa-heart"></i>
+                                            </div>
+                                            <div class="single-action openuptip" data-flow="up" title="Compare" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                                <i class="fa-solid fa-arrows-retweet"></i>
+                                            </div>
+                                            <div class="single-action openuptip cta-quickview product-details-popup-btn" data-flow="up" title="Quick View">
+                                                <i class="fa-regular fa-eye"></i>
+                                            </div>
+                                        </div> -->
+                                    </div>
+                                    <!-- image and action area end -->
+
+                                    <div class="body-content">
+                                        <a href="{% url 'product_details' product.pid %}">
+                                            <h4 
+                                            data-title-fr="{{ product.title }}"
+                          data-title-en="{{ product.eng_title }}"
+                          class="title">{{ product.title }}</h4>
+                                        </a>
+                                        <span class="availability">{{ product.specifications }}</span>
+                                        <div class="price-area">
+                                            {% if product.price %}
+                                            <span class="currrent-product-price-{{product.id}} current">{{ product.price }} </span><span>€</span>
+                                            {% if product.old_price %}
+                                            <div class="previous">€{{ product.old_price }}</div>
+                                            {% endif %}
+                                            {% else %}
+                                            <span class="current">Price not available</span>
+                                            {% endif %}
+                                        </div>
+                                        <div class="cart-counter-action">
+                                            {% if product.quantity > 0 %}
+                                            <div class="quantity-edit">
+                                                <input type="text" class="product-quantity-{{product.id}} input" value="1" id="product-quantity">
+                                                <div class="button-wrapper-action">
+                                                    <button class="button"><i class="fa-regular fa-chevron-down"></i></button>
+                                                    <button class="button plus">+<i class="fa-regular fa-chevron-up"></i></button>
+                                                </div>
+                                            </div>
+                                            {% endif %}
+                                            <a style="cursor: pointer;" class="rts-btn btn-primary radious-sm with-icon">
+                                            
+                                                <input type="hidden" class="product-quantity-{{product.id}}" value="1" id="product-quantity">
+                                                <input type="hidden" class="product-pid-{{product.id}}" value="{{product.pid}}">
+                                                <input type="hidden" class="product-image-{{product.id}}" value="{{product.image.url}}">
+                                                <input type="hidden" class="product-id-{{product.id}}" value="{{product.id}}">
+                                                <input type="hidden" class="product-title-{{product.id}}" value="{{product.title}}">
+                                                
+                                                {% if product.quantity > 0 %}
+                                                <!-- <div class="btn-text add-to-cart-btn" data-index="{{product.id}}" id="add-to-cart-btn">
+                                                    Add To Cart
+                                                </div>
+                                                <div class="arrow-icon">
+                                                    <i class="fa-regular fa-cart-shopping"></i>
+                                                </div> -->
+                                                <div class="arrow-icon add add-to-cart-btn" data-index="{{product.id}}" id="add-to-cart-btn"><i class="fa-regular fa-cart-shopping"></i></div>
+                                                {% else %}
+                                                <div class="btn-text-out-of-stock">
+                                                    Out Of Stock
+                                                </div>
+                                                {% endif %}
+                                                
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                          
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- shop[ grid sidebar wrapper end -->
+</div>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const minInput = document.getElementById('min');
+        const maxInput = document.getElementById('max');
+        const slider = document.getElementById('price-slider');
+        const minPriceSpan = document.getElementById('price-min');
+        const maxPriceSpan = document.getElementById('price-max');
+    
+        function updateInputsFromSlider() {
+            const minValue = slider.value;
+            const maxValue = slider.dataset.max;
+            minInput.value = minValue;
+            maxInput.value = maxValue;
+            minPriceSpan.textContent = minValue;
+            maxPriceSpan.textContent = maxValue;
+        }
+    
+        function updateSliderFromInputs() {
+            const minValue = parseFloat(minInput.value) || 0;
+            const maxValue = parseFloat(maxInput.value) || 2000;
+            slider.value = minValue;
+            slider.dataset.max = maxValue;
+            minPriceSpan.textContent = minValue;
+            maxPriceSpan.textContent = maxValue;
+        }
+    
+        slider.addEventListener('input', updateInputsFromSlider);
+        minInput.addEventListener('input', updateSliderFromInputs);
+        maxInput.addEventListener('input', updateSliderFromInputs);
+    });
+    </script>
+    
+    <style>
+        /* Default layout (PC and larger devices) */
+        .category-wrapper {
+            display: block; /* Default to block layout for larger screens */
+        }
+    
+        .single-category {
+            margin-bottom: 10px; /* Space between items */
+        }
+    
+        /* Flexbox layout for mobile devices */
+        @media (max-width: 767px) { /* Adjust breakpoint as needed */
+            .category-wrapper {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 10px; /* Adjust gap between items as needed */
+            }
+    
+            .single-category {
+                flex: 1 1 calc(50% - 10px); /* Adjust percentage to show two items per row with gap */
+                display: flex;
+                align-items: center;
+            }
+    
+            .single-category input[type="checkbox"] {
+                margin-right: 8px; /* Space between checkbox and label */
+            }
+        }
+    </style>
+    
+{% endblock body %}

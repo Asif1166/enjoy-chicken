@@ -1,0 +1,145 @@
+<!-- cart.html -->
+{% extends "base.html" %}
+{% load static %}
+{% block body %}
+
+
+
+
+
+
+
+
+    <!-- Start Breadcrumb
+============================================= -->
+<div class="breadcrumb-area bg-cover shadow dark text-center text-light"
+style="background-image: url(/static/assets/img/default/banner2.jpg);">
+
+</div>
+    <!-- End Breadcrumb -->
+
+    <!-- Start Shop
+    ============================================= -->
+    <div class="validtheme-shop-area default-padding" style="background-color: #002654;">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-8">
+                                <div class="table-responsive">
+                                    <table class="table check-tbl">
+                                        <thead>
+                                        <tr>
+                                            <th>Produit</th>
+                                            <th></th>
+                                            <th class="hide-column">Prix</th>
+                                            <th class="text-center">Quantité</th>
+                                            <th>Sous-total</th>
+                                            <th></th>
+                                        </tr>
+                                        </thead>
+
+                                        
+                                        {% for product_id, item in cart_data.items %}
+                                        <tbody>
+                                                                                                                                                                    <tr >
+                                            <td class="product-item-img">
+                                                    <a href="">
+                                                        <img src="{{ item.image }}" alt="image">
+                                                    </a>
+                                            </td>
+                                            <td class="product-item-name" >
+                                                <a href="" style="color: white !important;">
+                                                    {{ item.title }}
+                                                </a>
+                                            </td>
+                                            <td class="product-item-price hide-column">
+                                             
+                                                    &euro;{{ item.price|floatformat:2 }}
+                                                                                            </td>
+                                            <td class="product-item-quantity">
+                                                <div class="quantity btn-quantity style-1 cart-edits quantity-edits">
+                                                        <input type="hidden" id="food_item_id" name="food_item_id" value="206" >
+                                                        <input type="hidden" id="price" name="price" value="12.99" >
+                                                        <input type="hidden" id="discount" name="discount" value="20" >
+                                                        <input type="hidden" id="qty_type" name="qty_type" value="add" >
+
+                                                        <span style="display:block; float:left; margin-top: 13px;" class="update-product" data-product="{{ product_id }}">
+                                                            <a  class="mt-2 minus" ><i style="font-size: 35px; color: white;" class="fas fa-minus-circle"></i></a>
+                                                        </span>
+                                                        <span style="display:block; float:left; margin-top: 10px;">
+                                                            <input type="text" value="{{ item.qty }}" name="qty" class="input product-qty-{{ product_id }}" readonly>
+                                                        </span>
+                                                        <span style="display:block; float:left; margin-top: 13px;" class="update-product" data-product="{{ product_id }}">
+                                                            <a  class="mt-2 plus"><i style="font-size: 35px; color: white;" class="fas fa-plus-circle"></i></a>
+                                                        </span>
+                                                </div>
+                                               
+                                            </td>
+                                            <td class="product-item-totle" >&euro;<span id="cart_row_total_206">{{ item.total|floatformat:2 }}</span></td>
+                                            
+                                            <td class="product-item-close close section-activation">
+                                                <i style="font-size: 35px;" class="fas fa-times-circle" onclick="deleteFromCart('{{ product_id }}')"></i>
+                                            </td>
+                                        </tr>
+                                        {% endfor %}                                 </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 marginTop " style="color: white;">
+                                <div class="title text-center"><h4 style="color: white;">Total du panier</h4></div>
+                                <div class="cart-detail">
+                                    <table>
+                                        <tbody>
+                                        <tr class="total">
+                                            <td>
+                                                <h6 class="mb-0" style="color: white;">Total</h6>
+                                            </td>
+                                            <td class="price">
+                                                &euro;<span class="cart_total">{{cart_total_amount}}</span>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                    {% if totalcartitems %}
+                                    <a href="{% url 'checkout' %}" class="btn secondary btn-theme btn-sm animation w-100">CHECKOUT</a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Shop -->
+
+
+
+
+    <script>
+        function deleteFromCart(productId) {
+            // Make AJAX request to delete item from cart
+            $.ajax({
+                url: "{% url 'delete_item_from_cart' %}",
+                type: "GET",
+                data: {
+                    id: productId
+                },
+                success: function(response) {
+                    // Refresh the entire page after deletion
+                    location.reload();
+                },
+                error: function(error) {
+                    console.log("Error deleting item:", error);
+                }
+            });
+        }
+    </script>
+    
+    
+
+
+{% endblock body %}

@@ -1,0 +1,28 @@
+    <!-- Start About 
+    ============================================= -->
+    <div class="about-style-one-area default-padding ">
+        <div class="about-thumb">
+            {% if about_us.background_image_1 %}
+            <div class="item animate" data-animate="fadeInLeft" style="background-image: url({{ about_us.background_image_1.url }});"></div>
+            {% endif %}
+            {% if about_us.background_image_2 %}
+            <div class="item animate" data-animate="fadeInLeft" data-delay="200ms" style="background-image: url({{ about_us.background_image_2.url }});"></div>
+            {% endif %}
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 offset-lg-6">
+                    <div class="about-style-one-info animate" data-animate="fadeInUp" data-delay="400ms">
+                        <img src="{{ about_us.main_image.url }}" alt="Image Not Found">
+                        <h4 class="sub-heading" id="AboutusText">A propos de nous</h4>
+                        <h2 class="title">{{ about_us.title }}</h2>
+                        <p>
+                            {{ about_us.description }}
+                        </p>
+                        <a class="btn btn-theme btn-md animation mt-10" href="{{ about_us.button_link }}">{{ about_us.button_text }}</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End About -->

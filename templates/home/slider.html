@@ -1,0 +1,84 @@
+    <!-- Start Banner Area 
+    ============================================= -->
+    <div class="banner-area banner-style-one navigation-circle overflow-hidden text-light">
+        <!-- Slider main container -->
+        <div class="banner-fade">
+            <!-- Additional required wrapper -->
+            <div class="swiper-wrapper">
+
+                <!-- Single Item -->
+                 {% for slider in sliders %}
+                <div class="swiper-slide bg-cover shadow dark" style="background: url({{slider.background_image.url}});">
+                    <div class="container">
+                        <div class="content">
+                            <div class="row align-center">
+                                <div class="col-xl-7 col-lg-9">
+                                    <h4>{{slider.subtitle}}</h4>
+                                    <h2>{{slider.title}}</h2>
+                                    <p>
+                                       {{slider.description}}
+                                    </p>
+                                    <div class="button-container">
+                                        <div class="button mt-40">
+                                            <a class="btn btn-theme btn-md animation" href="{{slider.livraison_link}}">Livraison</a>
+                                        </div>
+                                        &nbsp; &nbsp; &nbsp; &nbsp;
+                                        <div class="button mt-40">
+                                            <a class="btn btn-theme btn-md animation" href="{{slider.emporter_link}}">Emporter</a>
+                                        </div>
+                                        &nbsp; &nbsp; &nbsp; &nbsp;
+                                        <div class="button mt-40">
+                                            <a class="btn btn-theme btn-md animation" href="{{slider.sur_place_link}}">Sur&nbsp;Place</a>
+                                        </div>
+                                    </div>
+                                    
+                                   
+                                </div>
+                                <div class="col-xl-5 col-lg-3">
+                                    <a href="{{slider.video_url}}" class="popup-youtube video-play-button">
+                                        <i class="fas fa-play"></i>
+                                        <div class="effect"></div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+                <!-- End Single Item -->
+
+             
+
+            </div>
+
+            <!-- Navigation -->
+            <div class="swiper-nav-left">
+                <div class="swiper-button-prev"></div>
+                <div class="swiper-button-next"></div>
+            </div>
+
+        </div>  
+    </div>
+    <!-- End Banner -->
+
+
+    <style>
+        /* Base styles for the button container */
+.button-container {
+    display: flex;
+    gap: 1px; /* Add spacing between buttons */
+    justify-content: center; /* Center align the buttons */
+    flex-wrap: wrap; /* Allow buttons to wrap on smaller screens */
+    margin-top: 20px; /* Add some space above the container */
+}
+
+/* Styles for each button */
+.button {
+    flex: 1; /* Make buttons flexible */
+    min-width: 120px; /* Set a minimum width to ensure readability */
+    text-align: center; /* Center text inside the buttons */
+}
+
+
+
+    </style>

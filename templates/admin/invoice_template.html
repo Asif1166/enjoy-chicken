@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Invoice</title>
+    <style>
+        @page {
+             size: 80mm 200mm; /* Width x Height for a small receipt */
+             margin: 0.25in;
+         }
+         body {
+             font-family: Courier, monospace;
+             line-height: 1.3;
+             margin: 0;
+         }
+         .receipt {
+             width: 100%;
+             max-width: 400px;
+             margin: 0 auto;
+         }
+         .header {
+             text-align: center;
+             margin-bottom: 20px;
+         }
+         .logo {
+             width: 100px;
+             height: auto;
+             margin-bottom: 10px;
+         }
+         .address {
+             text-align: center;
+             font-size: 12px;
+             
+         }
+     
+         .price{
+            text-align: right;
+         }
+   
+         .footer {
+             text-align: center;
+             font-size: 12px;
+             margin-top: 20px;
+         }
+         .transaction-info{
+            text-align: center;
+         }
+
+         .items table td {
+            padding: 1px 0;
+            }
+        .subtotal{
+            font-weight: 700;
+            font-size: larger;
+        }
+        .category{
+          font-size: smaller;
+        }
+    
+     </style>
+     
+</head>
+<body>
+    <div class="invoice">
+        <div class="header">
+          <img src="bhai-sushi-logo.png" alt="Enjoy Chicken" class="logo">
+          <h1>Enjoy Chicken</h1>
+        </div>
+        
+    
+        <hr>
+
+        <div class="transaction-info" style="background-color: black; color: white;">
+          <br>
+          <strong style="font-size: x-large;">#{{ order.order_id|stringformat:"05d" }}</strong>
+         
+
+
+        </div>
+
+
+        <div class="transaction-info">
+          <p>{{ order.created_at|date:"m/d/Y H:i:s A" }}</p>
+          <p>{{shipping_address.street_address}} , {{shipping_address.city}} <br> {{shipping_address.phone}}</p>
+ 
+
+
+        </div>
+        <hr>
+
+        <div class="items">
+            <table>
+              <thead>
+                {% for item in items %}
+                <tr>
+                  <td>{{ item.qty }} {{ item.product }}</td>
+                  
+                  <td class="price">€ {{ item.price }}</td>
+                </tr>
+                <tr>
+                  <td class="category">{{item.product.category}}</td>
+                </tr>
+                {% endfor %}
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="subtotal">Subtotal</td>
+                  <td class="price">€ {{ order.price }}</td>
+                </tr>
+                <tr>
+                  <td>{{cost_settings.tax_rate}} ({{cost_settings.tax_rate}}%)</td>
+                  <td class="price">€ {{ order.tax_amount }}</td>
+                </tr>
+                </tr>
+                <tr>
+                  <td>Shipping</td>
+                  <td class="price">€ {{ cost_settings.shipping_cost }}</td>
+                </tr>
+
+                <tr>
+                    <td colspan="2"><hr></td>
+                  </tr>
+                <tr>
+                  <td>TOTAL</td>
+                  <td class="price">€ {{ order.total_cost }}</td>
+                </tr>
+                <tr>
+                    <td colspan="2"><hr></td>
+                  </tr>
+                <tr>
+                  <td>Cash</td>
+                  <td class="price">€ {{ order.total_cost }}</td>
+                </tr>
+                <tr>
+                  <td class="subtotal">Change</td>
+                  <td class="price">€ 0.00</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+    
+        <div class="footer">
+          LUNDI AU VENDREDI <br>
+          11:30H-23:30H <br>
+          SAMEDI ET DIMANCHE <br>
+          12:30H-23:30H <br>
+          Merci de votre visite ! <br>
+          11 Rue Traversière 1er étage , Villeneuve D'ascq (Nord), 59650 Triolo <br>
+          0759351512 <br>
+          www.enjoychicken.com 
+
+        </div>
+      </div>
+</body>
+</html>

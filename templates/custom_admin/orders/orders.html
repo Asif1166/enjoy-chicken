@@ -1,0 +1,1536 @@
+{% extends "custom_admin/base.html" %}
+{% load custom_filters %}
+{% load static %}
+
+
+
+
+{% block custom_admin_body %}
+
+
+
+<div class="page-wrapper">
+    <div class="content">
+        <div class="page-header">
+            <div class="add-item d-flex">
+                <div class="page-title">
+                    <h4>Order Lists</h4>
+                    <h6>Manage Your Orders</h6>
+                </div>
+
+
+
+                
+
+                <div class="form-check ms-4">
+                    <input type="checkbox" class="form-check-input" id="orderToggle" 
+                           {% if site_settings.is_order %}checked{% endif %}>
+                    <label class="form-check-label" for="orderToggle">Order (ON/OFF)</label>
+                </div>
+
+                <div class="form-check ms-4">
+                    <input type="checkbox" class="form-check-input" id="deliveryToggle" 
+                           {% if site_settings.is_delivery_enabled %}checked{% endif %}>
+                    <label class="form-check-label" for="deliveryToggle">Delivery (ON/OFF)</label>
+                </div>
+
+
+                
+                <div class="form-check ms-4">
+                    <input type="checkbox" class="form-check-input" id="takeAwayToggle" 
+                           {% if site_settings.is_take_away_enabled %}checked{% endif %}>
+                    <label class="form-check-label" for="takeAwayToggle">Take Away (ON/OFF)</label>
+                </div>
+
+&nbsp;
+&nbsp;
+&nbsp;
+
+                <form action="" method="POST" style="display: flex;">
+
+                    {% csrf_token %}
+       <label style="font-weight: 800;" for=""> Shipping Cost</label>
+              &nbsp;
+                    {{ cost_form.shipping_cost }}
+                    <button type="submit" class="btn btn-primary"> Save</button>
+                </form>
+            </div>
+
+
+  
+
+
+  
+
+
+
+&nbsp;
+
+            <form action="{% url 'process_all_orders' %}" method="POST">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-primary"><i
+                    data-feather="rotate-ccw" class="me-2"></i> Check New Orders</button>
+            </form>
+
+
+
+            
+        </div>
+
+        <div class="card table-list-card">
+            <div class="card-body">
+
+                <div class="card" >
+                    
+                    <div class="card-body">
+                        <form method="get" class="row " style="text-align: center;">
+                            &nbsp;
+                            <div class="col-md-3" >
+                                <label  for="start_date" class="form-label">Start Date</label>
+                                {{ form.start_date|add_class:"form-control" }}
+                            </div>
+                            <div class="col-md-3">
+                                <label for="end_date" class="form-label">End Date</label>
+                                {{ form.end_date|add_class:"form-control" }}
+                            </div>  
+                            <div class="col-md-4">
+                               
+                          
+                            
+                               
+                                <button style="margin-top: 30px;" type="submit" name="generate_pdf" class="btn btn-primary">
+                                    <i class="fas fa-file-pdf"></i> Generate PDF Report
+                                </button>
+                            </div>
+
+
+
+                           
+                        </form>
+
+                        
+                    </div>
+                </div>
+                
+
+             
+
+                <div class="table-responsive">
+                    <table class="table  datanew" >
+                        <thead>
+                            <tr>
+                                
+                                <th>Orders</th>
+                                <th>Customer</th>
+                                <th>Address</th>
+                               
+                                
+                                <th>Payment Method</th>
+                                <th>Transaction ID</th>
+                                <th>Shipping Cost</th>
+                                <th>Amount</th>
+                                <th>Order Type</th>
+                               
+                                <th>Status</th>
+                               
+                           
+                                
+                               
+                                <th class="text-center">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody class="sales-list fetch_data" id="orders-table-body">
+                            {% for order in cart_orders %}
+                            <tr >
+                               
+                                <td># 00{{ order.id }}</td>
+                                <td>{{ order.shipping_address.name }}
+                                    <br>
+                                     {{ order.shipping_address.email }}
+                                     <br>
+                                      {{ order.shipping_address.phone }}
+                                    </td>
+
+                                <td>
+                                    {{ order.shipping_address.street_address }}
+                                    <br>
+                                    {{ order.shipping_address.zip_code }}
+                                    <br>
+                                    {{ order.shipping_address.city }}
+                                </td>
+
+
+                                {% if order.payment_method == 'Stripe' %}
+                                <td class="payment-info">
+                                    <a href="javascript:void(0);"> <img src="/static/custom_admin_css/assets/img/icons/stripe.svg" alt="Pay"> </a>
+                                    </td>
+                                    {% else %}
+                                    <td> <strong>COD</strong></td>
+                                    {% endif %}
+                               
+                               
+                                <td></td>
+                                <td>{{order.shipping_cost}}</td>
+
+                                <td>{{ order.price }} €</td>
+
+                                <td>{{ order.order_type }}</td>
+                              
+                               
+
+                                <!-- <td> 
+                                    <a href="javascript:void(0);" class="dropdown-item"
+                                        data-bs-toggle="modal" data-bs-target="#showpayment-{{ order.id }}"><i data-feather="eye" class="feather-eye"></i>
+                                        Product</a>
+                                </td>
+                                <td> 
+                                    <a href="javascript:void(0);" class="dropdown-item"
+                                        data-bs-toggle="modal" data-bs-target="#showaddress-{{ order.id }}"><i data-feather="eye" class="feather-eye"></i>
+                                        Adress</a>
+                                </td> -->
+
+                                
+                                <td>
+                                    <!-- Status Display and Dropdown -->
+                                    <div class="dropdown">
+                                        <button class="btn btn-secondary dropdown-toggle" type="button" id="statusDropdown-{{ order.id }}" data-bs-toggle="dropdown" aria-expanded="false">
+                                            {{ order.product_status }}
+                                        </button>
+                                        <ul class="dropdown-menu" aria-labelledby="statusDropdown-{{ order.id }}">
+                                            <li><a class="dropdown-item" href="javascript:void(0);" data-status="progress">Order In Progress</a></li>
+                                            <li><a class="dropdown-item" href="javascript:void(0);" data-status="placed">Order Placed</a></li>
+                                            
+                                            {% if order.payment_method == 'Stripe' and order.paid_status or order.payment_method == 'COD' %}
+                                                                <li>
+                                                                    <a class="dropdown-item" href="javascript:void(0);" data-status="accepted">
+                                                                        Order Accepted
+                                                                    </a>
+                                                                </li>
+                                                           
+                                                                                                    
+                                            <li><a class="dropdown-item" href="javascript:void(0);" data-status="delivered">Order Delivered</a></li>
+                                            <li><a class="dropdown-item" href="javascript:void(0);" data-status="canceled">Order Cancelled</a></li>
+                                             {% endif %}
+                                        </ul>
+                                    </div>
+                                </td>
+                                
+                                
+                                <!-- {% if order.paid_status %}
+                                <td>
+                                    <span class="badge badge-linesuccess">Paid</span>
+                                    <a href="{% url 'toggle_paid_status' order.id %}" class="btn btn-sm btn-warning">Mark as Due</a>
+                                </td>
+                                {% else %}
+                                <td>
+                                    <span class="badge badge-linedanger">Due</span>
+                                    <a href="{% url 'toggle_paid_status' order.id %}" class="btn btn-sm btn-success">Mark as Paid</a>
+                                </td>
+                                {% endif %} -->
+
+                              
+                               
+                                <td class="text-center">
+                               
+                                   
+
+                                    <a class="action-set" href="javascript:void(0);" data-bs-toggle="dropdown" aria-expanded="true" >
+                                        <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                                    </a>
+
+                                    <ul class="dropdown-menu">
+                                        <!-- <li>
+                                            <a href="{% url 'download_invoice' order.id %}" class="dropdown-item"><i data-feather="download" class="info-img"></i>Download PDF</a>
+                                        </li> -->
+                                        <li>
+
+                                            <a href="{% url 'delete_sale' order.id %}" class="dropdown-item mb-0">
+                                                <i data-feather="trash-2" class="info-img"></i>Delete Sale
+                                            </a>
+                                        </li>
+                                        
+                                    </ul>
+                                </td>
+                                
+                            </tr>
+                        
+                            {% endfor %}
+
+
+
+                          
+
+
+                        </tbody>
+
+
+                        <tbody class="sales-list" >
+                            {% for order in cart_orders %}
+                            <tr >
+                               
+                                <td># 00{{ order.id }}</td>
+                                <td>{{ order.shipping_address.name }}
+                                    <br>
+                                     {{ order.shipping_address.email }}
+                                     <br>
+                                      {{ order.shipping_address.phone }}
+                                    </td>
+
+                                <td>
+                                    {{ order.shipping_address.street_address }}
+                                    <br>
+                                    {{ order.shipping_address.zip_code }}
+                                    <br>
+                                    {{ order.shipping_address.city }}
+                                </td>
+
+
+                                {% if order.payment_method == 'Stripe' %}
+                                <td class="payment-info">
+                                    <a href="javascript:void(0);"> <img src="/static/custom_admin_css/assets/img/icons/stripe.svg" alt="Pay"> </a>
+                                    </td>
+                                    {% else %}
+                                    <td> <strong>N/A</strong></td>
+                                    {% endif %}
+                               
+                               
+                                    {% if order.payment_method == 'Stripe' %}
+                                <td>{{order.stripe_payment_intent_id}}</td>
+                                {% else %}
+                                <td>N/A</td>
+                                {% endif %}
+                                <td>€ {{order.shipping_cost}}</td>
+
+                                <td>€ {{ order.price }} </td>
+
+                                <td>{{ order.order_type }}</td>
+                              
+                               
+
+                                <!-- <td> 
+                                    <a href="javascript:void(0);" class="dropdown-item"
+                                        data-bs-toggle="modal" data-bs-target="#showpayment-{{ order.id }}"><i data-feather="eye" class="feather-eye"></i>
+                                        Product</a>
+                                </td> -->
+                                <!-- <td> 
+                                    <a href="javascript:void(0);" class="dropdown-item"
+                                        data-bs-toggle="modal" data-bs-target="#showaddress-{{ order.id }}"><i data-feather="eye" class="feather-eye"></i>
+                                        Adress</a>
+                                </td> -->
+
+                                
+                                <td>
+                                    <!-- Status Display and Dropdown -->
+                                    <div class="dropdown">
+                                        <button class="btn btn-secondary dropdown-toggle" type="button" id="statusDropdown-{{ order.id }}" data-bs-toggle="dropdown" aria-expanded="false">
+                                            {{ order.product_status }}
+                                        </button>
+                                        <ul class="dropdown-menu" aria-labelledby="statusDropdown-{{ order.id }}">
+                                            <li><a class="dropdown-item" href="javascript:void(0);" data-status="progress">Order In Progress</a></li>
+                                            <li><a class="dropdown-item" href="javascript:void(0);" data-status="placed">Order Placed</a></li>
+                                            {% if order.payment_method == 'Stripe' and order.paid_status or order.payment_method == 'COD' %}
+                                                                <li>
+                                                                    <a class="dropdown-item" href="javascript:void(0);" data-status="accepted">
+                                                                        Order Accepted
+                                                                    </a>
+                                                                </li>
+                                                            {% endif %}
+                                            <li><a class="dropdown-item" href="javascript:void(0);" data-status="delivered">Order Delivered</a></li>
+                                            <li><a class="dropdown-item" href="javascript:void(0);" data-status="canceled">Order Cancelled</a></li>
+                                        </ul>
+                                    </div>
+                                </td>
+                                
+                                
+                                <!-- {% if order.paid_status %}
+                                <td>
+                                    <span class="badge badge-linesuccess">Paid</span>
+                                    <a href="{% url 'toggle_paid_status' order.id %}" class="btn btn-sm btn-warning">Mark as Due</a>
+                                </td>
+                                {% else %}
+                                <td>
+                                    <span class="badge badge-linedanger">Due</span>
+                                    <a href="{% url 'toggle_paid_status' order.id %}" class="btn btn-sm btn-success">Mark as Paid</a>
+                                </td>
+                                {% endif %} -->
+
+                              
+
+
+                                
+                               
+                                <td class="text-center">
+                               
+                                   
+                                    <a class="me-2 p-2" href="#" data-bs-toggle="modal" data-bs-target="#add-sales-new-{{ order.id }}">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                                    </a>
+
+
+                                    <a class="action-set" href="javascript:void(0);" data-bs-toggle="dropdown" aria-expanded="true">
+                                        <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li>
+                                            <a href="{% url 'download_invoice' order.id %}" class="dropdown-item"><i data-feather="download" class="info-img"></i>Download PDF</a>
+                                        </li>
+                                        <li>
+
+                                            <a href="{% url 'delete_sale' order.id %}" class="dropdown-item mb-0">
+                                                <i data-feather="trash-2" class="info-img"></i>Delete Sale
+                                            </a>
+                                        </li>
+                                        
+                                    </ul>
+                                </td>
+                                
+                            </tr>
+                        
+                            {% endfor %}
+
+
+
+                          
+
+
+                        </tbody>
+
+
+                        
+                    </table>
+
+                    <div class="col-xl-6">
+                        <div class="card-body">
+                            <nav aria-label="Page navigation" class="pagination-style-4">
+                                <ul class="pagination mb-0 flex-wrap">
+                                    {% if cart_orders.has_previous %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page={{ cart_orders.previous_page_number }}">
+                                            Prev
+                                        </a>
+                                    </li>
+                                    {% else %}
+                                    <li class="page-item disabled">
+                                        <a class="page-link" href="javascript:void(0);">
+                                            Prev
+                                        </a>
+                                    </li>
+                                    {% endif %}
+                                    
+                                    {% for num in cart_orders.paginator.page_range %}
+                                        {% if cart_orders.number == num %}
+                                        <li class="page-item active"><a class="page-link" href="javascript:void(0);">{{ num }}</a></li>
+                                        {% else %}
+                                        <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+                                        {% endif %}
+                                    {% endfor %}
+                    
+                                    {% if cart_orders.has_next %}
+                                    <li class="page-item">
+                                        <a class="page-link text-primary" href="?page={{ cart_orders.next_page_number }}">
+                                            Next
+                                        </a>
+                                    </li>
+                                    {% else %}
+                                    <li class="page-item disabled">
+                                        <a class="page-link" href="javascript:void(0);">
+                                            Next
+                                        </a>
+                                    </li>
+                                    {% endif %}
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+
+
+{% for order in cart_orders %}
+<div class="modal fade" id="add-sales-new-{{ order.id }}">
+<div class="modal-dialog add-centered">
+    <div class="modal-content">
+        <div class="page-wrapper p-0 m-0">
+            <div class="content p-0">
+                <div class="modal-header border-0 custom-modal-header">
+                    <div class="page-title">
+                        <h4> Order #{{order.id}}</h4>
+                    </div>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="card">
+                    <div class="card-body">
+               
+                            <div class="row">
+                                <div class="col-lg-4 col-sm-6 col-12">
+                                    <div class="input-blocks">
+                                 
+                                        <label>Invoice {{order.cart_order_items.invoice_no}}</label>
+                                        <label>Amount: {{order.price}}</label>
+                                        <label>Order Status: {{order.product_status}}</label>
+                                        <label>Payment Method: {{order.payment_method}}</label>
+                                        <label>Place On: {{order.order_date}}</label>
+                                        <label>Transaction ID: {{order.id}}</label>
+                                        
+                                    </div>
+                                </div>
+                            
+                                <div class="col-lg-4 col-sm-6 col-12">
+                                    <div class="input-blocks">
+                                        <label>{{order.shipping_address.name}}</label>
+                                        <label>{{order.shipping_address.city}}</label>
+                                        <label>{{order.shipping_address.street_address}} {{order.shipping_address.zip_code}}</label>
+                                        
+                                    
+                                        <label>{{order.shipping_address.phone}}</label>
+                                   
+                                        
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-4 col-sm-12 col-12">
+                                    <div class="input-blocks">
+                                        <label>Change Order Status</label>
+                                        <td>
+                                            <!-- Status Display and Dropdown -->
+                                            <div class="dropdown">
+                                                <button class="btn btn-secondary dropdown-toggle" type="button" id="statusDropdown-{{ order.id }}" data-bs-toggle="dropdown" aria-expanded="false">
+                                                    {{ order.product_status }}
+                                                </button>
+                                                <ul class="dropdown-menu" aria-labelledby="statusDropdown-{{ order.id }}">
+                                                    <li><a class="dropdown-item" href="javascript:void(0);" data-status="progress">Order In Progress</a></li>
+                                                    <li><a class="dropdown-item" href="javascript:void(0);" data-status="placed">Order Placed</a></li>
+                                                    <li><a class="dropdown-item" href="javascript:void(0);" data-status="accepted">Order Accepted</a></li>
+
+                                                    <li><a class="dropdown-item" href="javascript:void(0);" data-status="delivered">Order Delivered</a></li>
+                                                    <li><a class="dropdown-item" href="javascript:void(0);" data-status="canceled">Order Cancelled</a></li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                    </div>
+                                </div>
+                               
+                            </div>
+                            <div class="table-responsive no-pagination">
+                                <table class="table  datanew">
+                                    <thead>
+                                        <tr>
+                                            <th>Image</th>
+                                            <th>Food</th>
+                                            <th>Qty</th>
+                                            <th>Price</th>
+                                            <th>Subtotal</th>
+                                        
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for item in order.cartorderitems_set.all %}
+                                        <tr>
+                                           
+                                            <td><img width="30" src="{{item.image}}" alt="{{item.image}}"></td>
+                                          <td>{{item.item}}</td>
+                                          <td>{{ item.qty }}</td>
+                                          <td>€ {{ item.price }}</td>
+                                          <td>€ {{ item.total }}</td>
+                                         
+
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-6 ms-auto">
+                                    <div class="total-order w-100 max-widthauto m-auto mb-4">
+                                        <ul>
+                                           
+                                           
+                                            <li>
+                                                <h4>Tax <span style="color: red; font-size: smaller;">(TVA 5.00 % included)</span></h4>
+                                                <h5>€ {{order.tax_amount}}</h5>
+                                            </li>
+                                            <li>
+                                                <h4>Shipping</h4>
+                                                <h5>€ {{cost_settings.shipping_cost}}</h5>
+                                            </li>
+                                            <li>
+                                                <h4>Grand Total</h4>
+                                                <h5>€ {{order.price}}</h5>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                           
+
+
+                            <div class="col-lg-12 text-end">
+                         
+
+                                    <!-- <a href="{% url 'download_invoice' order.id %}">
+                                <button type="" class="btn btn-submit">Download Pdf</
+                            </a> -->
+                            </div>
+                   
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+{% endfor %}
+
+<div class="modal fade" id="sales-details-new">
+<div class="modal-dialog sales-details-modal">
+    <div class="modal-content">
+        <div class="page-wrapper details-blk">
+            <div class="content p-0">
+                <div class="page-header p-4 mb-0">
+                    <div class="add-item d-flex">
+                        <div class="page-title modal-datail">
+                            <h4>Sales Detail : SL0101</h4>
+                        </div>
+                        <div class="page-btn">
+                            <a href="#" class="btn btn-added" data-bs-toggle="modal"
+                                data-bs-target="#add-payroll-new"><i data-feather="plus-circle"
+                                    class="me-2"></i> Add New Sales</a>
+                        </div>
+                    </div>
+                    <ul class="table-top-head">
+                        <li>
+                            <a data-bs-toggle="tooltip" data-bs-placement="top" title="Pdf"><i
+                                    data-feather="edit" class="action-edit sales-action"></i></a>
+                        </li>
+                        <li>
+                            <a data-bs-toggle="tooltip" data-bs-placement="top" title="Pdf"><img
+                                    src="/static/custom_admin_css/assets/img/icons/pdf.svg" alt="img"></a>
+                        </li>
+                        <li>
+                            <a data-bs-toggle="tooltip" data-bs-placement="top" title="Excel"><img
+                                    src="/static/custom_admin_css/assets/img/icons/excel.svg" alt="img"></a>
+                        </li>
+                        <li>
+                            <a data-bs-toggle="tooltip" data-bs-placement="top" title="Print"><i
+                                    data-feather="printer" class="feather-rotate-ccw"></i></a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <div class="card-body">
+                        <form action="sales-list.html">
+                            <div class="invoice-box table-height"
+                                style="max-width: 1600px;width:100%;overflow: auto;padding: 0;font-size: 14px;line-height: 24px;color: #555;">
+                                <div class="sales-details-items d-flex">
+                                    <div class="details-item">
+                                        <h6>Customer Info</h6>
+                                        <p>walk-in-customer<br>
+                                            <a href="/cdn-cgi/l/email-protection" class="__cf_email__"
+                                                data-cfemail="2a5d4b464107434407495f595e45474f586a4f524b475a464f04494547">[email&#160;protected]</a><br>
+                                            123456780<br>
+                                            N45 , Dhaka
+                                        </p>
+                                    </div>
+                                    <div class="details-item">
+                                        <h6>Company Info</h6>
+                                        <p>DGT<br>
+                                            <a href="/cdn-cgi/l/email-protection" class="__cf_email__"
+                                                data-cfemail="b7d6d3daded9f7d2cfd6dac7dbd299d4d8da">[email&#160;protected]</a><br>
+                                            6315996770<br>
+                                            3618 Abia Martin Drive
+                                        </p>
+                                    </div>
+                                    <div class="details-item">
+                                        <h6>Invoice Info</h6>
+                                        <p>Reference<br>
+                                            Payment Status<br>
+                                            Status
+                                        </p>
+                                    </div>
+                                    <div class="details-item">
+                                        <h5><span>SL0101</span>Paid<br> Completed</h5>
+                                    </div>
+                                </div>
+                                <h5 class="order-text">Order Summary</h5>
+                                <div class="table-responsive no-pagination">
+                                    <table class="table  datanew">
+                                        <thead>
+                                            <tr>
+                                                <th>Product</th>
+                                                <th>Qty</th>
+                                                <th>Purchase Price(€)</th>
+                                                <th>Discount(€)</th>
+                                                <th>Tax(%)</th>
+                                                <th>Tax Amount(€)</th>
+                                                <th>Unit Cost(€)</th>
+                                                <th>Total Cost(%)</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <div class="productimgname">
+                                                        <a href="javascript:void(0);"
+                                                            class="product-img stock-img">
+                                                            <img src="/static/custom_admin_css/assets/img/products/stock-img-02.png"
+                                                                alt="product">
+                                                        </a>
+                                                        <a href="javascript:void(0);">Nike Jordan</a>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="product-quantity">
+                                                        <span class="quantity-btn">+<i
+                                                                data-feather="plus-circle"
+                                                                class="plus-circle"></i></span>
+                                                        <input type="text" class="quntity-input" value="2">
+                                                        <span class="quantity-btn"><i
+                                                                data-feather="minus-circle"
+                                                                class="feather-search"></i></span>
+                                                    </div>
+                                                </td>
+                                                <td>2000</td>
+                                                <td>500</td>
+                                                <td>
+                                                    0.00
+                                                </td>
+                                                <td>0.00</td>
+                                                <td>0.00</td>
+                                                <td>1500</td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <div class="productimgname">
+                                                        <a href="javascript:void(0);"
+                                                            class="product-img stock-img">
+                                                            <img src="/static/custom_admin_css/assets/img/products/stock-img-03.png"
+                                                                alt="product">
+                                                        </a>
+                                                        <a href="javascript:void(0);">Apple Series 5 Watch</a>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="product-quantity">
+                                                        <span class="quantity-btn">+<i
+                                                                data-feather="plus-circle"
+                                                                class="plus-circle"></i></span>
+                                                        <input type="text" class="quntity-input" value="2">
+                                                        <span class="quantity-btn"><i
+                                                                data-feather="minus-circle"
+                                                                class="feather-search"></i></span>
+                                                    </div>
+                                                </td>
+                                                <td>3000</td>
+                                                <td>400</td>
+                                                <td>
+                                                    0.00
+                                                </td>
+                                                <td>0.00</td>
+                                                <td>0.00</td>
+                                                <td>1700</td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <div class="productimgname">
+                                                        <a href="javascript:void(0);"
+                                                            class="product-img stock-img">
+                                                            <img src="/static/custom_admin_css/assets/img/products/stock-img-05.png"
+                                                                alt="product">
+                                                        </a>
+                                                        <a href="javascript:void(0);">Lobar Handy</a>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="product-quantity">
+                                                        <span class="quantity-btn">+<i
+                                                                data-feather="plus-circle"
+                                                                class="plus-circle"></i></span>
+                                                        <input type="text" class="quntity-input" value="2">
+                                                        <span class="quantity-btn"><i
+                                                                data-feather="minus-circle"
+                                                                class="feather-search"></i></span>
+                                                    </div>
+                                                </td>
+                                                <td>2500</td>
+                                                <td>500</td>
+                                                <td>
+                                                    0.00
+                                                </td>
+                                                <td>0.00</td>
+                                                <td>0.00</td>
+                                                <td>2000</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="row">
+                                    <div class="col-lg-6 ms-auto">
+                                        <div class="total-order w-100 max-widthauto m-auto mb-4">
+                                            <ul>
+                                                <li>
+                                                    <h4>Order Tax</h4>
+                                                    <h5>€ 0.00</h5>
+                                                </li>
+                                                <li>
+                                                    <h4>Discount</h4>
+                                                    <h5>€ 0.00</h5>
+                                                </li>
+                                                <li>
+                                                    <h4>Grand Total</h4>
+                                                    <h5>€ 5200.00</h5>
+                                                </li>
+                                                <li>
+                                                    <h4>Paid</h4>
+                                                    <h5>€ 5200.00</h5>
+                                                </li>
+                                                <li>
+                                                    <h4>Due</h4>
+                                                    <h5>€ 0.00</h5>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+
+<div class="modal fade" id="edit-sales-new">
+<div class="modal-dialog edit-sales-modal">
+    <div class="modal-content">
+        <div class="page-wrapper p-0 m-0">
+            <div class="content p-0">
+                <div class="page-header p-4 mb-0">
+                    <div class="add-item new-sale-items d-flex">
+                        <div class="page-title">
+                            <h4>Edit Sales</h4>
+                        </div>
+                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-body">
+                        <form action="sales-list.html">
+                            <div class="row">
+                                <div class="col-lg-4 col-sm-6 col-12">
+                                    <div class="input-blocks">
+                                        <label>Customer</label>
+                                        <div class="row">
+                                            <div class="col-lg-10 col-sm-10 col-10">
+                                                <select class="select">
+                                                    <option>Thomas</option>
+                                                    <option>Name</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-lg-2 col-sm-2 col-2 ps-0">
+                                                <div class="add-icon">
+                                                    <a href="#" class="choose-add"><i data-feather="plus-circle"
+                                                            class="plus"></i></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-sm-6 col-12">
+                                    <div class="input-blocks">
+                                        <label>Purchase Date</label>
+                                        <div class="input-groupicon calender-input">
+                                            <i data-feather="calendar" class="info-img"></i>
+                                            <input type="text" class="datetimepicker" placeholder="19 jan 2023">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-sm-6 col-12">
+                                    <div class="input-blocks">
+                                        <label>Supplier</label>
+                                        <select class="select">
+                                            <option>Dazzle Shoes</option>
+                                            <option>Supplier Name</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12 col-sm-6 col-12">
+                                    <div class="input-blocks">
+                                        <label>Product Name</label>
+                                        <div class="input-groupicon select-code">
+                                            <input type="text"
+                                                placeholder="Please type product code and select">
+                                            <div class="addonset">
+                                                <img src="/static/custom_admin_css/assets/img/icons/scanners.svg" alt="img">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="table-responsive no-pagination">
+                                <table class="table  datanew">
+                                    <thead>
+                                        <tr>
+                                            <th>Product</th>
+                                            <th>Qty</th>
+                                            <th>Purchase Price(€)</th>
+                                            <th>Discount(€)</th>
+                                            <th>Tax(%)</th>
+                                            <th>Tax Amount(€)</th>
+                                            <th>Unit Cost(€)</th>
+                                            <th>Total Cost(%)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <div class="productimgname">
+                                                    <a href="javascript:void(0);" class="product-img stock-img">
+                                                        <img src="/static/custom_admin_css/assets/img/products/stock-img-02.png"
+                                                            alt="product">
+                                                    </a>
+                                                    <a href="javascript:void(0);">Nike Jordan</a>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="product-quantity">
+                                                    <span class="quantity-btn">+<i data-feather="plus-circle"
+                                                            class="plus-circle"></i></span>
+                                                    <input type="text" class="quntity-input" value="2">
+                                                    <span class="quantity-btn"><i data-feather="minus-circle"
+                                                            class="feather-search"></i></span>
+                                                </div>
+                                            </td>
+                                            <td>2000</td>
+                                            <td>500</td>
+                                            <td>
+                                                0.00
+                                            </td>
+                                            <td>0.00</td>
+                                            <td>0.00</td>
+                                            <td>1500</td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="productimgname">
+                                                    <a href="javascript:void(0);" class="product-img stock-img">
+                                                        <img src="/static/custom_admin_css/assets/img/products/stock-img-03.png"
+                                                            alt="product">
+                                                    </a>
+                                                    <a href="javascript:void(0);">Apple Series 5 Watch</a>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="product-quantity">
+                                                    <span class="quantity-btn">+<i data-feather="plus-circle"
+                                                            class="plus-circle"></i></span>
+                                                    <input type="text" class="quntity-input" value="2">
+                                                    <span class="quantity-btn"><i data-feather="minus-circle"
+                                                            class="feather-search"></i></span>
+                                                </div>
+                                            </td>
+                                            <td>3000</td>
+                                            <td>400</td>
+                                            <td>
+                                                0.00
+                                            </td>
+                                            <td>0.00</td>
+                                            <td>0.00</td>
+                                            <td>1700</td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="productimgname">
+                                                    <a href="javascript:void(0);" class="product-img stock-img">
+                                                        <img src="/static/custom_admin_css/assets/img/products/stock-img-05.png"
+                                                            alt="product">
+                                                    </a>
+                                                    <a href="javascript:void(0);">Lobar Handy</a>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="product-quantity">
+                                                    <span class="quantity-btn">+<i data-feather="plus-circle"
+                                                            class="plus-circle"></i></span>
+                                                    <input type="text" class="quntity-input" value="2">
+                                                    <span class="quantity-btn"><i data-feather="minus-circle"
+                                                            class="feather-search"></i></span>
+                                                </div>
+                                            </td>
+                                            <td>2500</td>
+                                            <td>500</td>
+                                            <td>
+                                                0.00
+                                            </td>
+                                            <td>0.00</td>
+                                            <td>0.00</td>
+                                            <td>2000</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-6 ms-auto">
+                                    <div class="total-order w-100 max-widthauto m-auto mb-4">
+                                        <ul>
+                                            <li>
+                                                <h4>Order Tax</h4>
+                                                <h5>€ 0.00</h5>
+                                            </li>
+                                            <li>
+                                                <h4>Discount</h4>
+                                                <h5>€ 0.00</h5>
+                                            </li>
+                                            <li>
+                                                <h4>Shipping</h4>
+                                                <h5>€ 0.00</h5>
+                                            </li>
+                                            <li>
+                                                <h4>Grand Total</h4>
+                                                <h5>€5200.00</h5>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-3 col-sm-6 col-12">
+                                    <div class="input-blocks">
+                                        <label>Order Tax</label>
+                                        <div class="input-groupicon select-code">
+                                            <input type="text" placeholder="0">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-sm-6 col-12">
+                                    <div class="input-blocks">
+                                        <label>Discount</label>
+                                        <div class="input-groupicon select-code">
+                                            <input type="text" placeholder="0">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-sm-6 col-12">
+                                    <div class="input-blocks">
+                                        <label>Shipping</label>
+                                        <div class="input-groupicon select-code">
+                                            <input type="text" placeholder="0">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-sm-6 col-12">
+                                    <div class="input-blocks mb-5">
+                                        <label>Status</label>
+                                        <select class="select">
+                                            <option>Choose</option>
+                                            <option>Completed</option>
+                                            <option>Inprogress</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <div class="input-blocks">
+                                        <label>Notes</label>
+                                        <textarea class="form-control"></textarea>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12 text-end">
+                                    <button type="button" class="btn btn-cancel add-cancel me-3"
+                                        data-bs-dismiss="modal">Cancel</button>
+                                    <button type="submit" class="btn btn-submit add-sale">Submit</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+
+{% for order in cart_orders %}
+<div class="modal fade" id="showpayment-{{ order.id }}" tabindex="-1" aria-labelledby="showpayment" aria-hidden="true">
+<div class="modal-dialog modal-dialog-centered stock-adjust-modal">
+    <div class="modal-content">
+        <div class="page-wrapper-new p-0">
+            <div class="content">
+                <div class="modal-header border-0 custom-modal-header">
+                    <div class="page-title">
+                        <h4>Products</h4>
+                    </div>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body custom-modal-body">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="modal-body-table total-orders">
+                                <div class="table-responsive">
+                                    <table class="table  datanew">
+                                        <thead>
+                                            <tr>
+                                              
+                                                <th>Product Name</th>
+                                                <th>Quantity</th>
+                                                <th>Unit Price</th>
+                                                <th>Total</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for item in order.cartorderitems_set.all %}
+                                            <tr>
+                                             
+                                                <td>{{ item.item  }}</td>
+                                                <td>{{ item.qty }}</td>
+                                                <td>{{ item.price }} €</td>
+                                                <td>{{ item.total }} €</td>
+                                               
+                                               
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+{% endfor %}
+
+{% for order in cart_orders %}
+<div class="modal fade" id="showaddress-{{ order.id }}" tabindex="-1" aria-labelledby="showaddress" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered stock-adjust-modal">
+        <div class="modal-content">
+            <div class="page-wrapper-new p-0">
+                <div class="content">
+                    <div class="modal-header border-0 custom-modal-header">
+                        <div class="page-title">
+                            <h4>Shiiping Address</h4>
+                        </div>
+                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body custom-modal-body">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="modal-body-table total-orders">
+                                    <div class="table-responsive">
+                                        <table class="table  datanew">
+                                            <thead>
+                                                <tr>
+                                                    <th>Email</th>
+                                                    <th>Country</th>
+                                                    <th>Street</th>
+                                                    <th>City</th>
+                                                    <th>State</th>
+                                                    <th>Zip</th>
+                                                  
+                                              
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>{{ order.shipping_address.email }}</td>
+                                                    <td>{{ order.shipping_address.country }}</td>
+                                                    <td>{{ order.shipping_address.street_address }}</td>
+                                                    <td>{{ order.shipping_address.city }}</td>
+                                                    <td>{{ order.shipping_address.state }}</td>
+                                                    <td>{{ order.shipping_address.zip_code }}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    {% endfor %}
+
+
+<div class="modal fade" id="createpayment" tabindex="-1" aria-labelledby="createpayment" aria-hidden="true">
+<div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+        <div class="modal-header border-0 custom-modal-header">
+            <div class="page-title">
+                <h4>Create Payments</h4>
+            </div>
+            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body custom-modal-body">
+            <form action="sales-list.html">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="input-blocks">
+                            <label> Date</label>
+                            <div class="input-groupicon calender-input">
+                                <i data-feather="calendar" class="info-img"></i>
+                                <input type="text" class="datetimepicker" placeholder="Choose Date">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-sm-12 col-12">
+                        <div class="input-blocks">
+                            <label>Reference</label>
+                            <input type="text" class="form-control">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-4 col-sm-12 col-12">
+                        <div class="input-blocks">
+                            <label>Received Amount</label>
+                            <div class="input-groupicon calender-input">
+                                <i data-feather="dollar-sign" class="info-img"></i>
+                                <input type="text">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-sm-12 col-12">
+                        <div class="input-blocks">
+                            <label>Paying Amount</label>
+                            <div class="input-groupicon calender-input">
+                                <i data-feather="dollar-sign" class="info-img"></i>
+                                <input type="text">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-sm-12 col-12">
+                        <div class="input-blocks">
+                            <label>Payment type</label>
+                            <select class="select">
+                                <option>Choose</option>
+                                <option>Online</option>
+                                <option>Cash</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="input-blocks">
+                            <label>Description</label>
+                            <textarea class="form-control"></textarea>
+                            <p>Maximum 60 Characters</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <div class="modal-footer-btn">
+                        <button type="button" class="btn btn-cancel me-2"
+                            data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-submit">Submit</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</div>
+
+
+<div class="modal fade" id="editpayment" tabindex="-1" aria-labelledby="editpayment" aria-hidden="true">
+<div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+        <div class="modal-header border-0 custom-modal-header">
+            <div class="page-title">
+                <h4>Edit Payments</h4>
+            </div>
+            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body custom-modal-body">
+            <form action="sales-list.html">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="input-blocks">
+                            <label>19 Jan 2023</label>
+                            <div class="input-groupicon calender-input">
+                                <i data-feather="calendar" class="info-img"></i>
+                                <input type="text" class="datetimepicker form-control"
+                                    placeholder="Select Date">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-sm-12 col-12">
+                        <div class="input-blocks">
+                            <label>Reference</label>
+                            <input type="text" value="INV/SL0101">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-4 col-sm-12 col-12">
+                        <div class="input-blocks">
+                            <label>Received Amount</label>
+                            <div class="input-groupicon calender-input">
+                                <i data-feather="dollar-sign" class="info-img"></i>
+                                <input type="text" value="1500">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-sm-12 col-12">
+                        <div class="input-blocks">
+                            <label>Paying Amount</label>
+                            <div class="input-groupicon calender-input">
+                                <i data-feather="dollar-sign" class="info-img"></i>
+                                <input type="text" value="1500">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-sm-12 col-12">
+                        <div class="input-blocks">
+                            <label>Payment type</label>
+                            <select class="select">
+                                <option>Cash</option>
+                                <option>Online</option>
+                                <option>Inprogress</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="input-blocks summer-description-box transfer">
+                            <label>Description</label>
+                            <textarea class="form-control"></textarea>
+                        </div>
+                        <p>Maximum 60 Characters</p>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <div class="modal-footer-btn mb-3 me-3">
+                        <button type="button" class="btn btn-cancel me-2"
+                            data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-submit">Save Changes</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</div>
+
+
+
+
+
+<div class="customizer-links" id="setdata">
+    <ul class="sticky-sidebar">
+        <li class="sidebar-icons">
+            <a href="#" class="navigation-add" data-bs-toggle="tooltip" data-bs-placement="left"
+                data-bs-original-title="Theme">
+                <i data-feather="settings" class="feather-five"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        // Handle status change from dropdown
+        $('.dropdown-item').click(function() {
+            var newStatus = $(this).data('status');
+            var dropdownButton = $(this).closest('.dropdown').find('.dropdown-toggle');
+            var orderId = dropdownButton.attr('id').split('-')[1]; // Extract order ID from button ID
+    
+            $.ajax({
+                url: "{% url 'update_order_status' %}",  // Replace with your URL
+                type: "POST",
+                data: {
+                    'order_id': orderId,
+                    'product_status': newStatus,
+                    'csrfmiddlewaretoken': '{{ csrf_token }}'
+                },
+                success: function(response) {
+                    // Update dropdown button text with new status
+                    dropdownButton.text(newStatus.charAt(0).toUpperCase() + newStatus.slice(1));
+                },
+                error: function(xhr, errmsg, err) {
+                    console.error(xhr.status + ": " + xhr.responseText);
+                    // Optionally, handle errors here
+                }
+            });
+        });
+    });
+    
+    
+</script>
+
+
+<script>
+    $(document).ready(function () {
+        $(".confirm-text").on("click", function () {
+            var orderId = $(this).data("order-id");
+
+            Swal.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, delete it!",
+                confirmButtonClass: "btn btn-primary",
+                cancelButtonClass: "btn btn-danger ml-1",
+                buttonsStyling: false,
+            }).then(function (result) {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: "{% url 'delete_sale' 0 %}".replace('0', orderId),  // Ensure this URL matches your Django routing
+                        type: "POST",
+                        data: {
+                            csrfmiddlewaretoken: "{{ csrf_token }}"  // Correctly pass CSRF token
+                        },
+                        success: function (response) {
+                            if (response.success) {
+                                Swal.fire({
+                                    icon: "success",
+                                    title: "Deleted!",
+                                    text: "The order has been deleted.",
+                                    confirmButtonClass: "btn btn-success",
+                                });
+
+                                // Optionally remove the row from the table
+                                $("#order-row-" + orderId).remove();
+                            } else {
+                                Swal.fire({
+                                    icon: "error",
+                                    title: "Error!",
+                                    text: "An error occurred while trying to delete the order: " + response.error,
+                                    confirmButtonClass: "btn btn-danger",
+                                });
+                            }
+                        },
+                        error: function (xhr, status, error) {
+                            Swal.fire({
+                                icon: "error",
+                                title: "Request Failed!",
+                                text: "The AJAX request failed: " + error,
+                                confirmButtonClass: "btn btn-danger",
+                            });
+                        }
+                    });
+                }
+            });
+        });
+    });
+</script>
+
+<script>
+    document.getElementById('orderToggle').addEventListener('change', function() {
+        const isDisabled = this.checked;
+    
+        // Send Ajax POST request to toggle reservation status
+        fetch("{% url 'toggle_order_on_off_status' %}", {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}',
+                'X-Requested-With': 'XMLHttpRequest'
+            },
+            body: JSON.stringify({ is_order: !isDisabled })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                alert(`Order are now ${data.is_order ? 'enabled' : 'disabled'}.`);
+            } else {
+                alert('Failed to update order status.');
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    });
+    </script>
+
+<script>
+    document.getElementById('deliveryToggle').addEventListener('change', function() {
+        const isDisabled = this.checked;
+    
+        // Send Ajax POST request to toggle reservation status
+        fetch("{% url 'toggle_delivery_on_off_status' %}", {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}',
+                'X-Requested-With': 'XMLHttpRequest'
+            },
+            body: JSON.stringify({ is_delivery_enabled: !isDisabled })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                alert(`Delivery are now ${data.is_delivery_enabled ? 'enabled' : 'disabled'}.`);
+            } else {
+                alert('Failed to update delivery status.');
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    });
+    </script>
+
+
+    
+
+    <script>
+    document.getElementById('takeAwayToggle').addEventListener('change', function() {
+        const isDisabled = this.checked;
+    
+        // Send Ajax POST request to toggle reservation status
+        fetch("{% url 'toggle_take_away_on_off_status' %}", {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}',
+                'X-Requested-With': 'XMLHttpRequest'
+            },
+            body: JSON.stringify({ is_take_away_enabled: !isDisabled })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                alert(`Take Away are now ${data.is_take_away_enabled ? 'enabled' : 'disabled'}.`);
+            } else {
+                alert('Failed to update take away status.');
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    });
+    </script>
+
+<style>
+    .table .fetch_data tr td {
+        background-color: rgb(250, 137, 137) !important;
+    }
+
+
+
+</style>
+
+
+{% endblock custom_admin_body %}

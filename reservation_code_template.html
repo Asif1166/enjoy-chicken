@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            font-family: monospace;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            background-color: #f0f0f0;
+        }
+
+        .receipt {
+            width: 300px;
+            background: white;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .logo img {
+            width: 100px;
+            margin-bottom: 10px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .address {
+            font-size: 12px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .divider {
+            border-top: 1px dashed #000;
+            margin: 10px 0;
+        }
+
+        .order-number {
+            font-size: 12px;
+            margin-bottom: 10px;
+        }
+
+        .item-row {
+            display: flex;
+            justify-content: space-between;
+            margin: 5px 0;
+            font-size: 12px;
+        }
+
+        .total-section {
+            margin: 15px 0;
+        }
+
+        .total-row {
+            display: flex;
+            justify-content: space-between;
+            margin: 5px 0;
+            font-size: 12px;
+        }
+
+        .total {
+            font-weight: bold;
+        }
+
+        .hours {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 12px;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 12px;
+        }
+
+        .qr-section {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .qr-section img {
+            width: 100px;
+        }
+
+        .app-stores {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .app-stores img {
+            height: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="receipt">
+        <div class="logo">
+            <img src="/api/placeholder/100/50" alt="Enjoy Chicken Logo">
+            <div>Enjoy Chicken</div>
+        </div>
+
+        <div class="address">
+            11 RUE TRAVERSIERE 1ER ETAGE,<br>
+            VILLENEUVE-D'ASCQ (NORD) 59650<br>
+            TRIOLO<br>
+            0759351512
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="order-number">
+            #1 - 10/26/2024 10:49:00 AM
+        </div>
+        <div class="divider"></div>
+        <div class="item-row">
+            <span>1 SUSHI Saumon 2p</span>
+            <span>€3.40</span>
+        </div>
+
+
+        <div class="total-section">
+            <div class="total-row">
+                <span>Subtotal</span>
+                <span>€3.09</span>
+            </div>
+            <div class="total-row">
+                <span>10 (10%)</span>
+                <span>€0.31</span>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="total-row total">
+                <span>TOTAL</span>
+                <span>€3.40</span>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="total-row">
+                <span>Cash</span>
+                <span>€3.40</span>
+            </div>
+            <div class="total-row">
+                <span>Change</span>
+                <span>€0.00</span>
+            </div>
+        </div>
+
+        <div class="hours">
+            LUNDI AU VENDREDI<br>
+            11:30H-23:30H<br>
+            SAMEDI ET DIMANCHE<br>
+            12:30H-23:30H
+        </div>
+
+        <div class="footer">
+            Merci de votre visite !<br>
+            www.enjoychicken.com
+        </div>
+
+     
+    </div>
+</body>
+</html>

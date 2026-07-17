@@ -1,0 +1,54 @@
+    <!-- Start Opening Hours 
+    ============================================= -->
+    <div class="opening-hours-area default-padding overflow-hidden">
+        <div class="container">
+            <div class="opening-hour-items">
+                <h2 class="text-fixed">EnjoyChicken</h2>
+                <div class="shape">
+                    <img src="/static/assets/img/shape/4.png" alt="Image Not Found">
+                </div>
+                <div class="row">
+                    <div class="col-lg-6">
+
+                        <div class="opening-hours-thumb video-bg-live">
+                             {% if opening_hours %}
+
+                            <video autoplay muted loop class="video-bg-live" width="350" style="height:500px;">
+                                <source src="/static/assets/video/video.mp4" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                         
+                           
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="opening-hours-info animate" data-animate="fadeInLeft">
+                            <h3>Heures d'ouverture</h3>
+                            <p>
+                                {{ opening_hours.description }}
+                            </p>
+                            <ul class="opening-hours-table">
+
+                                {% for hour in opening_hours.operating_hours.all %}
+                                <li>
+                                    <h6>{{ hour.day }} :</h6> <span>{{ hour.hours }}</span>
+                                </li>
+                                {% endfor %}
+                            </ul>
+                            <div class="call-to-action">
+                                <div class="icon">
+                                    <img src="/static/assets/img/icon/6.png" alt="Image Not Found">
+                                </div>
+                                <div class="info">
+                                    <p>Call Anytime</p>
+                                    <h4><a href="tel:{{ opening_hours.contact_number }}">tel:{{ opening_hours.contact_number }}</a></h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Opening Hours -->

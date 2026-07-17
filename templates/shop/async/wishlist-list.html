@@ -1,0 +1,77 @@
+<!-- rts cart area start -->
+<div class="rts-cart-area rts-section-gap bg_light-1">
+    <div class="container">
+        <div class="row g-5">
+            <div class="col-lg-12">
+                <div class="rts-cart-list-area wishlist">
+                    <div class="single-cart-area-list head">
+                        <div class="product-main">
+                            <P>Products</P>
+                        </div>
+                        <div class="price">
+                            <p>Price</p>
+                        </div>
+                        <div class="quantity">
+                           <p>Quantity</p>
+                        </div>
+                        <div class="quantity">
+                           <p>Refresh</p>
+                        </div>
+                        <div class="subtotal">
+                            <p>SubTotal</p>
+                        </div>
+                        <div class="button-area">
+
+                        </div>
+                    </div>
+
+                    {% for item in wishlist %}
+    <div class="single-cart-area-list main item-parent">
+        <div class="product-main-cart">
+            <div class="close section-activation delete-product-wishlist" data-product="{{ item.product.id }}">
+                <i class="fa-regular fa-x"></i>
+            </div>
+            <div class="thumbnail">
+                <img src="{{ item.product.image.url }}" alt="{{ item.product.title }}">
+            </div>
+            <div class="information">
+                <h6 class="title">{{ item.product.title }}</h6>
+            </div>
+        </div>
+        <div class="price">
+            <p>{{ item.product.price|floatformat:2 }} €</p>
+        </div>
+        <div class="quantity">
+            <div class="quantity-edit">
+                <input type="text" class="input product-qty-{{ item.product.id }}" value="{{ item.product.quantity }}">
+                <div class="button-wrapper-action">
+                    <button class="button"><i class="fa-regular fa-chevron-down"></i></button>
+                    <button class="button plus">+<i class="fa-regular fa-chevron-up"></i></button>
+                </div>
+            </div>
+        </div>
+        <div class="price update-product" data-product="{{ item.product.id }}">
+            <i class="fa-solid fa-rotate"></i>
+        </div>
+        <div class="subtotal">
+            <p>{{item.product.price|floatformat:2}} €</p>
+        </div>
+        <div class="button-area">
+            <a href="#" class="rts-btn btn-primary radious-sm with-icon">
+                <div class="btn-text">
+                    Add To Cart
+                </div>
+                <div class="arrow-icon">
+                    <i class="fa-regular fa-cart-shopping"></i>
+                </div>
+            </a>
+        </div>
+    </div>
+{% endfor %}
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- rts cart area end -->

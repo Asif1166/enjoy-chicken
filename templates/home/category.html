@@ -1,0 +1,59 @@
+    <!-- rts category area satart -->
+    <div class="rts-caregory-area-one ">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="category-area-main-wrapper-one">
+                        <div class="swiper mySwiper-category-1 swiper-data" data-swiper='{
+                            "spaceBetween":12,
+                            "slidesPerView":10,
+                            "loop": true,
+                            "speed": 1000,
+                            "breakpoints":{
+                            "0":{
+                                "slidesPerView":2,
+                                "spaceBetween": 12},
+                            "320":{
+                                "slidesPerView":2,
+                                "spaceBetween":12},
+                            "480":{
+                                "slidesPerView":3,
+                                "spaceBetween":12},
+                            "640":{
+                                "slidesPerView":4,
+                                "spaceBetween":12},
+                            "840":{
+                                "slidesPerView":4,
+                                "spaceBetween":12},
+                            "1140":{
+                                "slidesPerView":10,
+                                "spaceBetween":12}
+                            }
+                        }'>
+                            <div class="swiper-wrapper">
+
+
+                                <!-- single swiper start -->
+
+                                {% for category in categories %}
+                                    <div class="swiper-slide">
+                                        <a href="{% url 'category_products' category.cid %}" class="single-category-one">
+                                            <img src="{{ category.image.url }}" alt="category">
+                                            <p
+                                            data-title-fr="{{ category.title }}"
+                                            data-title-en="{{ category.eng_title }}">
+                                            {{ category.title }}</p>
+                                        </a>
+                                    </div>
+                                {% endfor %}
+
+                                <!-- single swiper start -->
+                             
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- rts category area end -->

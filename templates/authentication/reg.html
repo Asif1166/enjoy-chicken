@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+
+
+{% block body %}
+
+    <!-- rts register area start -->
+    <div class="rts-register-area rts-section-gap bg_light-1">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="registration-wrapper-1">
+                        <div class="logo-area mb--0">
+                            <img class="mb--10" src="/static/assets/images/logo/fav.png" alt="logo">
+                        </div>
+                        <h3 class="title">Register Into Your Account</h3>
+
+                   
+                        <form action="" method="POST" class="registration-form">
+                            {% csrf_token %}
+                            <div class="input-wrapper">
+                                <label for="id_username">Username*</label>
+                                <input type="text" name="username" id="id_username" value="{{ form.username.value|default_if_none:'' }}">
+                                <!-- Display any errors for the username field -->
+                                {% if form.username.errors %}
+                                    <div class="error">{{ form.username.errors.0 }}</div>
+                                {% endif %}
+                            </div>
+                            <div class="input-wrapper">
+                                <label for="id_email">Email*</label>
+                                <input type="email" name="email" id="id_email" value="{{ form.email.value|default_if_none:'' }}">
+                                <!-- Display any errors for the email field -->
+                                {% if form.email.errors %}
+                                    <div class="error">{{ form.email.errors.0 }}</div>
+                                {% endif %}
+                            </div>
+                            <div class="input-wrapper">
+                                <label for="id_password1">Password*</label>
+                                <input type="password" name="password1" id="id_password1">
+                                <!-- Display any errors for the password1 field -->
+                                {% if form.password1.errors %}
+                                    <div class="error">{{ form.password1.errors.0 }}</div>
+                                {% endif %}
+                            </div>
+                            <div class="input-wrapper">
+                                <label for="id_password2">Confirm Password*</label>
+                                <input type="password" name="password2" id="id_password2">
+                                <!-- Display any errors for the password2 field -->
+                                {% if form.password2.errors %}
+                                    <div class="error">{{ form.password2.errors.0 }}</div>
+                                {% endif %}
+                            </div>
+                            <button type="submit" class="rts-btn btn-primary">Register Account</button>
+                        </form>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- rts register area end -->
+
+{% endblock body %}

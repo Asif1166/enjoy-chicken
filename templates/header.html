@@ -1,0 +1,149 @@
+    <!-- Start Header Top 
+    ============================================= -->
+    <div class="top-bar-area top-bar-style-one bg-theme text-light">
+        <div class="container">
+            <div class="row align-center">
+                <div class="col-lg-7 for-mobile">
+                    <ul class="item-flex">
+                        <li>
+                             <a href="tel:{{site_info.primary_phone}}"> 
+                                <img src="/static/assets/img/icon/6.png" alt="Icon"> Phone: {{site_info.primary_phone}}
+                            </a>
+                        </li>
+                        <li>
+                            <a href="mailto:name@email.com">
+                                <img src="/static/assets/img/icon/7.png" alt="Icon"> Email: {{site_info.email}}
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-lg-5 text-end">
+                    <div class="item-flex">
+                        <div class="dropdown">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="currentlanguage" data-bs-toggle="dropdown" aria-expanded="false">
+                                
+                               French
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="currentlanguage">
+                              <li><a class="dropdown-item" href="#" id="lang-french"  data-lang="fr">French</a></li>
+                              <li><a class="dropdown-item" href="#" id="lang-english" data-lang="en">English</a></li>
+                            </ul>
+                        </div>
+                        <div class="social">
+                            <ul>
+                                <li>
+                                    <a href="{{site_info.facebook_url}}">
+                                        <i class="fab fa-facebook-f"></i>
+                                    </a>
+                                </li>
+
+                                <li>
+                              <a href="{{site_info.instagram_url}}">
+                                <i class="fab fa-instagram"></i>
+                                </a>
+                                </li>
+
+
+                                <li>
+                                    <a href="{{site_info.youtube_url}}">
+                                        <i class="fab fa-youtube"></i>
+                                    </a>
+                                </li>
+
+
+                                <li>
+                                    <a href="{{site_info.snapchat_url}}">
+                                      <i class="fab fa-snapchat"></i>
+                                      </a>
+                                      </li>
+      
+                             
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Header Top -->
+
+
+
+    <!-- Header 
+    ============================================= -->
+    <header>
+        <!-- Start Navigation -->
+        <nav class="navbar mobile-sidenav nav-top-margin navbar-sticky navbar-default validnavs navbar-fixed white no-background nav-border" style="background-color: #002654;">
+
+
+            <div class="container d-flex justify-content-between align-items-center">            
+
+                <!-- Start Header Navigation -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-menu">
+                        <i class="fa fa-bars"></i>
+                    </button>
+                    <a class="navbar-brand" href="/">
+                        <img src="{{site_info.logo.url}}" class="logo logo-display" alt="Logo">
+                        <img src="{{site_info.logo.url}}" class="logo logo-scrolled" alt="Logo">
+                    </a>
+                </div>
+                <!-- End Header Navigation -->
+
+                <div class="nav-item-box d-flex justify-content-between align-items-center">
+                    <!-- Collect the nav links, forms, and other content for toggling -->
+                    <div class="collapse navbar-collapse" id="navbar-menu">
+
+                        <img src="{{site_info.logo.url}}" alt="Logo">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-menu">
+                            <i class="fa fa-times"></i>
+                        </button>
+                        
+                        <ul class="nav navbar-nav navbar-right" data-in="fadeInDown" data-out="fadeOutUp">
+
+                            {% for menu in menus %}
+                            <li class="dropdown">
+                                <a href="{{ menu.link }}" class="{% if menu.submenus.all %}dropdown-toggle{% endif %} active" data-toggle="dropdown" data-title-fr="{{ menu.title }}"
+                                data-title-en="{{ menu.eng_title }}">{{ menu.title }}</a>
+                                {% if menu.submenus.all %}
+                                <ul class="dropdown-menu">
+                                    {% for submenu in menu.submenus.all %}
+                                    <li><a href="{{ submenu.link }}"> {{ submenu.title }}</a></li>
+                                    {% endfor %}
+                                </ul>
+                                {% endif %}
+                            </li>
+                            {% endfor %}
+                            <li class="dropdown cart">
+                                <a href="{% url 'cart_view' %}" class="position-relative cart-items-count"><i class="fas fa-shopping-basket "></i>
+                                    <span class="position-absolute translate-middle badge rounded-pill bg-danger cart-badge-top cart-count" id="cart_summary">
+                                        {{ request.session.cart_data_obj|length }}
+                                  </span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div><!-- /.navbar-collapse -->
+
+                  
+                    <div class="attr-right">
+                        <!-- Start Atribute Navigation -->
+                        <div class="attr-nav">
+                            <ul>
+                                {% if site_info.pdf_menu %}
+                                <li class="button"><a href="{{site_info.pdf_menu.url}}">Menu PDF</a></li>
+                                {% endif %}
+                            </ul>
+                        </div>
+                        <!-- End Atribute Navigation -->
+                    </div>
+                </div>
+
+                <!-- Main Nav -->
+            </div>   
+            <!-- Overlay screen for menu -->
+            <div class="overlay-screen"></div>
+            <!-- End Overlay screen for menu -->
+        </nav>
+        <!-- End Navigation -->
+    </header>
+    <!-- End Header -->

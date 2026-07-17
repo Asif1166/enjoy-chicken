@@ -1,0 +1,288 @@
+[
+{
+  "model": "shop.category",
+  "pk": 8,
+  "fields": {
+    "super_category": 4,
+    "cid": "catff4dg4bgc1",
+    "title": "CALIFORNIAS",
+    "eng_title": null,
+    "image": ""
+  }
+},
+{
+  "model": "shop.category",
+  "pk": 9,
+  "fields": {
+    "super_category": 4,
+    "cid": "catbfcfaf11f4",
+    "title": "SUSHIS",
+    "eng_title": null,
+    "image": ""
+  }
+},
+{
+  "model": "shop.category",
+  "pk": 10,
+  "fields": {
+    "super_category": 4,
+    "cid": "cat22f33f1chb",
+    "title": "WHITE",
+    "eng_title": null,
+    "image": ""
+  }
+},
+{
+  "model": "shop.category",
+  "pk": 11,
+  "fields": {
+    "super_category": 4,
+    "cid": "cat2ab1g2cgbf",
+    "title": "MAKIS",
+    "eng_title": null,
+    "image": ""
+  }
+},
+{
+  "model": "shop.category",
+  "pk": 12,
+  "fields": {
+    "super_category": 4,
+    "cid": "cat54fdd41h3d",
+    "title": "GREEN",
+    "eng_title": null,
+    "image": ""
+  }
+},
+{
+  "model": "shop.category",
+  "pk": 13,
+  "fields": {
+    "super_category": 4,
+    "cid": "catdb2c3h2d54",
+    "title": "GOLDEN ROLL",
+    "eng_title": null,
+    "image": ""
+  }
+},
+{
+  "model": "shop.category",
+  "pk": 14,
+  "fields": {
+    "super_category": 4,
+    "cid": "cat3db3c2da23",
+    "title": "CRYSPY",
+    "eng_title": null,
+    "image": ""
+  }
+},
+{
+  "model": "shop.category",
+  "pk": 15,
+  "fields": {
+    "super_category": 4,
+    "cid": "catcbc3e2cee2",
+    "title": "ROLL  SAUMON",
+    "eng_title": null,
+    "image": ""
+  }
+},
+{
+  "model": "shop.category",
+  "pk": 16,
+  "fields": {
+    "super_category": 4,
+    "cid": "catdgab23f34d",
+    "title": "SIGNATURES",
+    "eng_title": null,
+    "image": ""
+  }
+},
+{
+  "model": "shop.category",
+  "pk": 17,
+  "fields": {
+    "super_category": 5,
+    "cid": "cataahca2cghb",
+    "title": "SUSHI BOX",
+    "eng_title": null,
+    "image": ""
+  }
+},
+{
+  "model": "shop.category",
+  "pk": 18,
+  "fields": {
+    "super_category": 6,
+    "cid": "cat51adfc4f22",
+    "title": "CHIRASHI BOWL",
+    "eng_title": null,
+    "image": ""
+  }
+},
+{
+  "model": "shop.category",
+  "pk": 19,
+  "fields": {
+    "super_category": 7,
+    "cid": "cat1a24fdb1d2",
+    "title": "Sashimi",
+    "eng_title": null,
+    "image": ""
+  }
+},
+{
+  "model": "shop.category",
+  "pk": 20,
+  "fields": {
+    "super_category": 8,
+    "cid": "catgfa4ha35a5",
+    "title": "Tataki",
+    "eng_title": null,
+    "image": ""
+  }
+},
+{
+  "model": "shop.category",
+  "pk": 21,
+  "fields": {
+    "super_category": 9,
+    "cid": "cat5ccah2ffge",
+    "title": "Chirashi Tartare",
+    "eng_title": null,
+    "image": ""
+  }
+},
+{
+  "model": "shop.category",
+  "pk": 22,
+  "fields": {
+    "super_category": 10,
+    "cid": "cat4ec5d25h3g",
+    "title": "Salades",
+    "eng_title": null,
+    "image": ""
+  }
+},
+{
+  "model": "shop.category",
+  "pk": 23,
+  "fields": {
+    "super_category": 6,
+    "cid": "cat4ab3faf5hh",
+    "title": "POKE BOWL",
+    "eng_title": null,
+    "image": ""
+  }
+},
+{
+  "model": "shop.category",
+  "pk": 24,
+  "fields": {
+    "super_category": 11,
+    "cid": "catd324h231e1",
+    "title": "Riz Cantonais",
+    "eng_title": null,
+    "image": ""
+  }
+},
+{
+  "model": "shop.category",
+  "pk": 25,
+  "fields": {
+    "super_category": 12,
+    "cid": "cathb53eega33",
+    "title": "Nouilles",
+    "eng_title": null,
+    "image": ""
+  }
+},
+{
+  "model": "shop.category",
+  "pk": 26,
+  "fields": {
+    "super_category": 13,
+    "cid": "categh4c4h1hc",
+    "title": "Entree",
+    "eng_title": null,
+    "image": ""
+  }
+},
+{
+  "model": "shop.category",
+  "pk": 27,
+  "fields": {
+    "super_category": 14,
+    "cid": "cat24a4gbdca1",
+    "title": "Dessert",
+    "eng_title": null,
+    "image": ""
+  }
+},
+{
+  "model": "shop.category",
+  "pk": 28,
+  "fields": {
+    "super_category": 14,
+    "cid": "cat52ab5a4eeb",
+    "title": "MAKI",
+    "eng_title": null,
+    "image": ""
+  }
+},
+{
+  "model": "shop.category",
+  "pk": 29,
+  "fields": {
+    "super_category": 14,
+    "cid": "cat55bd345dd3",
+    "title": "MOCHI",
+    "eng_title": null,
+    "image": ""
+  }
+},
+{
+  "model": "shop.category",
+  "pk": 30,
+  "fields": {
+    "super_category": 14,
+    "cid": "cat3d5bh54h44",
+    "title": "BOULES DE GLACE",
+    "eng_title": null,
+    "image": ""
+  }
+},
+{
+  "model": "shop.category",
+  "pk": 31,
+  "fields": {
+    "super_category": 15,
+    "cid": "cate2a2b4e1bb",
+    "title": "BOISSONS",
+    "eng_title": null,
+    "image": ""
+  }
+},
+{
+  "model": "shop.category",
+  "pk": 32,
+  "fields": {
+    "super_category": 15,
+    "cid": "cat1dbfad4g44",
+    "title": "NOS BOISSONS CHAUDES",
+    "eng_title": null,
+    "image": ""
+  }
+},
+{
+  "model": "shop.category",
+  "pk": 33,
+  "fields": {
+    "super_category": 12,
+    "cid": "catbfe3b34cee",
+    "title": "VAGITABLE",
+    "eng_title": null,
+    "image": ""
+  }
+}
+]

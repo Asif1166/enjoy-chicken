@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+
+
+{% block body %}
+
+    <!-- rts register area start -->
+    <div class="rts-register-area rts-section-gap bg_light-1">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="registration-wrapper-1">
+                        <div class="logo-area mb--0">
+                            <img class="mb--10" src="/static/assets/images/logo/fav.png" alt="logo">
+                        </div>
+                        <h3 class="title">Login Into Your Account</h3>
+                        <form action="" method="POST" class="registration-form">
+                            {% csrf_token %}
+                            <div class="input-wrapper">
+                                <label for="id_email">Email*</label>
+                                <input type="email" name="email" id="id_email" value="{{ request.POST.email|default_if_none:'' }}">
+                                <!-- Display error if email is not found -->
+                                {% if messages %}
+                                    {% for message in messages %}
+                                        <div class="error">{{ message }}</div>
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+                            <div class="input-wrapper">
+                                <label for="id_password">Password*</label>
+                                <input type="password" name="password" id="id_password">
+                                <!-- Display error if password is incorrect -->
+                                {% if form.password.errors %}
+                                    <div class="error">{{ form.password.errors.0 }}</div>
+                                {% endif %}
+                            </div>
+                            <button type="submit" class="rts-btn btn-primary">Login Account</button>
+                        </form>
+                        
+                        <div class="another-way-to-registration">
+                            <div class="registradion-top-text">
+                                <span>Or Register With</span>
+                            </div>
+                            <div class="login-with-brand">
+                                <a href="#" class="single">
+                                    <img src="/static/assets/images/form/google.svg" alt="login">
+                                </a>
+                                <a href="#" class="single">
+                                    <img src="/static/assets/images/form/facebook.svg" alt="login">
+                                </a>
+                            </div>
+                            <p>Already Have Account? <a href="{% url 'registration' %}">Register</a></p>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- rts register area end -->
+
+{% endblock body %}

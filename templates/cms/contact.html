@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% load static %}
+{% block body %}
+
+ 
+
+
+<!-- Start Breadcrumb
+    ============================================= -->
+    <div class="breadcrumb-area bg-cover shadow dark text-center text-light"
+    style="background-image: url(/static/assets/img/default/banner2.jpg);">
+
+</div>
+<!-- End Breadcrumb -->
+
+
+
+        <!-- Start Contact Us 
+    ============================================= -->
+    <div class="contact-style-one-area default-padding overflow-hidden">
+
+        <div class="container">
+            <div class="row align-center">
+
+                <div class="col-lg-10 offset-lg-1">
+
+                    <div class="contact-style-one-info">
+                        <ul>
+                            <li class="wow fadeInUp" style="visibility: visible; animation-name: fadeInUp;">
+                                <div class="icon">
+                                    <img src="/static/assets/img/icon/phone.png" alt="Icon">
+                                </div>
+                                <div class="content">
+                                    <h5 class="title">Hotline</h5>
+                                    <a href="tel:{{site_info.email}}">{{site_info.primary_phone}}</a>
+                                </div>
+                            </li>
+                            <li class="wow fadeInUp" data-wow-delay="300ms" style="visibility: visible; animation-delay: 300ms; animation-name: fadeInUp;">
+                                <div class="icon">
+                                    <img src="/static/assets/img/icon/placeholder.png" alt="Icon">
+                                </div>
+                                <div class="info">
+                                    <h5 class="title">Notre emplacement</h5>
+                                    <p>
+                                        {{site_info.address}}
+                                    </p>
+                                </div>
+                            </li>
+                            <li class="wow fadeInUp" data-wow-delay="500ms" style="visibility: visible; animation-delay: 500ms; animation-name: fadeInUp;">
+                                <div class="icon">
+                                    <img src="/static/assets/img/icon/email.png" alt="Icon">
+                                </div>
+                                <div class="info">
+                                    <h5 class="title">Courriel officiel</h5>
+                                    <a href="mailto:{{site_info.email}}">{{site_info.email}}</a>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                
+
+                     
+
+    <div class="maps-area overflow-hidden">
+        <div class="google-maps">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2531.5507560357546!2d3.1386475769193685!3d50.61688477536575!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47c2d6358d031501%3A0x45f74a435d906868!2s11%20Rue%20Traversi%C3%A8re%201er%20%C3%A9tage%2C%2059650%20Villeneuve-d&#39;Ascq%2C%20France!5e0!3m2!1sen!2sbd!4v1732686116177!5m2!1sen!2sbd" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+    </div>
+
+
+                
+
+            </div>
+        </div>
+    </div>
+    <!-- End Contact -->
+
+
+    
+
+{% endblock body %}

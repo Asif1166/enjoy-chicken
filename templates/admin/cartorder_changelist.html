@@ -1,0 +1,67 @@
+{% extends "admin/change_list.html" %}
+{% block content %}
+<div class="cart-order-report-container">
+    <h2 class="cart-order-title">Cart Orders</h2>
+    <form method="post" action="{% url 'admin:cartorder_generate_report' %}" class="cart-order-form">
+        {% csrf_token %}
+        <div class="form-group">
+            {{ form.as_p }}
+        </div>
+        <button type="submit" class="btn btn-primary">Generate Reports</button>
+    </form>
+</div>
+
+<div class="cart-order-list">
+    {{ block.super }}
+</div>
+{% endblock %}
+
+{% block extrahead %}
+<style>
+    .cart-order-report-container {
+       
+        background-color: #f8f9fa;
+        border-bottom: 1px solid #dee2e6;
+      
+        border-radius: 8px;
+    }
+    .cart-order-title {
+        font-size: 24px;
+        font-weight: bold;
+ 
+        color: #333;
+    }
+  
+    .cart-order-form label {
+        font-weight: 600;
+        margin-bottom: 5px;
+        color: #555;
+    }
+    .cart-order-form input,
+    .cart-order-form select {
+        width: 100%;
+     
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 16px;
+        margin-bottom: 10px;
+    }
+    .btn-primary {
+        
+        font-size: 16px;
+        background-color: #007bff;
+        border: none;
+        border-radius: 4px;
+        color: #fff;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        
+    }
+    .btn-primary:hover {
+        background-color: #0056b3;
+    }
+    .cart-order-list {
+        margin-top: 20px;
+    }
+</style>
+{% endblock %}

@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% load static %}
+{% block body %}
+
+ 
+
+<!-- Start Breadcrumb
+    ============================================= -->
+    <div class="breadcrumb-area bg-cover shadow dark text-center text-light"
+    style="background-image: url(/static/assets/img/default/banner2.jpg);">
+
+</div>
+<!-- End Breadcrumb -->
+
+
+    <!-- Start Food Gallery 
+    ============================================= -->
+    <div class="gallery-style-two-area default-padding">
+        <div class="container">
+            <div class="row">
+                <div class="gallery-content-items">
+                    <div id="gallery-masonary" class="gallery-items gallery-style-two colums-3">
+
+
+                        <!-- Single Item -->
+                        {% for p in photo_galleries %}
+                        <div class="gallery-item">
+                            <div class="gallery-style-one">
+                                <div class="item">
+                                    <a href="{{ p.image.url }}" class="popup-gallery">
+                                        <img src="{{ p.image.url }}" alt="Image Not Found">
+                                        {% if p.subtitle %}
+                                        <div class="overlay">
+                                            <span>{{ p.subtitle }}</span>
+                                            <h4>{{ p.title}}</h4>
+                                        </div>
+                                        {% endif %}
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                        <!-- End Single Item -->
+                     
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Food Gallery -->
+
+
+
+
+{% endblock body %}

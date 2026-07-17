@@ -1,0 +1,224 @@
+    <!-- Start Foot Menu 
+    ============================================= -->
+   
+    {% if offer_products %}
+    <div class="food-menu-area default-padding-top">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 offset-lg-2">
+                    <div class="site-heading text-center text-light">
+                        <h4 class="sub-title" id="MenuofferText">Offre Menu</h4>
+                        <h2 class="title" id="SpecialmenusText">Offre de menus spéciaux</h2>
+                    </div>
+                </div>
+            </div>
+
+            <div class="countdown">
+                {% if countdown and countdown.target_date > now %}
+                    <div class="countDown" data-end-time="{{ countdown.target_date|date:'Y-m-d H:i:s' }}"></div>
+                {% endif %}
+            </div>
+            
+
+            <div class="food-menu-items text-light">
+                <div class="row">
+                    <div class="col-lg-12 text-center">
+                        <div class="nav nav-tabs food-menu-nav" id="nav-tab" role="tablist">
+                            {% for category, offer_products in offer_products_by_category.items %}
+                                <button class="nav-link {% if forloop.first %}active{% endif %}" id="nav-{{ category.cid }}" data-bs-toggle="tab" data-bs-target="#tab-{{ category.cid }}" type="button" role="tab" aria-controls="tab-{{ category.cid }}" aria-selected="{% if forloop.first %}true{% else %}false{% endif %}">
+                                    {{ category.title }}
+                                </button>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    
+                    <div class="col-lg-12">
+                        <div class="tab-content food-menu-tab-content" id="nav-tabContent">
+                            {% for category, offer_products in offer_products_by_category.items %}
+                                <div class="tab-pane fade {% if forloop.first %}show active{% endif %}" id="tab-{{ category.cid }}" role="tabpanel" aria-labelledby="nav-{{ category.cid }}">
+                                    <div class="row">
+                                      
+                                            <div class="col-xl-5 thumb" style="background: url(/static/assets/img/default/offer.png);">
+                                               
+                                            </div>
+                                        
+                                            <div class="col-xl-7">
+                                                <div class="info">
+                                                    <ul class="meal-type">
+                                                        <li>Accual</li>
+                                                        <li>Discount</li>
+                                                    </ul>
+                                                    <ul class="meal-items">
+                                                       {% for product in offer_products %}
+                                                        <li class="{% if product.id in last_offer_product_ids %}last-offer-highlight{% endif %}">
+                                                          
+                                                            <a href="{% url 'product_details' product.pid  %}">
+                                                            <div class="thumbnail">
+                                                                {% if product.image %}
+                                                                <img src="{{ product.image.url }}" alt="{{ product.title }}">
+                                                                {% endif %}
+                                                                {% if product.id in last_offer_product_ids %}
+                                                                {% comment %} <span class="last-offer-badge">Dernière Offre</span> {% endcomment %}
+                                                                {% endif %}
+                                                            </div>
+                                                           
+                                                        </a>
+                                                            <div class="content">
+                                                                <div class="top">
+                                                                    <div class="title">
+                                                                        <h4><a href="{% url 'product_details' product.pid  %}">{{ product.title }}</a></h4>
+                                                                    </div>
+                                                                    <div class="">
+                                                                        {% if product.old_price %}
+                                                                        <span class="old-price" style="font-size: larger; color: #ED2939;"><del>Є&nbsp;{{ product.old_price }}</del></span>
+
+                                                                    {% endif %} 
+                                                                    &nbsp;&nbsp;&nbsp;
+
+                                                                    {% if product.price %}
+                                                                        <span style="font-size: larger; font-weight: 900;">Є&nbsp;{{ product.price }} </span>
+                                                                        {% endif %}
+                                                                    </div>
+                                                                </div>
+                                                                <div class="bottom">
+                                                                    <div class="left">
+                                                                        <p>{{ product.category }}</p>
+                                                                    </div>
+                                                                   
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                         {% endfor %}
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                       
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+
+
+
+        </div>
+    </div>
+    <!-- End Food Menu -->
+
+{% endif %}
+    <style>
+        .countdown {
+    font-size: 1.5rem;
+    color: #ff0000;
+    text-align: center;
+    padding: 10px;
+}
+
+.countdown .countDown {
+    font-weight: bold;
+    background: #f0f0f0;
+    padding: 5px 15px;
+    border-radius: 5px;
+    display: inline-block;
+}
+
+/* Last Offer Highlight Styles */
+.last-offer-highlight {
+    position: relative;
+    border: 2px solid #ff6b35 !important;
+    border-radius: 8px;
+    padding: 10px;
+    background: linear-gradient(135deg, rgba(255, 107, 53, 0.1) 0%, rgba(255, 107, 53, 0.05) 100%);
+    box-shadow: 0 4px 15px rgba(255, 107, 53, 0.3);
+    transition: all 0.3s ease;
+    animation: pulse-highlight 2s ease-in-out infinite;
+}
+
+.last-offer-highlight:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 20px rgba(255, 107, 53, 0.5);
+}
+
+.last-offer-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: linear-gradient(135deg, #ff6b35 0%, #ff8c42 100%);
+    color: #fff;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 8px rgba(255, 107, 53, 0.4);
+    z-index: 10;
+    animation: badge-pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse-highlight {
+    0%, 100% {
+        box-shadow: 0 4px 15px rgba(255, 107, 53, 0.3);
+    }
+    50% {
+        box-shadow: 0 4px 20px rgba(255, 107, 53, 0.5);
+    }
+}
+
+@keyframes badge-pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+.last-offer-highlight .thumbnail {
+    position: relative;
+    overflow: visible;
+}
+
+.last-offer-highlight .content .title h4 a {
+    color: #ff6b35;
+    font-weight: bold;
+}
+
+    </style>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const countdownElement = document.querySelector(".countDown");
+        if (countdownElement) {
+            const endTime = new Date(countdownElement.getAttribute("data-end-time")).getTime();
+
+            function updateCountdown() {
+                const now = new Date().getTime();
+                const distance = endTime - now;
+
+                if (distance < 0) {
+                    countdownElement.innerHTML = "Offer Expired";
+                    return;
+                }
+
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                countdownElement.innerHTML = `
+                    ${days}d ${hours}h ${minutes}m ${seconds}s
+                `;
+            }
+
+            updateCountdown();  // Initial call to set up the countdown immediately
+            setInterval(updateCountdown, 1000);  // Update every second
+        }
+    });
+</script>
+
+
+
+    

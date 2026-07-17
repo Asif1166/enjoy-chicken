@@ -1,0 +1,31 @@
+<div class="category-feature-area rts-section-gap">
+    <div class="container">
+        <div class="row g-4"> <!-- Changed g-24 to g-4 for more spacing control -->
+
+            {% for super_category in super_categories %}
+            <div class="col-lg-4 col-md-6 col-sm-4 col-12">
+                <div class="single-feature-card ssthree style-three one" style="background-image: url('{{ super_category.image.url }}');">
+                    <div class="content-area">
+                        
+                        <h3 
+                        data-title-fr="{{ super_category.title }}"
+                         data-title-en="{{ super_category.eng_title }}"  class="title">
+                            {{ super_category.title }}
+                        </h3>
+                        <a href="{% url 'super_category_product_list_view' super_category.id %}" class="shop-now-goshop-btn">
+                            <span class="text">Shop Now</span>
+                            <div class="plus-icon">
+                                <i class="fa-sharp fa-regular fa-plus"></i>
+                            </div>
+                            <div class="plus-icon">
+                                <i class="fa-sharp fa-regular fa-plus"></i>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+
+        </div>
+    </div>
+</div>

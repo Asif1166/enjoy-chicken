@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block body %}
+
+
+
+    <!-- track order area start -->
+    <div class="track-order-area rts-section-gap">
+        <div class="container-2">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="tracing-order-account">
+                        <h2 class="title">Orders tracking</h2>
+                        <p>
+                            To keep up with the status of your order, kindly input your OrderID in the designated box below and click the "Track" button. This unique identifier can be found on your receipt as well as in the confirmation email that was sent to you.
+                        </p>
+                        <div id="status-message"></div>
+                        <form id="trackOrderForm" action="{% url 'track_order' %}" method="POST" class="order-tracking">
+                            {% csrf_token %}
+                            <div class="single-input">
+                                <label for="order-id">Order Id</label>
+                                <input type="text" name="order_id" placeholder="Input Order Id" required>
+                            </div>
+                            <div class="single-input">
+                                <label for="billing-email">Billing Email</label>
+                                <input type="email" name="email" placeholder="Email you used during checkout" required>
+                            </div>
+                            <button type="submit" class="rts-btn btn-primary">Track</button>
+                        </form>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- track order area start -->
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function(){
+        $('#trackOrderForm').on('submit', function(event){
+            event.preventDefault();  // Prevent the form from submitting the traditional way
+
+            $.ajax({
+                url: $(this).attr('action'),
+                type: $(this).attr('method'),
+                data: $(this).serialize(),
+                success: function(response){
+                    if(response.status === 'success'){
+                        $('#status-message').html('<div class="alert alert-success">Order Status: ' + response.product_status + '</div>');
+                    } else {
+                        $('#status-message').html('<div class="alert alert-danger">' + response.message + '</div>');
+                    }
+                },
+                error: function(){
+                    $('#status-message').html('<div class="alert alert-danger">An error occurred. Please try again later.</div>');
+                }
+            });
+        });
+    });
+</script>
+
+    {% endblock body %}

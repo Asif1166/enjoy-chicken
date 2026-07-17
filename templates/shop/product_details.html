@@ -1,0 +1,432 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+
+
+{% block body %}
+
+    <!-- Start Breadcrumb 
+    ============================================= -->
+    <div class="breadcrumb-area bg-cover shadow dark text-center text-light"
+        style="background-image: url(/static/assets/img/default/banner2.jpg);">
+       
+    </div>
+    <!-- End Breadcrumb -->
+    <!-- Start Shop 
+    ============================================= -->
+    <div class="validtheme-shop-single-area default-padding">
+        <div class="container">
+            <div class="product-details">
+                <div class="row">
+
+                    <div class="col-lg-6">
+                        <div class="product-thumb">
+                            <div id="timeline-carousel" class="carousel slide" data-bs-ride="carousel">
+                                <div class="carousel-inner item-box">
+                                    <!-- Display the main product image first -->
+                                    {% if product.image %}
+                                        <div class="carousel-item active product-item">
+                                            <a href="{{ product.image.url }}" class="item popup-gallery">
+                                                <img src="{{ product.image.url }}" alt="Main Product Image">
+                                            </a>
+                                            {% if product.old_price and product.price %}
+                                                <span class="onsale theme">{{ product.percentage }}%</span>
+                                            {% endif %}
+                                        </div>
+                                    {% endif %}
+                    
+                                    <!-- Display additional product images from p_images if available -->
+                                    {% for image in p_images %}
+                                        <div class="carousel-item {% if not product.image and forloop.first %}active{% endif %} product-item">
+                                            <a href="{{ image.image.url }}" class="item popup-gallery">
+                                                <img src="{{ image.image.url }}" alt="Thumb">
+                                            </a>
+                                            {% if product.old_price and product.price %}
+                                                <span class="onsale theme">{{ product.percentage }}%</span>
+                                            {% endif %}
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                    
+                                <!-- Carousel Indicators -->
+                                <div class="carousel-indicators">
+                                    <div class="product-gallery-carousel swiper">
+                                        <div class="swiper-wrapper">
+                                            <!-- Indicator for main product image -->
+                                            {% if product.image %}
+                                                <div class="swiper-slide">
+                                                    <div class="item active" data-bs-target="#timeline-carousel" data-bs-slide-to="0">
+                                                        <img src="{{ product.image.url }}" alt="Main Product Thumbnail">
+                                                    </div>
+                                                </div>
+                                            {% endif %}
+                    
+                                            <!-- Indicators for additional product images -->
+                                            {% for image in p_images %}
+                                                <div class="swiper-slide">
+                                                    <div class="item {% if not product.image and forloop.first %}active{% endif %}" data-bs-target="#timeline-carousel" data-bs-slide-to="{% if product.image %}{{ forloop.counter }}{% else %}{{ forloop.counter0 }}{% endif %}">
+                                                        <img src="{{ image.image.url }}" alt="Thumbnail">
+                                                    </div>
+                                                </div>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- End Carousel Content -->
+                            </div>
+                        </div>
+                    </div>
+                    
+                    
+
+                    <div class="col-lg-6">
+                        <div class="single-product-contents">
+                            <div class="summary-top-box">
+                                <div class="product-tags">
+                                    <a href="#">{{ product.category }}</a>
+                                   
+                                   
+                                </div>
+                                <!-- <div class="review-count">
+                                    <div class="rating">
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                   
+                                    </div>
+                                    <span>({{ review.count }} Reviews)</span>
+                                </div> -->
+                            </div>
+                            <h2 class="product-title">
+                                {{ product.title }}
+                            </h2>
+                            <div class="price">
+                                {% if product.old_price %}
+                                <span><del>{{ product.old_price }} €</del></span>
+                                {% endif %}
+                                <span class="currrent-product-price-{{product.id}}">{{ product.price }} </span> €
+                            </div>
+                            <!--{% if product.quantity > 0 %}-->
+                            <!--<div class="product-stock validthemes-in-stock">-->
+                            <!--    <span>Disponible</span>-->
+                            <!--</div>-->
+                            <!--{% else %}-->
+                            <!--<div class="product-stock validthemes-out-of-stock">-->
+                            <!--    <span>Indisponible</span>-->
+                            <!--</div>-->
+                            <!--{% endif %}-->
+                            <p>
+                                {{ product.description|safe }}
+                            </p>
+
+                            {% if is_order %}
+
+                    
+                            <div class="product-purchase-list">
+                                <div class="cart-edits">
+                                    <div class="quantity-edits action-item">
+                                        <button class="button minus"><i class="fal fa-minus minus"></i></button>
+                                        <input type="text" class="input product-quantity-{{product.id}}" value="1" name="" id="product-quantity"/>
+                                        <button class="button plus"><i class="fal fa-plus plus"></i></button>
+                                    </div>
+                                </div>
+
+                                <input type="hidden" class="product-quantity-{{product.id}}" value="1" id="product-quantity">
+                                <input type="hidden" class="product-pid-{{product.id}}" value="{{product.pid}}">
+                                {% if product.image %}
+                                <input type="hidden" class="product-image-{{product.id}}" value="{{product.image.url}}">
+                                {% else %}
+                                <input type="hidden" class="product-image-{{product.id}}" value="">
+                                {% endif %}
+                                <input type="hidden" class="product-id-{{product.id}}" value="{{product.id}}">
+                                <input type="hidden" class="product-title-{{product.id}}" value="{{product.title}}">
+                                &nbsp;
+                                &nbsp;
+                                &nbsp;
+
+
+                              
+                                <a style="cursor: pointer;" class="btn secondary btn-theme btn-sm animation add-to-cart-btn" id="add-to-cart-btn" data-index="{{product.id}}">
+                                    <i class="fas fa-shopping-cart"></i>
+                                  <span class="mob-hide"> Ajouter Au Panier</span>
+                                </a>
+                              
+                                <!-- <div class="shop-action">
+                                    <ul>
+                                        <li class="wishlist">
+                                            <a href="#"><span>Add to wishlist</span></a>
+                                        </li>
+                                        
+                                    </ul>
+                                </div> -->
+                            </div>
+
+                        
+
+                            {% else %}
+                            <p style="color: red; font-weight: 900;"> Les commandes sont actuellement désactivées.</p>
+                            {% endif %}
+                            <div class="product-estimate-delivary">
+                                <i style="color:black" class="fas fa-box-open"></i>
+                                <strong>  Livraison rapide et fiable en 40 minutes!</strong>
+                             
+                            </div>
+                            <div class="product-meta">
+                            <!--    <span class="sku">-->
+                            <!--        <strong>SKU:</strong> {{ product.sku }}-->
+                            <!--    </span>-->
+                                <span class="posted-in">
+                                    <strong>Le Carte:</strong>
+                                    <a href="#">{{ product.category }}</a>
+                                </span>
+                             
+                            <!--    <span class="posted-in">-->
+                            <!--        <strong>Type:</strong>-->
+                            <!--        <a href="#">{{ product.type }}</a>-->
+                            <!--    </span>-->
+                            
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product Bottom Info  -->
+            <!--<div class="single-product-bottom-info">-->
+            <!--    <div class="row">-->
+            <!--        <div class="col-lg-12">-->
+                        <!-- Tab Nav -->
+            <!--            <div class="nav nav-tabs" id="nav-tab" role="tablist">-->
+            <!--                <button class="nav-link active" id="description-tab-control" data-bs-toggle="tab"-->
+            <!--                    data-bs-target="#description-tab" type="button" role="tab"-->
+            <!--                    aria-controls="description-tab" aria-selected="true">-->
+            <!--                    Description-->
+            <!--                </button>-->
+
+
+            <!--                <button class="nav-link" id="review-tab-control" data-bs-toggle="tab"-->
+            <!--                    data-bs-target="#review-tab" type="button" role="tab" aria-controls="review-tab"-->
+            <!--                    aria-selected="false">-->
+            <!--                    Révision-->
+            <!--                </button>-->
+
+            <!--            </div>-->
+                        <!-- End Tab Nav -->
+                        <!-- Start Tab Content -->
+            <!--            <div class="tab-content tab-content-info" id="myTabContent">-->
+
+                            <!-- Tab Single -->
+            <!--                <div class="tab-pane fade show active" id="description-tab" role="tabpanel"-->
+            <!--                    aria-labelledby="description-tab-control">-->
+            <!--                    <p>-->
+            <!--                        {{ product.description }}-->
+            <!--                    </p>-->
+                               
+                                
+            <!--                </div>-->
+                            <!-- End Single -->
+
+               
+                            <!-- Tab Single -->
+            <!--                <div class="tab-pane fade" id="review-tab" role="tabpanel"-->
+            <!--                    aria-labelledby="review-tab-control">-->
+            <!--                    <h4>{{ review.count }} Reviews for “{{ product.title }}”</h4>-->
+            <!--                    <div class="review-items">-->
+
+            <!--                        {% for r in review %}-->
+            <!--                        <div class="item">-->
+            <!--                            <div class="thumb">-->
+            <!--                                <img src="/static/assets/img/800x800.png" alt="Thumb">-->
+            <!--                            </div>-->
+            <!--                            <div class="info">-->
+            <!--                                <div class="rating">-->
+            <!--                                    {{r.star_rating}}-->
+            <!--                                </div>-->
+            <!--                                <div class="review-date">{{r.date}}</div>-->
+            <!--                                <div class="review-authro">-->
+            <!--                                    <h5>{{r.user.username|title}}-->
+            <!--                                    </h5>-->
+            <!--                                </div>-->
+            <!--                                <p>-->
+            <!--                                    {{r.review}}-->
+            <!--                                </p>-->
+            <!--                            </div>-->
+            <!--                        </div>-->
+            <!--                        {% endfor %}-->
+            <!--                    </div>-->
+
+                                
+                         
+
+            <!--                </div>-->
+                            <!-- End Tab Single -->
+
+            <!--            </div>-->
+                        <!-- End Tab Content -->
+            <!--        </div>-->
+            <!--    </div>-->
+            <!--</div>-->
+            <!-- End Product Bottom Info  -->
+
+            <!-- Related Product  -->
+            <div class="related-products carousel-shadow">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h3>Produits apparentés</h3>
+                        <div class="vt-products text-center related-product-carousel swiper">
+                            <!-- Additional required wrapper -->
+                            <div class="swiper-wrapper">
+                                <!-- Single product -->
+
+                                {% for related_product in related_products %}
+                                <div class="swiper-slide">
+                                    <div class="product">
+                                        <div class="product-contents">
+                                            <div class="product-image">
+                                                {% if related_product.image %}
+                                                <a href="{% url 'product_details' related_product.pid %}">
+                                                    <img src="{{ related_product.image.url }}" alt="{{ related_product.name }}">
+                                                </a>
+                                                {% endif %}
+                                               
+                                            </div>
+                                            <div class="product-caption">
+                                                <div class="product-tags">
+                                                    <a href="#">{{ product.category }}</a>
+                                                   
+                                                </div>
+                                                <h4 class="product-title">
+                                                    <a href="{% url 'product_details' related_product.pid %}">{{ related_product.title }}</a>
+                                                </h4>
+                                                <div class="price">
+                                                    <span>€ {{ related_product.price }}</span>
+                                                </div>
+
+                                                {% if is_order %}
+                                                <a href="{% url 'product_details' related_product.pid %}" class="cart-btn"><i class="fas fa-shopping-bag"></i> Ajouter Au Panier</a>
+                                                    {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                                <!-- Single product -->
+                              
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- End Related Product  -->
+        </div>
+    </div>
+    <!-- End Shop -->
+
+
+
+
+
+<!-- Modal for Add to Cart Confirmation -->
+<div id="addToCartModal" class="modal" style="display: none;">
+    <div class="modal-content">
+        <span class="close-btn">&times;</span>
+        <p id="modal-message"></p>
+        <div class="modal-buttons">
+            <a href="/cart" class="btn btn-primary">Aller Au Panier</a>
+            <a href="/le_carte" class="btn btn-secondary">Continuer Vos Achats</a>
+        </div>
+    </div>
+</div>
+
+
+<style>
+    /* Modal container */
+
+
+    .close-btn {
+    color: black; /* Set the cross icon color to black */
+    background: none; /* Remove background if any */
+    border: none; /* Remove border */
+    font-size: 18px; /* Adjust size of the cross icon */
+    cursor: pointer; /* Make it look clickable */
+    position: absolute; /* Optional: Position it in the modal */
+    top: 10px; /* Adjust as needed */
+    right: 10px; /* Adjust as needed */
+}
+
+.close-btn:hover {
+    color: red; /* Optional: Change color on hover */
+}
+
+
+    #modal-message {
+        color: black; /* This ensures the text color is black */
+    }
+.modal {
+    position: fixed;
+    z-index: 999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+/* Modal content */
+.modal-content {
+    background-color: #fff;
+    margin: 15% auto;
+    padding: 20px;
+    border-radius: 8px;
+    width: 80%;
+    max-width: 400px;
+    text-align: center;
+    position: relative;
+}
+
+/* Close button */
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* Buttons */
+.modal-buttons .btn {
+    display: inline-block;
+    margin: 10px 5px;
+    padding: 10px 15px;
+    text-decoration: none;
+    border-radius: 5px;
+    color: white;
+}
+
+.btn-primary {
+    background-color: #f04e23;
+}
+
+.btn-secondary {
+    background-color: #555;
+}
+
+</style>
+
+
+{% endblock body %}
+
+
+
+
+
+
+

@@ -1,0 +1,190 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+
+
+{% block body %}
+    <!-- rts header area end -->
+     
+    <div class="rts-navigation-area-breadcrumb">
+        <div class="container-2">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="navigator-breadcrumb-wrapper">
+                        <a href="index.html">Home</a>
+                        <i class="fa-regular fa-chevron-right"></i>
+                        <a class="current" href="index.html">Account</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="account-tab-area-start rts-section-gap">
+        <div class="container-2">
+            <div class="row">
+                <div class="col-lg-3">
+                    <div class="nav accout-dashborard-nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                        <button class="nav-link active" id="v-pills-home-tab" data-bs-toggle="pill" data-bs-target="#v-pills-home" type="button" role="tab" aria-controls="v-pills-home" aria-selected="true"><i class="fa-regular fa-chart-line"></i>Dashboard</button>
+                        <button class="nav-link" id="v-pills-profile-tab" data-bs-toggle="pill" data-bs-target="#v-pills-profile" type="button" role="tab" aria-controls="v-pills-profile" aria-selected="false"><i class="fa-regular fa-bag-shopping"></i>Order</button>
+                        <button class="nav-link" id="v-pills-messages-tab" data-bs-toggle="pill" data-bs-target="#v-pills-messages" type="button" role="tab" aria-controls="v-pills-messages" aria-selected="false"><i class="fa-sharp fa-regular fa-tractor"></i> Track Your Order</button>
+                        <!-- <button class="nav-link" id="v-pills-settings-tab" data-bs-toggle="pill" data-bs-target="#v-pills-settings" type="button" role="tab" aria-controls="v-pills-settings" aria-selected="false"><i class="fa-sharp fa-regular fa-location-dot"></i>My Address</button> -->
+                        <button class="nav-link" id="v-pills-settingsa-tab" data-bs-toggle="pill" data-bs-target="#v-pills-settingsa" type="button" role="tab" aria-controls="v-pills-settingsa" aria-selected="false"><i class="fa-light fa-user"></i>Account Details</button>
+                        <button class="nav-link" id="v-pills-settingsb-tab" data-bs-toggle="pill" data-bs-target="#v-pills-settingsb" type="button" role="tab" aria-controls="v-pills-settingsb" aria-selected="false"><a href="{% url 'logout' %}"><i class="fa-light fa-right-from-bracket"></i>log Out</a></button>
+                    </div>
+                </div>
+                <div class="col-lg-9 pl--50 pl_md--10 pl_sm--10 pt_md--30 pt_sm--30">
+                    <div class="tab-content" id="v-pills-tabContent">
+                        <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab" tabindex="0">
+                            <div class="dashboard-account-area">
+                                <h2 class="title">Hello {{ user_info.username }}! (Not {{ user_info.username }}?) 
+                                    <a href="{% url 'logout' %}">Log Out.</a>
+                                </h2>
+                                <p class="disc">
+                                    From your account dashboard you can view your recent orders, manage your shipping and billing addresses, and edit your password and account details.
+                                </p>
+                                <p>Email: {{ user_info.email }}</p>
+                            </div>
+                        </div>
+                        
+                        <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab" tabindex="0">
+                            <div class="order-table-account">
+                                <div class="h2 title">Your Orders</div>
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>Order</th>
+                                                <th>Date</th>
+                                                <th>Status</th>
+                                               <th>Total</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                            {% for order in orders %}
+                                            <tr>
+                                                <td>#{{order.id}}</td>
+                                                <td>{{order.order_date}}</td>
+                                                <td>{{order.product_status}}</td>
+                                                <td>{{order.price}} €</td>
+                                                <td><a href="{% url 'order_details' order.id %}" class="btn-small d-block">View</a></td>
+                                            </tr>
+                                          {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab" tabindex="0">
+                            <div class="tracing-order-account">
+                                <h2 class="title">Orders tracking</h2>
+                                <p>
+                                    To keep up with the status of your order, kindly input your OrderID in the designated box below and click the "Track" button. This unique identifier can be found on your receipt as well as in the confirmation email that was sent to you.
+                                </p>
+                                <div id="status-message"></div>
+                                <form id="trackOrderForm" action="{% url 'track_order' %}" method="POST" class="order-tracking">
+                                    {% csrf_token %}
+                                    <div class="single-input">
+                                        <label for="order-id">Order Id</label>
+                                        <input type="text" name="order_id" placeholder="Input Order Id" required>
+                                    </div>
+                                    <div class="single-input">
+                                        <label for="billing-email">Billing Email</label>
+                                        <input type="email" name="email" placeholder="Email you used during checkout" required>
+                                    </div>
+                                    <button type="submit" class="rts-btn btn-primary">Track</button>
+                                </form>
+                                
+
+                                
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab" tabindex="0">
+                            <div class="shipping-address-billing-address-account">
+                                <div class="half">
+                                    <h2 class="title">Billing Address</h2>
+                                    <p class="address">
+                                        3522 Interstate <br>
+                                        75 Business Spur, <br>
+                                        Sault Ste. <br>
+                                        Marie, MI 49783 <br>
+                                        New York
+                                    </p>
+                                    <a href="#">Edit</a>
+                                </div>
+                                <div class="half">
+                                    <h2 class="title">Shipping Address</h2>
+                                    <p class="address">
+                                        3522 Interstate <br>
+                                        75 Business Spur, <br>
+                                        Sault Ste. <br>
+                                        Marie, MI 49783 <br>
+                                        New York
+                                    </p>
+                                    <a href="#">Edit</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="v-pills-settingsa" role="tabpanel" aria-labelledby="v-pills-settingsa-tab" tabindex="0">
+                            <form action="{% url 'dashboard' %}" method="POST" class="account-details-area">
+                                {% csrf_token %}
+                                <h2 class="title">Account Details</h2>
+                                <div class="input-half-area">
+                                    <div class="single-input">
+                                        <input type="text" name="full_name" value="{{ user_info.full_name }}" placeholder="Full Name">
+                                    </div>
+                                </div>
+                                <div class="input-half-area">
+                                    <input type="text" name="username" value="{{ user_info.username }}" placeholder="Display Name" required>
+                                    <input type="email" name="email" value="{{ user_info.email }}" placeholder="Email Address *" required>
+                                </div>
+                                <div class="input-half-area">
+                                    <input type="password" name="current_password" placeholder="Current Password *" required>
+                                </div>
+                                <div class="input-half-area">
+                                    <input type="password" name="new_password" placeholder="New Password *">
+                                    <input type="password" name="confirm_password" placeholder="Confirm Password *">
+                                </div>
+                                <button class="rts-btn btn-primary">Save Change</button>
+                            </form>
+                        </div>
+                        
+                        <div class="tab-pane fade" id="v-pills-settingsb" role="tabpanel" aria-labelledby="v-pills-settingsb-tab" tabindex="0">...</div>
+                      </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function(){
+        $('#trackOrderForm').on('submit', function(event){
+            event.preventDefault();  // Prevent the form from submitting the traditional way
+
+            $.ajax({
+                url: $(this).attr('action'),
+                type: $(this).attr('method'),
+                data: $(this).serialize(),
+                success: function(response){
+                    if(response.status === 'success'){
+                        $('#status-message').html('<div class="alert alert-success">Order Status: ' + response.product_status + '</div>');
+                    } else {
+                        $('#status-message').html('<div class="alert alert-danger">' + response.message + '</div>');
+                    }
+                },
+                error: function(){
+                    $('#status-message').html('<div class="alert alert-danger">An error occurred. Please try again later.</div>');
+                }
+            });
+        });
+    });
+</script>
+
+
+    {% endblock body %}
+  

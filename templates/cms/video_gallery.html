@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% load static %}
+{% block body %}
+
+ 
+
+<!-- Start Breadcrumb
+    ============================================= -->
+    <div class="breadcrumb-area bg-cover shadow dark text-center text-light"
+    style="background-image: url(/static/assets/img/default/banner2.jpg);">
+
+</div>
+<!-- End Breadcrumb -->
+
+
+    <!-- Start Food Gallery 
+    ============================================= -->
+    <div class="default-padding bg-gray">
+        <div class="container">
+            <div class="row">
+
+                
+                {% for video_gallery in video_galleries %}
+                    <div class="col-12 col-md-4 gallery-item mb-30">
+                        <div class="videowrapper">
+                            <iframe src="{{video_gallery.video_url}}"
+                                    title="YouTube video player" frameborder="0"
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                    referrerpolicy="strict-origin-when-cross-origin"
+                                    allowfullscreen="">
+                            </iframe>
+                        </div>
+                    </div>
+                    {% endfor %}
+                 
+                                                </div>
+        </div>
+    </div>
+
+    <!-- End Food Gallery -->
+
+
+
+
+{% endblock body %}

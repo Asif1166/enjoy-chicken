@@ -1,0 +1,47 @@
+[
+  {
+    "model": "shop.supercategory",
+    "pk": 25,
+    "fields": {
+      "title": "Sushi",
+      "eng_title": "Sushi",
+      "image": "supercategory/sushi_saumon_bar.webp"
+    }
+  },
+  {
+    "model": "shop.supercategory",
+    "pk": 26,
+    "fields": {
+      "title": "Boisson",
+      "eng_title": "Drinks",
+      "image": "supercategory/15.jpg"
+    }
+  },
+  {
+    "model": "shop.supercategory",
+    "pk": 27,
+    "fields": {
+      "title": "Thi",
+      "eng_title": "Thai",
+      "image": "supercategory/pouetbrosset1.jpg"
+    }
+  },
+  {
+    "model": "shop.supercategory",
+    "pk": 28,
+    "fields": {
+      "title": "Burger",
+      "eng_title": "Burger",
+      "image": "supercategory/burger-22.jpg"
+    }
+  },
+  {
+    "model": "shop.supercategory",
+    "pk": 34,
+    "fields": {
+      "title": "DESSERTS",
+      "eng_title": "Desserts",
+      "image": "supercategory/TARTARE-BOWL.jpg"
+    }
+  }
+]

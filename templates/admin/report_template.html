@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Report - Professional</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #2c3e50;
+            background: #f5f5f5;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: #fff;
+        }
+        
+        .header {
+            background-color: #667eea;
+            color: white;
+            padding: 30px 40px;
+            page-break-after: avoid;
+        }
+        
+        .header h1 {
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+        }
+        
+        .header .subtitle {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        
+    
+        
+        .card-row {
+            display: table-row;
+        }
+        
+        .card {
+            display: table-cell;
+            background: white;
+            padding: 20px;
+            border-radius: 6px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            border-left: 3px solid #667eea;
+            width: 20%;
+            vertical-align: top;
+        }
+        
+        .card + .card {
+            padding-left: 35px;
+        }
+        
+        .card-label {
+            font-size: 11px;
+            color: #7f8c8d;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+        
+        .card-value {
+            font-size: 22px;
+            font-weight: 700;
+            color: #2c3e50;
+            word-wrap: break-word;
+        }
+        
+        .card-value.highlight {
+            color: #667eea;
+        }
+        
+        .content {
+            padding: 30px 40px;
+        }
+        
+        .table-wrapper {
+            overflow-x: auto;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+        }
+        
+        thead {
+            background-color: #667eea;
+            color: white;
+        }
+        
+        th {
+            padding: 14px 16px;
+            text-align: left;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+            background-color: #667eea;
+            color: white;
+            border: 1px solid #667eea;
+        }
+        
+        td {
+            padding: 12px 16px;
+            border-bottom: 1px solid #ecf0f1;
+            border-left: 1px solid #ecf0f1;
+            border-right: 1px solid #ecf0f1;
+            font-size: 13px;
+            vertical-align: top;
+        }
+        
+        tbody tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .order-id {
+            font-weight: 600;
+            color: #667eea;
+            white-space: nowrap;
+        }
+        
+        .price {
+            font-weight: 600;
+            color: #27ae60;
+            white-space: nowrap;
+        }
+        
+        .payment-method {
+            display: inline-block;
+            padding: 4px 10px;
+            background: #e8f5e9;
+            color: #2e7d32;
+            border-radius: 10px;
+            font-size: 11px;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            background: #e3f2fd;
+            color: #1565c0;
+            border-radius: 10px;
+            font-size: 11px;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        
+        .address {
+            color: #7f8c8d;
+            line-height: 1.4;
+            font-size: 12px;
+        }
+        
+        .no-data {
+            text-align: center;
+            padding: 60px 20px;
+            color: #95a5a6;
+            font-size: 14px;
+        }
+        
+        .footer {
+            padding: 20px 40px;
+            background: #f8f9fa;
+            border-top: 1px solid #e0e0e0;
+            text-align: center;
+            color: #7f8c8d;
+            font-size: 11px;
+            page-break-before: avoid;
+        }
+        
+        @media print {
+            body {
+                background: white;
+            }
+            
+            .container {
+                box-shadow: none;
+            }
+            
+         
+            
+            thead {
+                display: table-header-group;
+            }
+            
+            tr {
+                page-break-inside: avoid;
+            }
+        }
+        
+        @page {
+            margin: 0;
+            size: A4 landscape;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header" style="text-align: center;">
+            <h1 style=" padding: 16px;">Sales Order Report</h1>
+        </div>
+        
+        <div class="summary-cards">
+            <div class="card-row" style="text-align: center;">
+                <div class="card">
+                    <div class="card-label" style="font-size: 16px; padding-left: 16px;">Report Period - {{ start_date }} to {{ end_date }}</div>
+                 
+                </div>
+                
+                <div class="card">
+                    <div class="card-label" style="font-size: 16px; padding-left: 16px;">Total Orders: {{ orders|length }}</div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-label" style="font-size: 16px; padding-left: 16px;">Total Sales: €{{ total_sales_amount|floatformat:2 }}</div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-label" style="font-size: 16px; padding-left: 16px;">Total Tax: €{{ total_tax_amount|floatformat:2 }}</div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-label" style="font-size: 16px; padding-left: 16px;">Avg Order:   {% if orders %}
+                            €{{ average_order_value|floatformat:2 }}
+                        {% else %}
+                            €0.00
+                        {% endif %}</div>
+                 
+                </div>
+            </div>
+        </div>
+        
+        <div class="content">
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Order ID</th>
+                            <th>Date</th>
+                            <th>Amount</th>
+                            <th>Tax</th>
+                            <th>Status</th>
+                            <th>Payment</th>
+                            <th>Shipping Address</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for order in orders %}
+                            <tr>
+                                <td class="order-id">#{{ order.id }}</td>
+                                <td>{{ order.order_date|date:"d M Y" }}</td>
+                                <td class="price">€{{ order.price|floatformat:2 }}</td>
+                                <td>€{{ order.tax_amount|default:"0.00" }}</td>
+                                <td>
+                                    <span class="status-badge">{{ order.product_status }}</span>
+                                </td>
+                                <td>
+                                    <span class="payment-method">{{ order.payment_method }}</span>
+                                </td>
+                                <td>
+                                    {% if order.shipping_address %}
+                                        <div class="address">
+                                            {{ order.shipping_address.street_address }},
+                                            {{ order.shipping_address.city }}, {{ order.shipping_address.state }} {{ order.shipping_address.zip_code }}
+                                        </div>
+                                    {% else %}
+                                        <em style="color: #bdc3c7;">No address</em>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% empty %}
+                            <tr>
+                                <td colspan="7" class="no-data">
+                                    No orders found for the selected date range.
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <div class="footer">
+            Generated on {% now "d M Y, H:i" %} • Order Report System
+        </div>
+    </div>
+</body>
+</html>

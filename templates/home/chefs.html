@@ -1,0 +1,40 @@
+    <!-- Start Chef Area 
+    ============================================= -->
+    <div class="chef-area default-padding bg-gray text-center">
+        <div class="container">
+
+            <div class="row">
+                <div class="col-lg-8 offset-lg-2">
+                    <div class="site-heading text-center">
+                        <h4 class="sub-title">CHEFS CUISINIERS</h4>
+                        <h2 class="title">Nos chefs spéciaux</h2>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <!-- Single Item -->
+                {% for chef in chefs %}
+                <div class="col-xl-4 col-lg-6">
+                    <div class="chef-style-one">
+                        <div class="chef-thumb">
+                            {% if chef.image %}
+                            <img src="{{ chef.image.url }}" alt="Image Not Found">
+                            {% else %}
+                            <img src="/static/assets/img/800x800.png" alt="Image Not Found">
+                            {% endif %}
+                            <div class="info">
+                                <h4><a href="#">{{ chef.name|default:'Unnamed Chef' }}</a></h4>
+                                <span>{{ chef.position|default:'Position Not Available' }}</span>
+                            </div>
+                          
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+                <!-- End Single Item -->
+              
+            </div>
+        </div>
+    </div>
+    <!-- End Chef Area -->

@@ -1,0 +1,823 @@
+{% extends "base.html" %}
+{% load static %}
+{% load custom_filters %}
+{% block body %}
+
+
+
+
+
+
+<!-- Start Breadcrumb
+    ============================================= -->
+<div class="breadcrumb-area bg-cover shadow dark text-center text-light"
+    style="background-image: url(/static/assets/img/default/banner2.jpg);">
+
+</div>
+<!-- End Breadcrumb -->
+
+<!-- Start Top Feature
+    ============================================= -->
+<div class="top-feature-style-one-area default-padding bg-cover" style="background-image: url(/front/img/shape/1.png);">
+
+    <div class="container">
+        <div class="top-feature-style-one-info">
+            <div class="row align-center">
+
+                <div class="col-xl-4 col-lg-6">
+                    <div class="reservation-style-two mr-50 mr-md-0 mr-xs-0">
+                        <h3 class="" id="ReserveatableText">Réserver une table</h3>
+
+
+
+
+                        <form action="{% url 'reservation' %}" method="POST" id="reservationForm" autocomplete="off">
+                            {% csrf_token %}
+
+
+                            <input type="hidden" name="_token" value="y9en2OSy6Kc2I3LwsMlMv3OLyi20U11LHjW4rxl5"
+                                autocomplete="off">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <label for="name">Nom</label>
+                                        <input class="form-control" id="name" name="name"
+                                            placeholder="Veuillez saisir le nom*" type="text" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <label for="phone">Courriel</label>
+                                        <input class="form-control" id="email" name="email"
+                                            placeholder="Veuillez saisir l'adresse électronique*" type="email" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <label for="phone">Numéro de contact</label>
+                                        <input class="form-control" id="phone" name="phone"
+                                            placeholder="Please enter phone*" type="text" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <label for="num_of_person">Nombre de personnes</label>
+                                        <select id="num_of_person" name="total_person" class="form-control" required>
+                                            {% for i in "x"|rjust:"20" %}
+                                            <option value="{{ forloop.counter }}">{{ forloop.counter }} Personne
+                                            </option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="input-group date date-picker-one">
+                                        <label for="date">Choisissez une date</label>
+                                        <input type="text" class="form-control" id="date" name="date"
+                                            placeholder="YYYY-MM-DD" required>
+
+                                        <span class="input-group-addon"><i class="fas fa-calendar-alt"></i></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <label for="time">Choisir un créneau horaire</label>
+                                        <select id="slot" class="form-control" name="slot" style="">
+                                            <option value="11:00-12:00">11:00-12:00</option>
+                                            <option value="12:00-13:00">12:00-13:00</option>
+                                            <option value="13:00-14:00">13:00-14:00</option>
+                                            <option value="14:00-15:00">14:00-15:00</option>
+                                            <option value="18:00-19:00">18:00-19:00</option>
+                                            <option value="19:00-20:00">19:00-20:00</option>
+                                            <option value="21:00-22:00">21:00-22:00</option>
+                                            <option value="22:00-23:30">22:00-23:30</option>
+
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="row ">
+                                <div class="col-lg-12 mt-2">
+                                    {% if is_reservation %}
+                                    <button type="submit" name="submit" id="submit">
+                                        Réserver une table
+                                    </button>
+                                    {% else %}
+                                    <p class="" style="color: #cd3040; font-weight: 900;">Nous sommes fermés
+                                        aujourd’hui.</p>
+                                    {% endif %}
+                                    <div class="notification notification-success mt-4" style="display: none;">
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+
+                        <div id="message-container" style="display: none;" class="alert alert-dismissible fade show"
+                            role="alert">
+                            <span id="message-text"></span>
+                            <!-- <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button> -->
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-xl-4 col-lg-6">
+                    <div class="top-feature-style-one-thumb animate" data-animate="fadeInUp">
+                        <img src="https://lillasushi.fr/banner-items/reservation.jpg" alt="reservation.jpg}">
+                    </div>
+                </div>
+                <div class="col-xl-4 col-lg-12 pl-50 pl-md-15 pl-xs-15">
+                    <div class="opening-hours-hightlight text-light">
+                        <h3 class="">Dernières réservations</h3>
+                        <div class="reservation-list">
+                            <ul>
+                                <li class="header">
+                                    <div class="col">Réserve Non</div>
+                                    <div class="col ">Date</div>
+                                    <div class="col text-center">Slot</div>
+
+                                    <div class="col text-center">Status</div>
+                                </li>
+
+                                {% for reserve in reservation %}
+                                <li class="item">
+                                    <div class="col">{{ reserve.id }}</div>
+                                    <div class="col">{{ reserve.date }}</div>
+                                    <div class="col text-center">{{ reserve.slot }}</div>
+                                    {% if reserve.status %}
+                                    <div class="col text-center">{{ reserve.status }}</div>
+                                    {% endif %}
+
+                                </li>
+                                {% endfor %}
+
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Top Feature -->
+
+<div class="reservation-wrapper py-5">
+    <div class="container">
+        <div class="table-wrapper">
+            <div class="table-title">
+                <h2 style="color: white;">Créneaux de réservation disponibles pour la semaine en cours</h2>
+            </div>
+            <div class="table-responsive">
+
+
+
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th style="width:30px;">Day</th>
+                            {% for slot in availability_data.0.slots %}
+                            <th>{{ slot.time }}</th>
+                            {% endfor %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for day in availability_data %}
+                        <tr>
+                            <td style="width:30px;">
+                                <span>
+                                    {{ day.day_name }}<br>
+                                    {{ day.date|date:"F d, Y" }}
+                                </span>
+                            </td>
+                            {% for slot in day.slots %}
+                            <td class="text-center">
+                                <span class="badge {{ slot.badge_class }}" title="Available Seats">
+                                    <strong style="font-size:15px">{{ slot.available }}</strong><br> personnes
+                                </span>
+                            </td>
+                            {% endfor %}
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container mb-5">
+    <div class="row">
+        <div class="blog-content col-lg-12">
+            <div class="post-author mt-5">
+                <div class="info">
+                    <h4>Annonce de réservation</h4>
+                    <p>
+                        Pour votre toute petite fête d'anniversaire ou toute fête maximum de 20 personnes en intérieur
+                        et en extérieur, notre restaurant est disponible. veuillez réserver le créneau, spécialement le
+                        dimanche est disponible pour votre fête ! de plus vous pouvez nous commander avant ce que vous
+                        voulez manger !! nous pouvons également apporter des gâteaux pour votre fête !!!
+                        Pour tout retard de discussion n'hésitez pas à nous le faire savoir !!
+                        Merci à bientôt .. chez Enjoy Chicken !
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- Menu Selection Modal -->
+<div class="modal fade" id="menuSelectionModal" tabindex="-1" role="dialog" aria-labelledby="menuSelectionModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
+        <!-- Changed to modal-xl for more space -->
+        <div class="modal-content">
+            <div class="modal-header bg-white text-dark border-bottom">
+                <h5 class="modal-title" id="menuSelectionModalLabel">
+                    <i class="fas fa-utensils mr-2"></i> Select Your Menu
+                </h5>
+                <button type="button" class="close text-dark" data-dismiss="modal" aria-label="Close"
+                    onclick="$('#menuSelectionModal').modal('hide');">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body p-0">
+                <div class="row no-gutters modal-layout-row">
+
+                    <!-- LEFT: Menu Accordion -->
+                    <div class="col-md-8 bg-white scrollable-column" style="border-right: 1px solid #dee2e6;">
+                        <div id="accordionMenu" class="p-3">
+                            <div class="text-center mt-5">
+                                <div class="spinner-border text-primary" role="status"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- RIGHT: Cart Summary -->
+                    <div class="col-md-4 bg-light d-flex flex-column cart-column" id="cartSectionWrapper">
+                        <div class="p-3 bg-dark text-white shadow-sm cart-section-title">
+                            <h5 class="m-0"><i class="fas fa-shopping-basket mr-2"></i>Your Order</h5>
+                        </div>
+
+                        <div class="flex-grow-1 p-3" style="overflow-y: auto;">
+                            <div id="reservationCartItems">
+                                <div class="text-center text-muted mt-5">
+                                    <i class="fas fa-shopping-basket fa-3x mb-3 opacity-50"></i>
+                                    <p>Cart is empty</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="p-3 border-top bg-white">
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>Subtotal:</span>
+                                <strong id="reservationCartTotal">€0.00</strong>
+                            </div>
+                            <small class="text-muted d-block mb-3">* Service fees may apply at checkout.</small>
+
+                            <button type="button" class="btn btn-primary btn-block btn-lg shadow"
+                                id="confirmReservationBtn" disabled>
+                                Confirm & Pay <i class="fas fa-chevron-right ml-2"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Modal Header Full Width */
+    #menuSelectionModal .modal-header {
+        margin: 0 !important;
+        padding: 15px 20px !important;
+        border-radius: 0 !important;
+        width: 100% !important;
+        color: #000 !important;
+        border-bottom: 1px solid #dee2e6 !important;
+    }
+
+    #menuSelectionModal .modal-content {
+        border-radius: 0 !important;
+        padding: 0 !important;
+    }
+
+    #menuSelectionModal .modal-body {
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+
+    #menuSelectionModal .modal-header .modal-title {
+        color: #000 !important;
+        font-weight: 600;
+    }
+
+    #menuSelectionModal .modal-header .close {
+        color: #000 !important;
+        opacity: 0.8;
+    }
+
+    #menuSelectionModal .modal-header .close:hover {
+        opacity: 1;
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+        background: #f1f1f1;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: #888;
+        border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+        background: #555;
+    }
+
+    /* Category Tabs */
+    .nav-pills .nav-link {
+        border-radius: 8px;
+        margin-bottom: 5px;
+        color: #555;
+        font-weight: 600;
+        transition: all 0.3s;
+        text-align: left;
+        padding: 12px 15px;
+    }
+
+    .nav-pills .nav-link:hover {
+        background-color: #f0f0f0;
+        color: #ce2829;
+        /* Theme Color */
+    }
+
+    .nav-pills .nav-link.active {
+        background-color: #ce2829 !important;
+        color: #fff !important;
+        box-shadow: 0 4px 6px rgba(206, 40, 41, 0.3);
+    }
+
+    /* Menu Item Card */
+    .menu-item-card {
+        border: 1px solid #f0f0f0;
+        border-radius: 10px;
+        padding: 15px;
+        margin-bottom: 15px;
+        background: #fff;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .menu-item-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        /* More subtle shadow */
+        border-color: #ce2829;
+    }
+
+    .menu-item-img {
+        width: 70px;
+        height: 70px;
+        object-fit: cover;
+        border-radius: 8px;
+        margin-right: 15px;
+    }
+
+    .menu-item-title {
+        font-size: 16px;
+        font-weight: 700;
+        margin-bottom: 4px;
+        color: #333;
+    }
+
+    .menu-item-price {
+        color: #ce2829;
+        font-weight: 700;
+        font-size: 15px;
+    }
+
+    /* Cart Item */
+    .cart-item {
+        background: #fff;
+        border-radius: 8px;
+        padding: 12px;
+        margin-bottom: 10px;
+        border: 1px solid #e9ecef;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+        transition: all 0.2s;
+    }
+
+    .cart-item:hover {
+        border-color: #ce2829;
+        box-shadow: 0 4px 8px rgba(206, 40, 41, 0.1);
+    }
+
+    .qty-controller {
+        background: #fff;
+        border-radius: 4px;
+        overflow: hidden;
+    }
+
+    .qty-display {
+        color: #333;
+    }
+
+    /* Animation */
+    .fade-in {
+        animation: fadeIn 0.4s ease-in-out;
+    }
+
+    /* Responsive Layout */
+    @media (min-width: 768px) {
+        .modal-layout-row {
+            height: 70vh;
+        }
+
+        .scrollable-column {
+            overflow-y: auto;
+            height: 100%;
+        }
+
+        .cart-column {
+            height: 100%;
+        }
+    }
+
+    @media (max-width: 767px) {
+        .modal-layout-row {
+            height: auto;
+            max-height: 80vh;
+            /* Allow modal to grow but stay within screen */
+            overflow-y: auto;
+            /* Scroll existing content */
+        }
+
+        .scrollable-column {
+            height: auto;
+            overflow-y: visible;
+        }
+
+        .cart-column {
+            height: auto;
+            border-left: none !important;
+            border-top: 1px solid #dee2e6;
+        }
+
+        /* Fix modal centering on mobile */
+        .modal-dialog-centered {
+            min-height: calc(100% - 1rem);
+        }
+    }
+
+    /* Category Buttons */
+    .category-toggle {
+        width: 100%;
+        /* Force full width */
+        border-radius: 8px;
+        background-color: #f8f9fa;
+        color: #333;
+        transition: all 0.3s;
+        border: 1px solid #eee;
+    }
+
+    .category-toggle:hover,
+    .category-toggle[aria-expanded="true"] {
+        background-color: #ce2829;
+        color: #fff !important;
+        border-color: #ce2829;
+    }
+
+    .category-toggle[aria-expanded="true"] .text-muted {
+        color: rgba(255, 255, 255, 0.8) !important;
+    }
+
+    /* Cart Improvements */
+    .cart-section-title {
+        background: #212529;
+        color: #fff;
+        padding: 15px;
+        border-radius: 0;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .transition-icon {
+        transition: transform 0.3s ease;
+    }
+
+    .rotate-icon {
+        transform: rotate(180deg);
+    }
+</style>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        // Initialize datepicker to prevent past date selection
+        $('.date-picker-one').datepicker({
+            format: 'yyyy-mm-dd',
+            autoclose: true,
+            startDate: new Date(), // Prevent selecting past dates
+            todayHighlight: true
+        });
+
+        let reservationCart = [];
+        let menuLoaded = false;
+        let formData = {};
+        let allMenuData = []; // Store data globally
+
+        // 1. Intercept Form Submission
+        $('#reservationForm').on('submit', function (e) {
+            e.preventDefault();
+
+            // Collect Form Data
+            const formArray = $(this).serializeArray();
+            formData = {};
+            $(formArray).each(function (index, obj) {
+                formData[obj.name] = obj.value;
+            });
+
+            // Open Modal
+            $('#menuSelectionModal').modal('show');
+
+            // Load Menu if not loaded
+            if (!menuLoaded) {
+                loadMenu();
+            }
+        });
+
+        function loadMenu() {
+            $.ajax({
+                url: "{% url 'get_menu_api' %}",
+                type: "GET",
+                success: function (response) {
+                    allMenuData = response.menu;
+                    renderAccordionMenu(allMenuData);
+                    menuLoaded = true;
+                },
+                error: function () {
+                    $('#categoryMenu').html('<p class="text-danger p-3">Failed to load menu.</p>');
+                }
+            });
+        }
+
+        function renderAccordionMenu(menuData) {
+            let html = '<div class="accordion" id="menuAccordion">';
+
+            menuData.forEach((cat, index) => {
+                const headingId = `heading${index}`;
+                const collapseId = `collapse${index}`;
+
+                // Items HTML
+                let itemsHtml = '';
+                if (cat.products.length > 0) {
+                    itemsHtml = '<div class="row">';
+                    cat.products.forEach(prod => {
+                        const imageHtml = prod.image ? `<img src="${prod.image}" class="menu-item-img">` : '';
+                        itemsHtml += `
+                         <div class="col-lg-6 col-md-12 mb-3">
+                            <div class="menu-item-card fade-in h-100">
+                                <div class="d-flex align-items-center justify-content-between h-100">
+                                    <div class="d-flex align-items-center">
+                                        ${imageHtml}
+                                        <div>
+                                            <div class="menu-item-title">${prod.title}</div>
+                                            <div class="menu-item-price">€${prod.price.toFixed(2)}</div>
+                                        </div>
+                                    </div>
+                                    <button class="btn btn-outline-danger btn-sm rounded-pill px-3 shadow-sm add-to-res-cart" 
+                                        data-id="${prod.id}" 
+                                        data-title="${prod.title}" 
+                                        data-price="${prod.price}">
+                                        <i class="fas fa-plus mr-1"></i> Add
+                                    </button>
+                                </div>
+                            </div>
+                        </div>`;
+                    });
+                    itemsHtml += '</div>';
+                } else {
+                    itemsHtml = '<p class="text-muted">No items in this category.</p>';
+                }
+
+                html += `
+                <div class="card border-0 mb-2 shadow-sm rounded">
+                    <div class="card-header bg-white border-0 p-0" id="${headingId}">
+                        <h2 class="mb-0">
+                            <button class="btn btn-link btn-block text-left font-weight-bold text-dark p-3 d-flex justify-content-between align-items-center collapsed category-toggle" 
+                                type="button" 
+                                data-toggle="collapse" 
+                                data-target="#${collapseId}" 
+                                aria-expanded="false" 
+                                aria-controls="${collapseId}">
+                                <span>${cat.category}</span>
+                                <i class="fas fa-chevron-down text-muted transition-icon"></i>
+                            </button>
+                        </h2>
+                    </div>
+
+                    <div id="${collapseId}" class="collapse" aria-labelledby="${headingId}" data-parent="#menuAccordion">
+                        <div class="card-body bg-light">
+                            ${itemsHtml}
+                        </div>
+                    </div>
+                </div>`;
+            });
+
+            html += '</div>';
+            $('#accordionMenu').html(html);
+        }
+
+        // Toggle Icon Rotation (Optional UX enhancement)
+        $(document).on('click', '.category-toggle', function () {
+            $('.category-toggle i').removeClass('rotate-icon');
+            if ($(this).hasClass('collapsed')) {
+                $(this).find('i').addClass('rotate-icon');
+            }
+        });
+
+
+        // Add to Cart
+        $(document).on('click', '.add-to-res-cart', function () {
+            const id = $(this).data('id');
+            const title = $(this).data('title');
+            const price = parseFloat($(this).data('price'));
+
+            // Animation for button
+            const btn = $(this);
+            const originalContent = btn.html();
+            btn.html('<i class="fas fa-check"></i>').addClass('btn-danger').removeClass('btn-outline-danger text-white');
+            setTimeout(() => {
+                btn.html(originalContent).removeClass('btn-danger').addClass('btn-outline-danger');
+            }, 600);
+
+            const existingItem = reservationCart.find(item => item.id === id);
+            if (existingItem) {
+                existingItem.qty++;
+            } else {
+                reservationCart.push({ id: id, title: title, price: price, qty: 1 });
+            }
+            updateCartDisplay();
+        });
+
+        // Remove/Decrease Qty
+        $(document).on('click', '.decrease-qty', function () {
+            const id = $(this).data('id');
+            const index = reservationCart.findIndex(item => item.id === id);
+            if (index > -1) {
+                if (reservationCart[index].qty > 1) {
+                    reservationCart[index].qty--;
+                } else {
+                    reservationCart.splice(index, 1);
+                }
+            }
+            updateCartDisplay();
+        });
+
+        // Increase Qty
+        $(document).on('click', '.increase-qty', function () {
+            const id = $(this).data('id');
+            const existingItem = reservationCart.find(item => item.id === id);
+            if (existingItem) {
+                existingItem.qty++;
+            }
+            updateCartDisplay();
+        });
+
+
+        function updateCartDisplay() {
+            let html = '';
+            let total = 0;
+
+            if (reservationCart.length === 0) {
+                html = `
+                    <div class="text-center text-muted mt-5 fade-in">
+                        <i class="fas fa-shopping-basket fa-3x mb-3 opacity-50"></i>
+                        <p>Cart is empty</p>
+                    </div>`;
+                $('#confirmReservationBtn').prop('disabled', true);
+            } else {
+                reservationCart.forEach(item => {
+                    const itemTotal = item.price * item.qty;
+                    total += itemTotal;
+                    html += `
+                <div class="cart-item fade-in">
+                    <div class="d-flex justify-content-between align-items-start mb-2">
+                         <div class="font-weight-bold text-dark" style="font-size: 0.95rem;">${item.title}</div>
+                         <div class="font-weight-bold text-dark">€${itemTotal.toFixed(2)}</div>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <small class="text-muted">€${item.price.toFixed(2)} / unit</small>
+                        <div class="qty-controller d-flex align-items-center bg-white border rounded">
+                            <button class="btn btn-sm text-secondary decrease-qty px-2 py-1" data-id="${item.id}">
+                                <i class="fas fa-minus" style="font-size: 10px; color: white;"></i>
+                            </button>
+                            <span class="qty-display mx-2 font-weight-bold" style="font-size: 14px; min-width: 20px; text-align: center;">${item.qty}</span>
+                            <button class="btn btn-sm text-danger increase-qty px-2 py-1" data-id="${item.id}">
+                                <i class="fas fa-plus" style="font-size: 10px; color: white;"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>`;
+                });
+                $('#confirmReservationBtn').prop('disabled', false);
+            }
+
+            $('#reservationCartItems').html(html);
+            $('#reservationCartTotal').text('€' + total.toFixed(2));
+        }
+
+        // Confirm Reservation
+        $('#confirmReservationBtn').click(function () {
+
+            // Validation: Ensure Cart is not empty (Extra safety)
+            if (reservationCart.length === 0) {
+                alert("Please select at least one item from the menu.");
+                return;
+            }
+
+            // Merge Data
+            const finalData = {
+                ...formData,
+                order_items: JSON.stringify(reservationCart),
+                // Payment Method is ALWAYS Stripe now
+                payment_method: 'stripe',
+                csrfmiddlewaretoken: '{{ csrf_token }}'
+            };
+
+            // UI Loading State
+            $(this).prop('disabled', true).html('<span class="spinner-border spinner-border-sm"></span> Processing...');
+
+            $.ajax({
+                url: "{% url 'reservation' %}",
+                type: "POST",
+                data: finalData,
+                headers: { 'X-Requested-With': 'XMLHttpRequest' },
+                success: function (response) {
+
+                    if (response.status === 'success') {
+                        if (response.payment_url) {
+                            // Redirect to Stripe
+                            window.location.href = response.payment_url;
+                        } else {
+                            // Should not happen with new logic, but fallback
+                            alert("Unexpected response. No Payment URL.");
+                            window.location.reload();
+                        }
+                    } else {
+                        // Error Handling
+                        $('#menuSelectionModal').modal('hide');
+
+                        $('#message-container').removeClass('alert-success bg-success').addClass('alert-danger bg-danger text-white').show();
+                        $('#message-text').text(response.message);
+                        $('html, body').animate({ scrollTop: $('#message-container').offset().top - 100 }, 500);
+
+                        // Reset Button
+                        $('#confirmReservationBtn').prop('disabled', false).html('Confirm & Pay <i class="fas fa-chevron-right ml-2"></i>');
+                    }
+                },
+                error: function () {
+                    alert('An error occurred. Please try again.');
+                    $('#confirmReservationBtn').prop('disabled', false).html('Confirm & Pay <i class="fas fa-chevron-right ml-2"></i>');
+                }
+            });
+        });
+    });
+</script>
+
+{% endblock body %}

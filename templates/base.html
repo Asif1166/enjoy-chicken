@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html lang="en">
+
+<head>
+    <!-- ========== Meta Tags ========== -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Enjoy Chicken">
+
+    <!-- ========== Page Title ========== -->
+    <title>Enjoy Chicken </title>
+
+    <!-- ========== Favicon Icon ========== -->
+    <link rel="shortcut icon" href="{% static 'assets/img/favicon2.png' %}" type="image/x-icon">
+
+    <!-- ========== Start Stylesheet ========== -->
+    <link href="{% static 'assets/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/css/font-awesome.min.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/css/magnific-popup.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/css/flaticon-set.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/css/swiper-bundle.min.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/css/animate.min.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/css/bootstrap-datepicker3.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/css/validnavs.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/css/helper.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/css/unit-test.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/css/shop.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/css/style.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/css/additional.css' %}" rel="stylesheet">
+
+
+
+</head>
+
+<body>
+
+    {% include "header.html" %}
+    {% block body %}
+
+    {% endblock body %}
+
+    {% include "footer.html" %}
+
+
+
+
+    <!-- Start Preloader 
+    ============================================= -->
+
+    <!-- End Preloader -->
+
+    <!-- jQuery Frameworks
+============================================= -->
+    <script src="{% static 'assets/js/jquery-3.6.0.min.js' %}"></script>
+    <script src="{% static 'assets/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'assets/js/jquery.appear.js' %}"></script>
+    <script src="{% static 'assets/js/swiper-bundle.min.js' %}"></script>
+    <script src="{% static 'assets/js/progress-bar.min.js' %}"></script>
+    <script src="{% static 'assets/js/isotope.pkgd.min.js' %}"></script>
+    <script src="{% static 'assets/js/imagesloaded.pkgd.min.js' %}"></script>
+    <script src="{% static 'assets/js/magnific-popup.min.js' %}"></script>
+    <script src="{% static 'assets/js/count-to.js' %}"></script>
+    <script src="{% static 'assets/js/jquery.nice-select.min.js' %}"></script>
+    <script src="{% static 'assets/js/jquery.scrolla.min.js' %}"></script>
+    <script src="{% static 'assets/js/YTPlayer.min.js' %}"></script>
+    <script src="{% static 'assets/js/validnavs.js' %}"></script>
+    <script src="{% static 'assets/js/gsap.js' %}"></script>
+    <script src="{% static 'assets/js/ScrollTrigger.min.js' %}"></script>
+    <script src="{% static 'assets/js/bootstrap-datepicker.js' %}"></script>
+    <script src="{% static 'assets/js/main.js' %}"></script>
+
+    {% block extra_scripts %}{% endblock %}
+
+
+    <style>
+        .fetched-row {
+            background-color: red !important;
+        }
+    </style>
+
+
+
+
+</body>
+
+
+</html>

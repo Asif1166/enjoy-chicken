@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+
+{% block body %}
+
+
+
+
+
+
+<!-- shop grid sidebar wrapper -->
+<div class="shop-grid-sidebar-area rts-section-gap">
+    <div class="container">
+        <div class="row g-0">
+            <div class="col-xl-12 col-lg-12">
+                <div class="search-results">
+                    <h2>Search Results for "{{ query }}"</h2>
+                    
+                </div>
+                <div class="tab-content" id="myTabContent">
+                    <div class="product-area-wrapper-shopgrid-list mt--20 tab-pane fade show active" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
+                        <div class="row g-4">
+
+                            {% if products %}
+                              
+                          
+                            {% for product in products %}
+                                <div class="col-lg-20 col-lg-4 col-md-6 col-sm-12 col-12">
+                                    <div class="single-shopping-card-one">
+                                        <!-- image and section area start -->
+                                        <div class="image-and-action-area-wrapper">
+                                            <a href="{% url 'product_details' product.pid %}" class="thumbnail-preview">
+                                                <div class="badge">
+                                                    <span>{{ product.discount }}% <br> Off</span>
+                                                    <i class="fa-solid fa-bookmark"></i>
+                                                </div>
+                                                <img src="{{ product.image.url }}" alt="{{ product.title }}">
+                                            </a>
+                                        
+                                        </div>
+                                        <!-- image and section area end -->
+    
+                                        <div class="body-content">
+                                            <a href="{% url 'product_details' product.pid %}">
+                                                <h4
+                                                data-title-fr="{{ product.title }}"
+                                                data-title-en="{{ product.eng_title }}" class="title">{{ product.title }}</h4>
+                                            </a>
+                                            <span class="availability">{{ product.size }}</span>
+                                            <div class="price-area">
+                                                <span class="currrent-product-price-{{product.id}} current">{{ product.price }} </span><span>€</span>
+                                                {% if product.old_price %}
+<<<<<<< HEAD
+                                                <div class="previous">€ {{ product.old_price }}</div>
+=======
+                                                <div class="previous">€{{ product.old_price }}</div>
+>>>>>>> 910ca73127541a1d6c0e537e75f6dab7d243b164
+                                                {% endif %}
+                                            </div>
+                                            <div class="cart-counter-action">
+                                                <div class="quantity-edit">
+                                                    <input type="text" class="product-quantity-{{product.id}} input" value="1" id="product-quantity">
+                                                    <div class="button-wrapper-action">
+                                                        <button class="button"><i class="fa-regular fa-chevron-down"></i></button>
+                                                        <button class="button plus">+<i class="fa-regular fa-chevron-up"></i></button>
+                                                    </div>
+                                                </div>
+                                                <a class="rts-btn btn-primary radious-sm with-icon">
+                                                    <input type="hidden" class="product-quantity-{{product.id}}" value="1" id="product-quantity">
+                                                    <input type="hidden" class="product-pid-{{product.id}}" value="{{product.pid}}">
+                                                    <input type="hidden" class="product-image-{{product.id}}" value="{{product.image.url}}">
+                                                    <input type="hidden" class="product-id-{{product.id}}" value="{{product.id}}">
+                                                    <input type="hidden" class="product-title-{{product.id}}" value="{{product.title}}">
+                                                    
+                                                    <div class="btn-text add-to-cart-btn" data-index="{{product.id}}" id="add-to-cart-btn">
+                                                        Add To Cart
+                                                    </div>
+                                                    <div class="arrow-icon">
+                                                        <i class="fa-regular fa-cart-shopping"></i>
+                                                    </div>
+                                                    <div class="arrow-icon">
+                                                        <i class="fa-regular fa-cart-shopping"></i>
+                                                    </div>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+
+                            {% else %}
+                            <p>NO product available</p>
+                            {% endif %}
+                             
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- shop grid sidebar wrapper end -->
+
+{% endblock body %}

@@ -1,0 +1,149 @@
+    <!-- Start Footer 
+    ============================================= -->
+    <footer class="bg-dark text-light">
+        <div class="footer-style-two default-padding">
+            <div class="container">
+
+                <div class="footer-bottom-shape">
+                    <img src="/static/assets/img/shape/9.png" alt="Image Not Found">
+                </div>
+
+                <div class="footer-top text-center">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <a href="#"><img src="{{site_info.logo.url}}" alt="Logo"></a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <!-- Singel Item -->
+                    <div class="col-lg-6 col-md-6 footer-item mt-50">
+                        <div class="f-item about">
+                            
+                            <h4 class="widget-title" id>À propos de nous</h4>
+                            <p>
+                                Nous proposons la livraison de sushis en ligne via notre site Internet et vous pouvez également emporter des sushis dans notre cuisine noire
+                            </p>
+
+                            <ul class="footer-social">
+                                <li>
+                                    <a href="{{site_info.facebook_url}}">
+                                        <i class="fab fa-facebook-f"></i>
+                                    </a>
+                                </li>
+                                <!--<li>-->
+                                <!--    <a href="{{site_info.twitter_url}}">-->
+                                <!--        <i class="fab fa-twitter"></i>-->
+                                <!--    </a>-->
+                                <!--</li>-->
+                                <li>
+                                    <a href="{{site_info.youtube_url}}">
+                                        <i class="fab fa-youtube"></i>
+                                    </a>
+                                </li>
+                                <!--<li>-->
+                                <!--    <a href="{{site_info.linkedin_url}}">-->
+                                <!--        <i class="fab fa-linkedin-in"></i>-->
+                                <!--    </a>-->
+                                <!--</li>-->
+                            </ul>
+                    
+                        </div>
+                    </div>
+                    <!-- End Singel Item -->
+
+                    <!-- Singel Item -->
+               
+                    <!-- End Singel Item -->
+
+                    <!-- Singel Item -->
+                    <div class="col-lg-6 col-md-6 footer-item  mt-50">
+                        <div class="f-item contact">
+                            <h4 class="widget-title">Contact</h4>
+                            <ul>
+                                <li>
+                                    <div class="icon">
+                                        <i class="fas fa-map-marker-alt"></i>
+                                    </div>
+                                    <div class="content">
+                                        {{site_info.address}}
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="icon">
+                                        <i class="fas fa-phone"></i>
+                                    </div>
+                                    <div class="content">
+                                        <a href="tel:{{site_info.primary_phone}}"> {{site_info.primary_phone}}</a> 
+                                        <br>
+                                        {% if site_info.secondary_phone %}
+                                        <a href="tel:{{site_info.secondary_phone}}"> {{site_info.secondary_phone}}</a>
+                                        {% endif %}
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="icon">
+                                        <i class="fas fa-envelope"></i>
+                                    </div>
+                                    <div class="content">
+                                        <a href="mailto:{{site_info.email}}"> {{site_info.email}}</a>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- End Singel Item -->
+
+                    <!-- Singel Item -->
+                    <!-- <div class="col-lg-3 col-md-6 footer-item mt-50">
+                        <h4 class="widget-title">Newsletter</h4>
+                        <p>
+                            Join our subscribers list to get the latest news and special offers.
+                        </p>
+                        <div class="f-item newsletter">
+                            <form action="#">
+                                <input type="email" placeholder="Your Email" class="form-control" name="email">
+                                <button type="submit"> <i class="fas fa-arrow-right"></i></button>  
+                            </form>
+                        </div>
+                        <fieldset>
+                            <input type="checkbox" id="privacy" name="privacy">
+                            <label for="privacy">I agree to the Privacy Policy</label>
+                        </fieldset>
+                    </div> -->
+                    <!-- End Singel Item -->
+
+
+                </div>
+            </div>
+        </div>
+            
+        <!-- Start Footer Bottom -->
+        <div class="footer-bottom-two">
+            
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <p>© Copyright 2026 {{site_info.name}}. All Rights Reserved by <a href="#">RozSoft.Tech</a></p>
+                    </div>
+                    <!--<div class="col-lg-6 text-end">-->
+                    <!--    <ul>-->
+                    <!--        <li>-->
+                    <!--            <a href="">Terms</a>-->
+                    <!--        </li>-->
+                    <!--        <li>-->
+                    <!--            <a href="">Privacy</a>-->
+                    <!--        </li>-->
+                    <!--        <li>-->
+                    <!--            <a href="">Support</a>-->
+                    <!--        </li>-->
+                    <!--    </ul>-->
+                    <!--</div>-->
+                </div>
+            </div>
+        </div>
+        <!-- End Footer Bottom -->
+
+    </footer>
+    <!-- End Footer -->

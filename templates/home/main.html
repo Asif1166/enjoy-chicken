@@ -1,0 +1,116 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Super Categories</title>
+</head>
+<body>
+
+    <div class="super-categories">
+        <h2>Explore by Super Categories</h2>
+        <div class="super-categories-list">
+            {% for super_category in super_categories %}
+                <div class="super-category-item">
+                    <a href="{% url 'super_category_home' super_category.cid %}">
+                        <img src="{{ super_category.image.url }}" alt="{{ super_category.title }}">
+                        <h3>{{ super_category.title }}</h3>
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html> -->
+
+
+
+<!DOCTYPE html>
+{% load static %}
+
+<html lang="en">
+    
+<!-- Mirrored from html.themewant.com/ekomart/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 10 Aug 2024 06:25:37 GMT -->
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Ekomart-Grocery-Store(e-Commerce) HTML Template: A sleek, responsive, and user-friendly HTML template designed for online grocery stores.">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keywords" content="Grocery, Store, stores">
+    <title>Ekomart-Grocery-Store(e-Commerce) HTML Templatess</title>
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'assets/images/fav.png' %}">
+    <!-- plugins css -->
+    <link rel="stylesheet preload" href="{% static 'assets/css/plugins.css' %}" as="style">
+    <link rel="stylesheet preload" href="{% static 'assets/css/style.css' %}" as="style">
+
+</head>
+<body class="shop-main-h">
+
+
+   <!-- rts feature product 2 area start -->
+   <div class="rts-feature-large-product-area rts-section-gapBottom" style="margin-top: 300px;">
+    <div class="container">
+        <div class="row g-5">
+
+            {% for super_category in super_categories %}
+            <div class="col-lg-6">
+                <div class="feature-product-area-large-2 bg_image">
+                    <div class="inner-feature-product-content">
+                        <span>Weekend Discount</span>
+                        <h2 class="title">
+                            {{ super_category.title }}
+                        </h2>
+                        <p>Just don’t miss the special offer this week</p>
+                        <a href="{% url 'super_category_home' super_category.cid %}" class="rts-btn btn-primary">Shop Now</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+<!-- rts feature product 2 area end -->
+
+    
+
+           
+<!--================= Preloader Section Start Here =================-->
+<div id="weiboo-load">
+    <div class="preloader-new">
+        <svg class="cart_preloader" role="img" aria-label="Shopping cart_preloader line animation"
+            viewBox="0 0 128 128" width="128px" height="128px" xmlns="http://www.w3.org/2000/svg">
+            <g fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="8">
+                <g class="cart__track" stroke="hsla(0,10%,10%,0.1)">
+                    <polyline points="4,4 21,4 26,22 124,22 112,64 35,64 39,80 106,80" />
+                    <circle cx="43" cy="111" r="13" />
+                    <circle cx="102" cy="111" r="13" />
+                </g>
+                <g class="cart__lines" stroke="currentColor">
+                    <polyline class="cart__top" points="4,4 21,4 26,22 124,22 112,64 35,64 39,80 106,80"
+                        stroke-dasharray="338 338" stroke-dashoffset="-338" />
+                    <g class="cart__wheel1" transform="rotate(-90,43,111)">
+                        <circle class="cart__wheel-stroke" cx="43" cy="111" r="13" stroke-dasharray="81.68 81.68"
+                            stroke-dashoffset="81.68" />
+                    </g>
+                    <g class="cart__wheel2" transform="rotate(90,102,111)">
+                        <circle class="cart__wheel-stroke" cx="102" cy="111" r="13" stroke-dasharray="81.68 81.68"
+                            stroke-dashoffset="81.68" />
+                    </g>
+                </g>
+            </g>
+        </svg>
+    </div>
+</div>
+<!--================= Preloader End Here =================-->
+     
+    <!-- plugins js -->
+    <script defer src="{% static 'assets/js/plugins.js' %}"></script>
+
+    <!-- custom js -->
+    <script defer src="{% static 'assets/js/main.js' %}"></script>
+    <!-- header style two End -->
+     
+    
+</body>
+
+<!-- Mirrored from html.themewant.com/ekomart/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 10 Aug 2024 06:27:25 GMT -->
+</html>

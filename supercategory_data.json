@@ -1,0 +1,122 @@
+[
+{
+  "model": "shop.supercategory",
+  "pk": 4,
+  "fields": {
+    "cid": "supercat4hg3gh2deg",
+    "title": "Menu Sushi",
+    "eng_title": null,
+    "image": ""
+  }
+},
+{
+  "model": "shop.supercategory",
+  "pk": 5,
+  "fields": {
+    "cid": "supercat1gc43bc1ec",
+    "title": "Sushi Box",
+    "eng_title": null,
+    "image": ""
+  }
+},
+{
+  "model": "shop.supercategory",
+  "pk": 6,
+  "fields": {
+    "cid": "supercatg4a32ehhhe",
+    "title": "Bowl",
+    "eng_title": null,
+    "image": ""
+  }
+},
+{
+  "model": "shop.supercategory",
+  "pk": 7,
+  "fields": {
+    "cid": "supercat4c1a5222bb",
+    "title": "Sashimi",
+    "eng_title": null,
+    "image": ""
+  }
+},
+{
+  "model": "shop.supercategory",
+  "pk": 8,
+  "fields": {
+    "cid": "supercatbc2babd14h",
+    "title": "Tataki",
+    "eng_title": null,
+    "image": ""
+  }
+},
+{
+  "model": "shop.supercategory",
+  "pk": 9,
+  "fields": {
+    "cid": "supercataa5gba1551",
+    "title": "Chirashi Tartare",
+    "eng_title": null,
+    "image": ""
+  }
+},
+{
+  "model": "shop.supercategory",
+  "pk": 10,
+  "fields": {
+    "cid": "supercatechbacgdeb",
+    "title": "Salades",
+    "eng_title": null,
+    "image": ""
+  }
+},
+{
+  "model": "shop.supercategory",
+  "pk": 11,
+  "fields": {
+    "cid": "supercat3hfhfffebg",
+    "title": "Riz Cantonnais",
+    "eng_title": null,
+    "image": ""
+  }
+},
+{
+  "model": "shop.supercategory",
+  "pk": 12,
+  "fields": {
+    "cid": "supercat1afhbf4g25",
+    "title": "Nouilles",
+    "eng_title": null,
+    "image": ""
+  }
+},
+{
+  "model": "shop.supercategory",
+  "pk": 13,
+  "fields": {
+    "cid": "supercat3214a14gc4",
+    "title": "Entree",
+    "eng_title": null,
+    "image": ""
+  }
+},
+{
+  "model": "shop.supercategory",
+  "pk": 14,
+  "fields": {
+    "cid": "supercatefc5c315hd",
+    "title": "Dessert",
+    "eng_title": null,
+    "image": ""
+  }
+},
+{
+  "model": "shop.supercategory",
+  "pk": 15,
+  "fields": {
+    "cid": "supercatfeeb3hfg5h",
+    "title": "Boisson",
+    "eng_title": null,
+    "image": ""
+  }
+}
+]

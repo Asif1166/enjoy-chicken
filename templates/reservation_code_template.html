@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reservation Code</title>
+    <style>
+        @page {
+             size: 80mm 200mm; /* Width x Height for a small receipt */
+             margin: 0.25in;
+         }
+        body {
+            text-align: center;
+            margin: 0;
+            background-color: #ffffff;
+            font-family: Arial, sans-serif;
+        }
+    
+        .header {
+            background-color: #000;
+            color: #fff;
+            padding: 10px 0;
+            font-size: 1.2em;
+        }
+        .code {
+            font-size: 2em;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+        .info {
+            font-size: 0.9em;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .line {
+            width: 100%;
+            height: 1px;
+            background-color: #000;
+            margin: 20px 0;
+        }
+        .thank-you {
+            font-size: 1em;
+            color: #333;
+        }
+    </style>
+</head>
+<body>`
+    <div class="reservation-container">
+        <div class="header">EnjoyChicken Code de réservation</div>
+        <div class="code">{{ reservation_code }}</div>
+        <div class="info">Soumis: {{ submitted_time }}</div>
+        <div class="line"></div>
+     
+    </div>
+</body>
+</html>

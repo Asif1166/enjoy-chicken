@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+    <meta name="description" content="POS - Bootstrap Admin Template">
+    <meta name="keywords"
+        content="admin, estimates, bootstrap, business, corporate, creative, invoice, html5, responsive, Projects">
+    <meta name="author" content="Dreamguys - Bootstrap Admin Template">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Admin</title>
+
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'custom_admin_css/assets/img/favicon2.png' %}">
+
+    <link rel="stylesheet" href="{% static 'custom_admin_css/assets/css/bootstrap.min.css' %}">
+    
+    <link rel="stylesheet" href="{% static 'custom_admin_css/assets/css/bootstrap-datetimepicker.min.css' %}">
+    
+    <link rel="stylesheet" href="{% static 'custom_admin_css/assets/css/animate.css' %}">
+    
+    <link rel="stylesheet" href="{% static 'custom_admin_css/assets/plugins/select2/css/select2.min.css' %}">
+    
+    <link rel="stylesheet" href="{% static 'custom_admin_css/assets/plugins/fontawesome/css/fontawesome.min.css' %}">
+    <link rel="stylesheet" href="{% static 'custom_admin_css/assets/plugins/fontawesome/css/all.min.css' %}">
+    
+    <link rel="stylesheet" href="{% static 'custom_admin_css/assets/css/style.css' %}">
+
+    <link rel="stylesheet" href="{% static 'custom_admin_css/assets/css/dataTables.bootstrap5.min.css' %}">
+    
+</head>
+
+<body>
+ 
+    
+    <div class="main-wrapper">
+        
+      
+        {% include "custom_admin/custome_admin_header.html" %}
+
+        {% include "custom_admin/custom_admin_sidebar.html" %}
+
+        {% block custom_admin_body %}
+          
+        {% endblock custom_admin_body %}
+        
+        {% include "custom_admin/custome_admin_footer.html" %}
+    
+    </div>
+
+
+    <script src="{% static 'custom_admin_css/assets/js/jquery-3.7.1.min.js' %}" type="b19bbd148c02493fee585122-text/javascript"></script>
+
+    <script src="{% static 'custom_admin_css/assets/js/feather.min.js' %}" type="b19bbd148c02493fee585122-text/javascript"></script>
+    
+    <script src="{% static 'custom_admin_css/assets/js/jquery.slimscroll.min.js' %}" type="b19bbd148c02493fee585122-text/javascript"></script>
+    
+    <script src="{% static 'custom_admin_css/assets/js/bootstrap.bundle.min.js' %}" type="b19bbd148c02493fee585122-text/javascript"></script>
+    
+    <script src="{% static 'custom_admin_css/assets/plugins/apexchart/apexcharts.min.js' %}" type="b19bbd148c02493fee585122-text/javascript"></script>
+    <script src="{% static 'custom_admin_css/assets/plugins/apexchart/chart-data.js' %}" type="b19bbd148c02493fee585122-text/javascript"></script>
+    
+    <script src="{% static 'custom_admin_css/assets/plugins/sweetalert/sweetalert2.all.min.js' %}" type="b19bbd148c02493fee585122-text/javascript"></script>
+    <script src="{% static 'custom_admin_css/assets/plugins/sweetalert/sweetalerts.min.js' %}" type="b19bbd148c02493fee585122-text/javascript"></script>
+    
+    <script src="{% static 'custom_admin_css/assets/js/theme-script.js' %}" type="b19bbd148c02493fee585122-text/javascript"></script>
+    <script src="{% static 'custom_admin_css/assets/js/script.js' %}" type="b19bbd148c02493fee585122-text/javascript"></script>
+    
+    
+    <script src="{% static 'custom_admin_css/cdn-cgi/scripts/7d0fa10a/cloudflare-static/rocket-loader.min.js' %}"
+        data-cf-settings="b19bbd148c02493fee585122-|49" defer=""></script>
+
+
+        <script src="{% static 'custom_admin_css/assets/js/jquery.dataTables.min.js' %}" type="2c383acb7803a43606120a52-text/javascript"></script>
+        <script src="{% static 'custom_admin_css/assets/js/dataTables.bootstrap5.min.js' %}" type="2c383acb7803a43606120a52-text/javascript"></script>
+
+        <script src="{% static 'custom_admin_css/assets/plugins/select2/js/select2.min.js' %}" type="2c383acb7803a43606120a52-text/javascript"></script>
+
+        <script src="{% static 'custom_admin_css/assets/js/moment.min.js' %}" type="2c383acb7803a43606120a52-text/javascript"></script>
+        <script src="{% static 'custom_admin_css/assets/js/bootstrap-datetimepicker.min.js' %}" type="2c383acb7803a43606120a52-text/javascript"></script>
+
+        <script>
+            // Function to play sound
+            // function playSound() {
+            //     var audio = new Audio("{% static 'custom_admin_css/not.mp3' %}");
+            //     audio.play();
+            // }
+        
+            // // Function to check for new orders
+            // function checkNewOrders() {
+            //     $.ajax({
+            //         url: "{% url 'check_new_orders' %}", // URL to your view
+            //         method: "GET",
+            //         success: function(data) {
+            //             if (data.new_orders > 0) {
+            //                 playSound();  // Play sound when new orders are detected
+            //             }
+            //         }
+            //     });
+            // }
+        
+            // // Poll every 30 seconds (30000 ms) to check for new orders
+            // setInterval(checkNewOrders, 30000);
+        </script>
+
+
+
+<style>
+    .fetched-row {
+        background-color: red;
+    }
+</style>
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+
+<audio id="notificationSound" src="{% static 'custom_admin_css/not.mp3' %}" preload="auto"></audio>
+
+
+<script>
+  $(document).ready(function() {
+    let soundTimer;
+    let lastOrderCount = 0; // Track the last known number of orders
+
+    function fetchOrders() {
+        $.ajax({
+            url: '{% url "fetch_orders_data" %}',
+            method: 'GET',
+            success: function(data) {
+                const newOrderCount = data.orders.length;
+
+                // Check if new orders are available
+                if (newOrderCount > lastOrderCount) {
+                    playSoundForOneMinute();
+                }
+
+                // Update the order count and the table
+                lastOrderCount = newOrderCount;
+                updateOrdersTable(data.orders);
+            },
+            error: function(xhr, status, error) {
+                console.error("Error fetching orders:", error);
+            }
+        });
+    }
+
+    function updateOrdersTable(orders) {
+        const ordersTableBody = $('#orders-table-body');
+        ordersTableBody.empty();
+
+        orders.forEach(function(order) {
+            const orderRow = `
+                <tr class="fetched-row">
+                    
+                    <td># 00${order.id}</td>
+                    <td>${order.customer_name}<br>${order.customer_email}<br>${order.customer_phone}</td>
+                    <td>${order.customer_street_address}<br>${order.customer_zip_code}<br>${order.customer_city}</td>
+                    <td class="payment-info">
+                        ${order.payment_method === 'Stripe' 
+                            ? `<img src="${order.payment_icon}" alt="Pay">`
+                            : '<strong>N/A</strong>'}
+                    </td>
+                    <td>${order.payment_method === 'Stripe' 
+                            ? `${order.stripe_payment_intent_id}`
+                            : '<strong>N/A</strong>'}</td>
+                    <td>${order.shipping_cost}</td>
+                    <td>${order.price} €</td>
+                    <td>${order.order_type}</td>
+                    <td>
+                        <div class="dropdown">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                ${order.product_status}
+                            </button>
+                           
+                        </div>
+                    </td>
+                </tr>
+            `;
+            ordersTableBody.append(orderRow);
+        });
+
+        feather.replace();
+    }
+
+    function playSoundForOneMinute() {
+        clearTimeout(soundTimer);
+        const audioElement = document.getElementById('notificationSound');
+        if (audioElement) {
+            audioElement.play().catch((error) => {
+                console.error("Error playing sound:", error);
+            });
+        }
+
+        soundTimer = setTimeout(() => {
+            if (audioElement) {
+                audioElement.pause();
+                audioElement.currentTime = 0;
+            }
+        }, 60000);
+    }
+
+    fetchOrders();
+    setInterval(fetchOrders, 10000);
+});
+
+</script>
+
+
+        
+
+
+
+
+
+
+
+
+<script>
+    $(document).ready(function() {
+        // Function to fetch orders
+        function fetchOrders() {
+            $.ajax({
+                url: '{% url "fetch_orders_data" %}',
+                method: 'GET',
+                success: function(data) {
+                    updateOrdersTable(data.orders);
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error fetching orders:", error);
+                }
+            });
+        }
+
+        // Function to update the orders table
+        function updateOrdersTable(orders) {
+            const ordersTableBody = $('#orders-table-body');
+            ordersTableBody.empty(); // Clear previous rows
+
+            orders.forEach(function(order) {
+                const orderRow = `
+                    <tr class="fetched-row">
+                        
+                        <td># 00${order.id}</td>
+                      
+                        <td>${order.customer_name}<br>${order.customer_email}<br>${order.customer_phone}</td>
+                        <td>
+                             ${order.customer_street_address}<br>${order.customer_zip_code}<br>${order.customer_city}
+                        </td>
+                        <td class="payment-info">
+                            ${order.payment_method === 'Stripe' 
+                                ? `<img src="${order.payment_icon}" alt="Pay">`
+                                : '<strong>N/A</strong>'}
+                        </td>
+                         <td>
+                            ${order.payment_method === 'Stripe' 
+                                ? `${order.stripe_payment_intent_id}`
+                                : '<strong>N/A</strong>'}
+                        </td>
+
+                        <td>€ ${order.shipping_cost}</td>
+                        <td>€ ${order.price} </td>
+                        <td>${order.order_type}</td>
+                        <td>
+                            <!-- Status Display and Dropdown -->
+                            <div class="dropdown">
+                                <button class="btn btn-secondary dropdown-toggle" type="button" id="statusDropdown-${order.id}" data-bs-toggle="dropdown" aria-expanded="false">
+                                    ${order.product_status}
+                                </button>
+                               
+                            </div>
+                        </td>
+                       
+                        <td class="text-center">
+                            <a class="action-set" href="javascript:void(0);" data-bs-toggle="dropdown" aria-expanded="true">
+                                <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a href="" class="dropdown-item">
+                                        <i data-feather="download" class="info-img"></i>Download PDF
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="" class="dropdown-item mb-0">
+                                        <i data-feather="trash-2" class="info-img"></i>Delete Sale
+                                    </a>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+                `;
+                ordersTableBody.append(orderRow);
+            });
+
+            // Refresh icons (if using Feather icons)
+            feather.replace();
+        }
+
+        // Initial fetch and set interval to refresh every 10 seconds
+        fetchOrders();
+        setInterval(fetchOrders, 10000);
+    });
+</script>
+
+
+
+    </body>
+
+</html>

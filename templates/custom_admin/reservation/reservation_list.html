@@ -1,0 +1,318 @@
+{% extends "custom_admin/base.html" %}
+{% load custom_filters %}
+{% load static %}
+
+
+
+
+{% block custom_admin_body %}
+
+
+
+
+<div class="page-wrapper">
+    <div class="content">
+        <div class="page-header">
+            <div class="add-item d-flex">
+                <div class="page-title">
+                    <h4>Reservation Lists</h4>
+                    <h6>Manage Your Reservation</h6>
+                </div>
+
+
+                <div class="form-check ms-4">
+                    <input type="checkbox" class="form-check-input" id="reservationToggle" 
+                           {% if site_settings.is_reservation %}checked{% endif %} style="border: 2px solid blue;">
+                    <label class="form-check-label" for="reservationToggle">Reservation (ON/OFF)</label>
+                </div>
+            </div>
+            
+         
+        </div>
+
+        <div class="card table-list-card">
+            <div class="card-body">
+
+
+
+
+
+     
+                
+
+    
+
+                <div class="table-responsive">
+                    <table class="table  datanew" >
+                        <thead>
+                            <tr>
+                                <th class="no-sort">
+                                    <label class="checkboxs">
+                                        <input type="checkbox" id="select-all">
+                                        <span class="checkmarks"></span>
+                                    </label>
+                                </th>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Phone</th>
+                                <th>Total Person</th>
+                                <th>Date</th>
+                                <th>Status</th>
+                                <th>Slot</th>
+                                           
+                                <th class="text-center">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody class="sales-list">
+                            {% for reservation in reservations %}
+                            <tr >
+                                <td >
+                                    <label class="checkboxs">
+                                        <input type="checkbox">
+                                        <span class="checkmarks"></span>
+                                    </label>
+                                </td>
+                                <td># {{ reservation.id }}</td>
+                                <td>{{ reservation.name }}</td>
+                                <td>{{ reservation.email }}</td>
+                                <td>{{ reservation.phone }}</td>
+                                <td>{{ reservation.total_person }}</td>
+                                <td>{{ reservation.date }}</td>
+                                <td>{{ reservation.slot }}</td>
+                                
+                                <td>
+                                    <!-- Status Display and Dropdown -->
+                                    <div class="dropdown">
+                                        <button class="btn btn-secondary dropdown-toggle" type="button" id="statusDropdown-{{ reservation.id }}" data-bs-toggle="dropdown" aria-expanded="false">
+                                            {{ reservation.status }}
+                                        </button>
+                                        <ul class="dropdown-menu" aria-labelledby="statusDropdown-{{ reservation.id }}">
+                                            <li><a class="dropdown-item" href="javascript:void(0);" data-status="Réservé">Réservé</a></li>
+                                            <li><a class="dropdown-item" href="javascript:void(0);" data-status="Rejeté">Rejeté</a></li>
+
+                                        </ul>
+                                    </div>
+                                </td>
+                               
+                                <td class="text-center">
+                               
+                                   
+
+                                    <a class="action-set" href="javascript:void(0);" data-bs-toggle="dropdown" aria-expanded="true">
+                                        <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li>
+                                            <a href="{{ reservation.invoice_slip.url }}" class="dropdown-item"><i data-feather="download" class="info-img"></i>Download PDF</a>
+                                        </li>
+                                        <li>
+
+                                            <a href="{% url 'delete_reservation' reservation.id %}" class="dropdown-item mb-0">
+                                                <i data-feather="trash-2" class="info-img"></i>Delete Reservation
+                                            </a>
+                                        </li>
+                                        
+                                    </ul>
+                                </td>
+                                
+                            </tr>
+                        
+                            {% endfor %}
+
+
+
+                          
+
+
+                        </tbody>
+
+
+
+
+                        
+                    </table>
+
+                    <div class="col-xl-6">
+                        <div class="card-body">
+                            <nav aria-label="Page navigation" class="pagination-style-4">
+                                <ul class="pagination mb-0 flex-wrap">
+                                    {% if reservations.has_previous %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page={{ reservations.previous_page_number }}">
+                                            Prev
+                                        </a>
+                                    </li>
+                                    {% else %}
+                                    <li class="page-item disabled">
+                                        <a class="page-link" href="javascript:void(0);">
+                                            Prev
+                                        </a>
+                                    </li>
+                                    {% endif %}
+                                    
+                                    {% for num in reservations.paginator.page_range %}
+                                        {% if reservations.number == num %}
+                                        <li class="page-item active"><a class="page-link" href="javascript:void(0);">{{ num }}</a></li>
+                                        {% else %}
+                                        <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+                                        {% endif %}
+                                    {% endfor %}
+                    
+                                    {% if reservations.has_next %}
+                                    <li class="page-item">
+                                        <a class="page-link text-primary" href="?page={{ reservations.next_page_number }}">
+                                            Next
+                                        </a>
+                                    </li>
+                                    {% else %}
+                                    <li class="page-item disabled">
+                                        <a class="page-link" href="javascript:void(0);">
+                                            Next
+                                        </a>
+                                    </li>
+                                    {% endif %}
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        // Handle status change from dropdown
+        $('.dropdown-item').click(function() {
+            var newStatus = $(this).data('status');
+            var dropdownButton = $(this).closest('.dropdown').find('.dropdown-toggle');
+            var reservationId = dropdownButton.attr('id').split('-')[1]; 
+    
+            $.ajax({
+                url: "{% url 'update_reservation_status' %}",  // Replace with your URL
+                type: "POST",
+                data: {
+                    'reservation_id': reservationId,
+                    'status': newStatus,
+                    'csrfmiddlewaretoken': '{{ csrf_token }}'
+                },
+                success: function(response) {
+                    // Update dropdown button text with new status
+                    dropdownButton.text(newStatus.charAt(0).toUpperCase() + newStatus.slice(1));
+                },
+                error: function(xhr, errmsg, err) {
+                    console.error(xhr.status + ": " + xhr.responseText);
+                    // Optionally, handle errors here
+                }
+            });
+        });
+    });
+    
+    
+</script>
+
+
+
+
+
+<script>
+    $(document).ready(function () {
+        $(".confirm-text").on("click", function () {
+            var orderId = $(this).data("order-id");
+
+            Swal.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, delete it!",
+                confirmButtonClass: "btn btn-primary",
+                cancelButtonClass: "btn btn-danger ml-1",
+                buttonsStyling: false,
+            }).then(function (result) {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: "{% url 'delete_sale' 0 %}".replace('0', orderId),  // Ensure this URL matches your Django routing
+                        type: "POST",
+                        data: {
+                            csrfmiddlewaretoken: "{{ csrf_token }}"  // Correctly pass CSRF token
+                        },
+                        success: function (response) {
+                            if (response.success) {
+                                Swal.fire({
+                                    icon: "success",
+                                    title: "Deleted!",
+                                    text: "The order has been deleted.",
+                                    confirmButtonClass: "btn btn-success",
+                                });
+
+                                // Optionally remove the row from the table
+                                $("#order-row-" + orderId).remove();
+                            } else {
+                                Swal.fire({
+                                    icon: "error",
+                                    title: "Error!",
+                                    text: "An error occurred while trying to delete the order: " + response.error,
+                                    confirmButtonClass: "btn btn-danger",
+                                });
+                            }
+                        },
+                        error: function (xhr, status, error) {
+                            Swal.fire({
+                                icon: "error",
+                                title: "Request Failed!",
+                                text: "The AJAX request failed: " + error,
+                                confirmButtonClass: "btn btn-danger",
+                            });
+                        }
+                    });
+                }
+            });
+        });
+    });
+</script>
+
+
+<script>
+    document.getElementById('reservationToggle').addEventListener('change', function() {
+        const isDisabled = this.checked;
+    
+        // Send Ajax POST request to toggle reservation status
+        fetch("{% url 'toggle_reservation_status' %}", {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}',
+                'X-Requested-With': 'XMLHttpRequest'
+            },
+            body: JSON.stringify({ is_reservation: !isDisabled })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                alert(`Reservations are now ${data.is_reservation ? 'enabled' : 'disabled'}.`);
+            } else {
+                alert('Failed to update reservation status.');
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    });
+    </script>
+
+<style>
+    .table .fetch_data tr td {
+        background-color: rgb(250, 137, 137) !important;
+    }
+</style>
+
+
+{% endblock custom_admin_body %}
