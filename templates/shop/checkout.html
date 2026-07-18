@@ -124,7 +124,7 @@
     <!-- Start Breadcrumb
     ============================================= -->
     <div class="breadcrumb-area bg-cover shadow dark text-center text-light"
-    style="background-image: url(/static/assets/img/default/banner2.jpg);">
+    style="background-image: url({% if site_info.banner %}{{ site_info.banner.url }}{% else %}{% static 'assets/img/default/banner2.jpg' %}{% endif %});">
     
     </div>
     <!-- End Breadcrumb -->
