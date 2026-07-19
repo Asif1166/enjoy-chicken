@@ -543,9 +543,9 @@
     }
 </style>
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+{% endblock body %}
 
+{% block extra_scripts %}
 <script>
     $(document).ready(function () {
         // Initialize datepicker to prevent past date selection
@@ -819,5 +819,4 @@
         });
     });
 </script>
-
-{% endblock body %}
+{% endblock %}

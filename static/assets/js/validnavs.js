@@ -626,9 +626,13 @@
 
 	$('ul.nav>li>a').on('click', function(event) {
 		var $anchor = $(this);
+		var href = $anchor.attr('href');
+		if (!href || href.charAt(0) !== '#' || !$(href).length) {
+			return;
+		}
 		var headerH = '75';
 		$('html, body').stop().animate({
-			scrollTop: $($anchor.attr('href')).offset().top - headerH + "px"
+			scrollTop: $(href).offset().top - headerH + "px"
 		}, 50, 'easeInOutExpo');
 		event.preventDefault();
 	});
