@@ -976,6 +976,28 @@ table.table tr th, table.table tr td {
     color : #fff !important;
 }
 
+ul.meal-items li .content .top .price {
+    padding: 0;
+}
+
+ul.meal-items li .content .top .price a {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    padding: 5px 5px;
+    color: var(--white) !important;
+    text-decoration: none !important;
+}
+
+ul.meal-items li .content .top .price a:hover,
+ul.meal-items li .content .top .price a:focus,
+ul.meal-items li .content .top .price a:active {
+    color: var(--white) !important;
+    text-decoration: none !important;
+    opacity: 1;
+}
+
 
 
 

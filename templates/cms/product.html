@@ -92,7 +92,7 @@
                                                                                 href="{% url 'product_details' product.pid  %}">{{ product.title }}</a></h4>
                                                                     </div>
                                                                     <div class="price">
-                                                                        <span>€{{ product.price }}</span>
+                                                                        <a href="{% url 'product_details' product.pid %}"><span>€{{ product.price }}</span></a>
                                                                     </div>
                                                                 </div>
                                                                 <div class="bottom">
@@ -188,7 +188,7 @@
                                                                                         </h4>
                                                                                     </div>
                                                                                     <div class="price">
-                                                                                        <span>€{{ product.price }}</span>
+                                                                                        <a href="{% url 'product_details' product.pid %}"><span>€{{ product.price }}</span></a>
                                                                                     </div>
                                                                                 </div>
                                                                                 <div class="bottom">
