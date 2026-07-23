@@ -998,6 +998,22 @@ ul.meal-items li .content .top .price a:active {
     opacity: 1;
 }
 
+/* Show the full breadcrumb banner image inside the existing box, no cropping */
+.breadcrumb-area.bg-cover {
+    background-size: contain !important;
+    background-repeat: no-repeat !important;
+    background-position: center top !important;
+}
+
+/* On desktop the navbar switches to position:absolute and overlaps whatever
+   comes right after it, hiding the top of the breadcrumb banner. Push the
+   banner down so nothing sits underneath the navbar. */
+@media (min-width: 1024px) {
+    .breadcrumb-area.bg-cover {
+        margin-top: 115px;
+    }
+}
+
 
 
 
